@@ -1,0 +1,17 @@
+#searchBox {
+	height: 25px;
+    width: 500px;
+}
+
+#search {
+	margin-top: 20%;
+	text-align: center;
+}
+
+#search img {
+	margin-bottom: 10px;
+}
+
+#search button {
+	height: 32px;
+}
