@@ -1,40 +1,32 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title>RevMiner Likeness</title>
-		<link href="index.css" type="text/css" rel="stylesheet" />
-		<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
-		<script src="index.js" type="text/javascript"></script>
-	</head>
-
-	<body>
-		<?php
-		
-		$new_restaurant_name = $_REQUEST["restaurant_name"];
-		
-		$new_restaurant = fetch_new_restaurant($new_restaurant_name);
-		//this list contains user's favorite restaurants
-		$favorite_restaurants_list = get_favorite_restaurants(); 
-		//apend new restaurant
-		$favorite_restaurants_list[] = $new_restaurant;
-			
-		//the list contains relevant restaurants
-		$relevant_restaurants_list = generate_relevant_restaurants_list();
-		
-		//this method can print the relevant restaurants list.
-		print_relevant_restaurants_list($relevant_restaurants_list);
-		
-		//Jinghao, your code will go here, relevant_restaurants_list contains the list of relevant restaurants
-		//$relevant restaurants are generated randomly now, 
-		rank_relevant_restaurants($relevant_restaurants_list);
-		
-		?>
-	</body>
-</html>
-
 <?php
+	include 'pattern.php';
+	include 'html_scraper.php';
+	
+	define('REVMINTER_URL', 'http://revminer.com/#');
+	
+	print_head();
+	
+	
+	$new_restaurant_name = $_REQUEST["restaurant_name"];
+	
+	$new_restaurant = fetch_new_restaurant($new_restaurant_name);
+	//this list contains user's favorite restaurants
+	$favorite_restaurants_list = get_favorite_restaurants(); 
+	//apend new restaurant
+	$favorite_restaurants_list[] = $new_restaurant;
+		
+	//the list contains relevant restaurants
+	$relevant_restaurants_list = generate_relevant_restaurants_list();
+	
+	//this method can print the relevant restaurants list.
+	print_relevant_restaurants_list($relevant_restaurants_list);
+	
+	//Jinghao, your code will be in this function, relevant_restaurants_list contains the list of relevant restaurants
+	//$relevant restaurants are generated randomly now, 
+	rank_relevant_restaurants($relevant_restaurants_list);
+	
+	print_bottom();
+		
 
 	abstract class Restaurant{
 		public $name;
@@ -68,7 +60,20 @@
 	//contains the info of the searched restaurant.
 	//if the restaurant is not found, then give user several related restaurant, and let user choose
 	function fetch_new_restaurant($restaurant_name){
+		print "o_url: " . $restaurant_name . "\n";
+		$restaurant_name = rawurlencode($restaurant_name);
+		print "url: " . $restaurant_name . "<br/>";
+		
 		$new_restaurant = new FavoriteRestaurant();
+/*
+		$dom = file_get_html(REVMINTER_URL . urlencode($restaurant_name));
+*/	
+		print "final url: " . REVMINTER_URL . $restaurant_name . "<br/>";
+		$html = file_get_contents(REVMINTER_URL . $restaurant_name);
+		
+		print $html;
+		
+		
 		$new_restaurant->name = random_string(10);//set name to random string with length of 10 chars
 		$new_restaurant->price = rand(1, 100);
 		
@@ -95,7 +100,7 @@
 										$service_weight / $total_weight, 
 										$decor_weight / $total_weight);
 										
-			$relevant_restaurants_list[] = $r; //apend new restaurants
+			$relevant_restaurants_list[] = $r; //apend new restaurant
 		}
 		return $relevant_restaurants_list;
 	}
@@ -124,5 +129,4 @@
 
 		return $result;
 	}
-
 ?>
