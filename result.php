@@ -2,7 +2,7 @@
 	include 'pattern.php';
 	include 'html_scraper.php';
 	
-	define('REVMINTER_URL', 'http://revminer.com/#');
+	define('REVMINER_URL', 'http://revminer.com/#');
 	
 	print_head();
 	
@@ -66,10 +66,10 @@
 		
 		$new_restaurant = new FavoriteRestaurant();
 /*
-		$dom = file_get_html(REVMINTER_URL . urlencode($restaurant_name));
+		$dom = file_get_html(REVMINER_URL . urlencode($restaurant_name));
 */	
-		print "final url: " . REVMINTER_URL . $restaurant_name . "<br/>";
-		$html = file_get_contents(REVMINTER_URL . $restaurant_name);
+		print "final url: " . REVMINER_URL . $restaurant_name . "<br/>";
+		$html = file_get_contents(REVMINER_URL . $restaurant_name);
 		
 		print $html;
 		
