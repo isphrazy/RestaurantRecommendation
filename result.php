@@ -2,7 +2,7 @@
 	include 'pattern.php';
 	include 'html_scraper.php';
 	
-	define('REVMINTER_URL', 'http://revminer.com/#');
+	define('REVMINER_URL', 'http://revminer.com/#');
 	
 	print_head();
 	
@@ -12,18 +12,17 @@
 	$new_restaurant = fetch_new_restaurant($new_restaurant_name);
 	//this list contains user's favorite restaurants
 	$favorite_restaurants_list = get_favorite_restaurants(); 
-	//apend new restaurant
+	//append new restaurant
 	$favorite_restaurants_list[] = $new_restaurant;
 		
 	//the list contains relevant restaurants
 	$relevant_restaurants_list = generate_relevant_restaurants_list();
-	
-	//this method can print the relevant restaurants list.
-	print_relevant_restaurants_list($relevant_restaurants_list);
-	
-	//Jinghao, your code will be in this function, relevant_restaurants_list contains the list of relevant restaurants
-	//$relevant restaurants are generated randomly now, 
+
+	//this method ranks the relevant restaurants list.
 	rank_relevant_restaurants($relevant_restaurants_list);
+
+	//this method prints the relevant restaurants list.
+	print_relevant_restaurants_list($relevant_restaurants_list);
 	
 	print_bottom();
 		
@@ -42,19 +41,15 @@
 	class FavoriteRestaurant extends Restaurant{
 		public $category;
 	}
-	
-	
-	
-	
-	//Jinghao's code
+
+	//sort the relevant restaurants based on relevance, qualities, and price 
 	function rank_relevant_restaurants($relevant_restaurants_list){
-		
+	/*Take the following factors into consideration:
+	  $r->price
+	  $r->reviews_weight (an array of size 3, representing food, service and decor)
+	  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
+	*/
 	}
-	
-	
-	
-	
-	
 	
 	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
 	//contains the info of the searched restaurant.
@@ -66,10 +61,10 @@
 		
 		$new_restaurant = new FavoriteRestaurant();
 /*
-		$dom = file_get_html(REVMINTER_URL . urlencode($restaurant_name));
+		$dom = file_get_html(REVMINER_URL . urlencode($restaurant_name));
 */	
-		print "final url: " . REVMINTER_URL . $restaurant_name . "<br/>";
-		$html = file_get_contents(REVMINTER_URL . $restaurant_name);
+		print "final url: " . REVMINER_URL . $restaurant_name . "<br/>";
+		$html = file_get_contents(REVMINER_URL . $restaurant_name);
 		
 		print $html;
 		
@@ -100,7 +95,7 @@
 										$service_weight / $total_weight, 
 										$decor_weight / $total_weight);
 										
-			$relevant_restaurants_list[] = $r; //apend new restaurant
+			$relevant_restaurants_list[] = $r; //append new restaurant
 		}
 		return $relevant_restaurants_list;
 	}
