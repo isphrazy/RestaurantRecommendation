@@ -12,7 +12,7 @@
 	$new_restaurant = fetch_new_restaurant($new_restaurant_name);
 	//this list contains user's favorite restaurants
 	$favorite_restaurants_list = get_favorite_restaurants(); 
-	//apend new restaurant
+	//append new restaurant
 	$favorite_restaurants_list[] = $new_restaurant;
 		
 	//the list contains relevant restaurants
@@ -100,7 +100,7 @@
 										$service_weight / $total_weight, 
 										$decor_weight / $total_weight);
 										
-			$relevant_restaurants_list[] = $r; //apend new restaurant
+			$relevant_restaurants_list[] = $r; //append new restaurant
 		}
 		return $relevant_restaurants_list;
 	}
