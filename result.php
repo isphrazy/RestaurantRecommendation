@@ -3,13 +3,15 @@
 	include 'html_scraper.php';
 	
 	define('REVMINER_URL', 'http://revminer.com/#');
+	define('RESTAURANTS_FILE_NAME', 'data/Restaurants.data');
+	define('BUSINESS_NAME_RESTAURANT_FILE_NAME', 'data/BusinessNameMapToRestaurantName.data');
 	
 	print_head();
 	
-	
 	$new_restaurant_name = $_REQUEST["restaurant_name"];
+	$found = $_REQUEST["sure"];
 	
-	$new_restaurant = fetch_new_restaurant($new_restaurant_name);
+	$new_restaurant = search_restaurant($new_restaurant_name);
 	//this list contains user's favorite restaurants
 	$favorite_restaurants_list = get_favorite_restaurants(); 
 	//append new restaurant
@@ -26,7 +28,9 @@
 	
 	print_bottom();
 		
-
+	/*
+	 * abstract class for restaurant
+	 */
 	abstract class Restaurant{
 		public $name;
 		public $price;
@@ -34,16 +38,23 @@
 		
 	}
 	
+	/*
+	 * restaurant that is relevant to the given restaurants
+	 */
 	class RelevantRestaurant extends Restaurant{
 		public $relevance; //similarity of this restaurant to the searched one
 	}
 	
+	/*
+	 * restaurant that is saved as user's favorite restaurant
+	 */
 	class FavoriteRestaurant extends Restaurant{
 		public $category;
 	}
 
-
-	//sort the relevant restaurants based on relevance, qualities, and price 
+	/*
+	 * sort the relevant restaurants based on relevance, qualities, and price 
+	 */
 	function rank_relevant_restaurants($relevant_restaurants_list){
 	/*Take the following factors into consideration:
 	  $r->price
@@ -53,18 +64,44 @@
 		// Use uasort() - Sorts by value
 	}
 	
+	/*
+	 * */
+	function search_restaurant($restaurant_name){
+		
+		$restaurant_name = trim($restaurant_name);
+		
+		$search_file = file_get_contents(RESTAURANTS_FILE_NAME);
+		$search_json = json_decode($search_file, true);
+		print_r($search_json);
+/*
+		$search_result = array();
+		foreach($search_json as $r_name => $r_name){
+			if(strlen(stristr($b_name, $restaurant_name)) > 0){
+				$search_result[$b_name] = $r_name;
+			}
+		}
+		//print_r($search_result);
+		$nFound = count($search_result);
+		if($nFound === 0){
+			
+		}else if($nFound === 1){
+			
+		}else{//found several restaurant
+			
+		}
+*/
+	}
+	
 	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
 	//contains the info of the searched restaurant.
 	//if the restaurant is not found, then give user several related restaurant, and let user choose
+/*
 	function fetch_new_restaurant($restaurant_name){
 		print "o_url: " . $restaurant_name . "\n";
 		$restaurant_name = rawurlencode($restaurant_name);
 		print "url: " . $restaurant_name . "<br/>";
 		
 		$new_restaurant = new FavoriteRestaurant();
-/*
-		$dom = file_get_html(REVMINER_URL . urlencode($restaurant_name));
-*/	
 		print "final url: " . REVMINER_URL . $restaurant_name . "<br/>";
 		$html = file_get_contents(REVMINER_URL . $restaurant_name);
 		
@@ -76,8 +113,11 @@
 		
 		return $new_restaurant;
 	}
+*/
 	
-	//search database to find relevant restaurants;
+	/*
+	 * search database to find relevant restaurants;
+	 */
 	function generate_relevant_restaurants_list(){
 		$relevant_restaurants_list = array();
 		
@@ -102,7 +142,9 @@
 		return $relevant_restaurants_list;
 	}
 	
-	//return user's favorite restaurant list. This list is sotred in database
+	/*
+	 * return user's favorite restaurant list. This list is sotred in database
+	 */
 	function get_favorite_restaurants(){
 		$favorite_restaurants_list = array();
 		
@@ -119,8 +161,7 @@
 	function random_string($length){      
 		$chars = 'bcdfghjklmnprstvwxzaeiou';
 
-		for ($p = 0; $p < $length; $p++)
-		{
+		for ($p = 0; $p < $length; $p++){
 			$result .= ($p%2) ? $chars[mt_rand(19, 23)] : $chars[mt_rand(0, 18)];
 		}
 
