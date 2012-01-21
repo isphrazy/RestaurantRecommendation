@@ -18,10 +18,10 @@
 	//the list contains relevant restaurants
 	$relevant_restaurants_list = generate_relevant_restaurants_list();
 
-	//this method ranks the relevant restaurants list.
+	//ranks the relevant restaurants list.
 	rank_relevant_restaurants($relevant_restaurants_list);
 
-	//this method prints the relevant restaurants list.
+	//prints the relevant restaurants list.
 	print_relevant_restaurants_list($relevant_restaurants_list);
 	
 	print_bottom();
@@ -42,6 +42,7 @@
 		public $category;
 	}
 
+
 	//sort the relevant restaurants based on relevance, qualities, and price 
 	function rank_relevant_restaurants($relevant_restaurants_list){
 	/*Take the following factors into consideration:
@@ -49,6 +50,7 @@
 	  $r->reviews_weight (an array of size 3, representing food, service and decor)
 	  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
 	*/
+		// Use uasort() - Sorts by value
 	}
 	
 	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
