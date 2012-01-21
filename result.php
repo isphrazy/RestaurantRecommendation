@@ -17,13 +17,12 @@
 		
 	//the list contains relevant restaurants
 	$relevant_restaurants_list = generate_relevant_restaurants_list();
-	
-	//this method can print the relevant restaurants list.
-	print_relevant_restaurants_list($relevant_restaurants_list);
-	
-	//Jinghao, your code will be in this function, relevant_restaurants_list contains the list of relevant restaurants
-	//$relevant restaurants are generated randomly now, 
+
+	//this method ranks the relevant restaurants list.
 	rank_relevant_restaurants($relevant_restaurants_list);
+
+	//this method prints the relevant restaurants list.
+	print_relevant_restaurants_list($relevant_restaurants_list);
 	
 	print_bottom();
 		
@@ -42,19 +41,15 @@
 	class FavoriteRestaurant extends Restaurant{
 		public $category;
 	}
-	
-	
-	
-	
-	//Jinghao's code
+
+	//sort the relevant restaurants based on relevance, qualities, and price 
 	function rank_relevant_restaurants($relevant_restaurants_list){
-		
+	/*Take the following factors into consideration:
+	  $r->price
+	  $r->reviews_weight (an array of size 3, representing food, service and decor)
+	  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
+	*/
 	}
-	
-	
-	
-	
-	
 	
 	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
 	//contains the info of the searched restaurant.
