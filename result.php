@@ -1,30 +1,54 @@
 <?php
 	include 'pattern.php';
-	include 'html_scraper.php';
 	
 	define('REVMINER_URL', 'http://revminer.com/#');
-	define('RESTAURANTS_FILE_NAME', 'data/Restaurants.data');
+	define('SEARCH_FILE', 'data/SearchDatabase.data');
 	define('BUSINESS_NAME_RESTAURANT_FILE_NAME', 'data/BusinessNameMapToRestaurantName.data');
+	define('BUSINESS_NAME', 'Business Name');
+	define('ADDRESS', 'Address');
 	
 	print_head();
 	
 	$new_restaurant_name = $_REQUEST["restaurant_name"];
-	$found = $_REQUEST["sure"];
+	//if it's true, then this call is by this file itself, and $new_restaurant_name
+	//is the key of the restaurant.
+	//if not set, then we will search restaurant name to find the restaurant.
+	$found = isset($_REQUEST["sure"]);
 	
-	$new_restaurant = search_restaurant($new_restaurant_name);
-	//this list contains user's favorite restaurants
-	$favorite_restaurants_list = get_favorite_restaurants(); 
-	//append new restaurant
-	$favorite_restaurants_list[] = $new_restaurant;
+	if(!$found){
+		$search_result = search_restaurant($new_restaurant_name);
+
+		$nFound = count($search_result);
+		if($nFound === 0){
+			print_not_restaurant_found($new_restaurant_name);
+		}else if($nFound === 1){
+			$found = true;
+		}else{//found several restaurant
+			print_restaurant_choices($search_result);
+		}
+
+	}
+	
+	if($found){
 		
-	//the list contains relevant restaurants
-	$relevant_restaurants_list = generate_relevant_restaurants_list();
+		$new_restaurant = get_restaurant($new_restaurant_name);
+		
+		//this list contains user's favorite restaurants
+		$favorite_restaurants_list = get_favorite_restaurants(); 
+		//append new restaurant
+		$favorite_restaurants_list[] = $new_restaurant;
+			
+		//the list contains relevant restaurants
+		$relevant_restaurants_list = generate_relevant_restaurants_list();
 
-	//ranks the relevant restaurants list.
-	rank_relevant_restaurants($relevant_restaurants_list);
+		//ranks the relevant restaurants list.
+		rank_relevant_restaurants($relevant_restaurants_list);
 
-	//prints the relevant restaurants list.
-	print_relevant_restaurants_list($relevant_restaurants_list);
+		//prints the relevant restaurants list.
+		print_relevant_restaurants_list($relevant_restaurants_list);
+		
+	}
+	
 	
 	print_bottom();
 		
@@ -65,31 +89,57 @@
 	}
 	
 	/*
+	 * search the given restaurant name in database. 
 	 * */
 	function search_restaurant($restaurant_name){
 		
 		$restaurant_name = trim($restaurant_name);
 		
-		$search_file = file_get_contents(RESTAURANTS_FILE_NAME);
+		$search_file = file_get_contents(SEARCH_FILE);
 		$search_json = json_decode($search_file, true);
-		print_r($search_json);
-/*
 		$search_result = array();
-		foreach($search_json as $r_name => $r_name){
-			if(strlen(stristr($b_name, $restaurant_name)) > 0){
-				$search_result[$b_name] = $r_name;
+		foreach($search_json as $r_name => $attr_array){
+			if(strlen(stristr($attr_array[BUSINESS_NAME], $restaurant_name)) > 0){
+				$search_result[$r_name] = $attr_array;
 			}
 		}
-		//print_r($search_result);
-		$nFound = count($search_result);
-		if($nFound === 0){
-			
-		}else if($nFound === 1){
-			
-		}else{//found several restaurant
-			
-		}
-*/
+		return $search_result;
+	}
+	
+	function print_not_restaurant_found($new_restaurant_name){
+		print_search_bar();
+		?>
+			<br/> Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
+		<?php
+	}
+	
+	
+	function print_restaurant_choices($search_result){
+		?>
+		Do you mean:<br/>
+		
+		<?php
+		
+			foreach($search_result as $r_name => $attr_array){
+				?>
+				
+				<a href='result.php?restaurant_name=' + <?=r_name?> + '&sure=true'>
+					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+				</a><br/>
+				
+				<?php
+				
+			}
+		
+		?>
+		
+		<?php
+	}
+	
+	
+	function get_restaurant($new_restaurant_name){
+		
+		
 	}
 	
 	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
