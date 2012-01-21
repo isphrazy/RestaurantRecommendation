@@ -15,13 +15,6 @@
 	<?php
 		
 	}
-
-	function print_bottom(){
-	?>
-			</body>
-		</html>
-	<?php
-	}
 	
 	function print_search_bar(){
 	?>
@@ -38,4 +31,10 @@
 		
 	}
 
+	function print_bottom(){
+	?>
+			</body>
+		</html>
+	<?php
+	}
 ?>
