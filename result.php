@@ -1,13 +1,18 @@
 <?php
 	
+	include 'pattern.php';
+	
 	define('SEARCH_FILE', 'DataMiner/SearchDatabase.data');
-	define('BUSINESS_NAME_RESTAURANT_FILE_NAME', 'DataMiner/BusinessNameMapToRestaurantName.data');
+	define('RESTAURANT_DATA', 'DataMiner/Restaurants.data');
 	define('BUSINESS_NAME', 'Business Name');
 	define('ADDRESS', 'Address');
 	
 	print_head();
 	
+	print_search_bar();
+	
 	$new_restaurant_name = $_REQUEST["restaurant_name"];
+	$new_restaurant_name = trim($new_restaurant_name);
 	//if it's true, then this call is by this file itself, and $new_restaurant_name
 	//is the key of the restaurant.
 	//if not set, then we will search restaurant name to find the restaurant.
@@ -23,7 +28,6 @@
 			$found = true;
 			$name_array = array_keys($search_result);
 			$new_restaurant_name = $name_array[0];
-			print $new_restaurant_name;
 		}else{//found several restaurant
 			print_restaurant_choices($search_result);
 		}
@@ -32,7 +36,10 @@
 	
 	if($found){
 		
-		$new_restaurant = get_restaurant($new_restaurant_name);
+		$restaurant_info = get_restaurant($new_restaurant_name);
+		print_restaurant_info($restaurant_info);
+		
+		$new_restaurant = generate_favorite_restaurant($restaurant_info);
 		
 		//this list contains user's favorite restaurants
 		$favorite_restaurants_list = get_favorite_restaurants(); 
@@ -94,8 +101,6 @@
 	 * */
 	function search_restaurant($restaurant_name){
 		
-		$restaurant_name = trim($restaurant_name);
-		
 		$search_file = file_get_contents(SEARCH_FILE);
 		$search_json = json_decode($search_file, true);
 		$search_result = array();
@@ -107,65 +112,25 @@
 		return $search_result;
 	}
 	
-	function print_not_restaurant_found($new_restaurant_name){
-		print_search_bar();
-		?>
-			<br/> 
-			Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
-		<?php
-	}
 	
-	
-	function print_restaurant_choices($search_result){
-		?>
-		Do you mean:<br/>
-		
-		<?php
-		
-			foreach($search_result as $r_name => $attr_array){
-				?>
-				
-				<a href='result.php?restaurant_name=' + <?=r_name?> + '&sure=true'>
-					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
-				</a><br/>
-				
-				<?php
-				
-			}
-		
-		?>
-		
-		<?php
-	}
-	
-	
+	/*
+	 * returns the restaurant info with 
+	 */
 	function get_restaurant($new_restaurant_name){
 		
+		$restaurant_file = file_get_contents(RESTAURANT_DATA);
+		$restaurant_json = json_decode($restaurant_file, true);
+		return $restaurant_json[$new_restaurant_name];
 		
 	}
 	
-	//fetch restaurant info with given name from revminer, return a FavoriteRestaurant object
-	//contains the info of the searched restaurant.
-	//if the restaurant is not found, then give user several related restaurant, and let user choose
-/*
-	function fetch_new_restaurant($restaurant_name){
-		print "o_url: " . $restaurant_name . "\n";
-		$restaurant_name = rawurlencode($restaurant_name);
-		print "url: " . $restaurant_name . "<br/>";
-		
-		$new_restaurant = new FavoriteRestaurant();
-		print "final url: " . REVMINER_URL . $restaurant_name . "<br/>";
-		$html = file_get_contents(REVMINER_URL . $restaurant_name);
-		
-		print $html;
+
+	
+	function generate_favorite_restaurant($restaurant_info){
 		
 		
-		$new_restaurant->name = random_string(10);//set name to random string with length of 10 chars
-		$new_restaurant->price = rand(1, 100);
-		
-		return $new_restaurant;
 	}
-*/
+	
 	
 	/*
 	 * search database to find relevant restaurants;
@@ -194,6 +159,8 @@
 		return $relevant_restaurants_list;
 	}
 	
+	
+	
 	/*
 	 * return user's favorite restaurant list. This list is sotred in database
 	 */
@@ -218,5 +185,57 @@
 		}
 
 		return $result;
+	}
+	
+	/*
+	 * if the more than one restaurant match the serched restaurant, then let user
+	 * select from these restaurants.
+	 */
+	function print_restaurant_choices($search_result){
+		?>
+		Do you mean:<br/>
+		
+		<?php
+		
+			foreach($search_result as $r_name => $attr_array){
+				?>
+				
+				<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+				</a><br/>
+				
+				<?php
+				
+			}
+		
+		?>
+		
+		<?php
+	}
+	
+	
+	/*
+	 * tells user that the given restaurant name can not be found
+	 */
+	function print_not_restaurant_found($new_restaurant_name){
+		
+		?>
+			<br/> 
+			Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
+		<?php
+	}
+	
+	/*
+	 * print all overview infos about the given restaurant
+	 */
+	function print_restaurant_info($restaurant_info){
+		foreach($restaurant_info as $key => $value){
+			
+			?>
+			<p><span><?=$key?>: </span><span><?=$value?></span></p><br/>
+			
+			<?php
+			
+		}
 	}
 ?>
