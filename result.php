@@ -23,6 +23,9 @@
 			print_not_restaurant_found($new_restaurant_name);
 		}else if($nFound === 1){
 			$found = true;
+			$name_array = array_keys($search_result);
+			$new_restaurant_name = $name_array[0];
+			print $new_restaurant_name;
 		}else{//found several restaurant
 			print_restaurant_choices($search_result);
 		}
@@ -109,7 +112,8 @@
 	function print_not_restaurant_found($new_restaurant_name){
 		print_search_bar();
 		?>
-			<br/> Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
+			<br/> 
+			Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
 		<?php
 	}
 	
