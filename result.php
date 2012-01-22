@@ -51,8 +51,8 @@
 		//the list contains relevant restaurants
 		$relevant_restaurants_list = generate_relevant_restaurants_list($favorite_restaurants_list);
 
-		//ranks the relevant restaurants list.
-		rank_relevant_restaurants($relevant_restaurants_list);
+		//sorts the relevant restaurants list based on relevance, qualities, and price 
+		usort($relevant_restaurants_list, 'cmp');
 
 		//prints the relevant restaurants list.
 		print_relevant_restaurants_list($relevant_restaurants_list);
@@ -86,16 +86,22 @@
 		public $category;
 	}
 
-	/*
-	 * sort the relevant restaurants based on relevance, qualities, and price 
-	 */
-	function rank_relevant_restaurants($relevant_restaurants_list){
-	/*Take the following factors into consideration:
-	  $r->price
-	  $r->reviews_weight (an array of size 3, representing food, service and decor)
-	  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
-	*/
-		// Use uasort() - Sorts by value
+	function cmp($r1, $r2) {
+		/*Take the following factors into consideration:
+		  $r->price
+		  $r->reviews_weight (an array of size 3, representing food, service and decor)
+		  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
+		*/
+		if ( $r1->relevance == $r2->relevance ) {
+			if ( $r1->price == $r2->price ) {
+				if ( $r1->reviews_weight[0] == $r2->reviews_weight[0] ) {
+					return 0;
+				}
+				return ( $r1->reviews_weight[0] < $r2->reviews_weight[0] ) ? 1 : -1;
+			}
+			return ( $r1->price < $r2->price ) ? -1 : 1 // ascending order
+		}
+		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 	}
 	
 	/*
