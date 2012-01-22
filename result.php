@@ -1,9 +1,7 @@
 <?php
-	include 'pattern.php';
 	
-	define('REVMINER_URL', 'http://revminer.com/#');
-	define('SEARCH_FILE', 'data/SearchDatabase.data');
-	define('BUSINESS_NAME_RESTAURANT_FILE_NAME', 'data/BusinessNameMapToRestaurantName.data');
+	define('SEARCH_FILE', 'DataMiner/SearchDatabase.data');
+	define('BUSINESS_NAME_RESTAURANT_FILE_NAME', 'DataMiner/BusinessNameMapToRestaurantName.data');
 	define('BUSINESS_NAME', 'Business Name');
 	define('ADDRESS', 'Address');
 	
