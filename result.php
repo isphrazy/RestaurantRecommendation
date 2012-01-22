@@ -3,9 +3,13 @@
 	include 'pattern.php';
 	
 	define('SEARCH_FILE', 'DataMiner/SearchDatabase.data');
-	define('RESTAURANT_DATA', 'DataMiner/Restaurants.data');
+	define('RESTAURANT_DATA_FILE', 'DataMiner/Restaurants.data');
+	define('CATEGORY_DATA_FILE', 'DataMiner/Category.data')
 	define('BUSINESS_NAME', 'Business Name');
 	define('ADDRESS', 'Address');
+	define('PRICE_RANGE', 'Price Range');
+	define('CATEGORY', 'Category');
+	define('RESTAURANT', 'Restaurants');
 	
 	print_head();
 	
@@ -42,12 +46,10 @@
 		$new_restaurant = generate_favorite_restaurant($restaurant_info);
 		
 		//this list contains user's favorite restaurants
-		$favorite_restaurants_list = get_favorite_restaurants(); 
-		//append new restaurant
-		$favorite_restaurants_list[] = $new_restaurant;
+		$favorite_restaurants_list = add_to_favorite_restaurants_list($new_restaurant);
 			
 		//the list contains relevant restaurants
-		$relevant_restaurants_list = generate_relevant_restaurants_list();
+		$relevant_restaurants_list = generate_relevant_restaurants_list($favorite_restaurants_list);
 
 		//ranks the relevant restaurants list.
 		rank_relevant_restaurants($relevant_restaurants_list);
@@ -67,14 +69,14 @@
 		public $name;
 		public $price;
 		public $reviews_weight;
-		
+		public $all_detail;
 	}
 	
 	/*
 	 * restaurant that is relevant to the given restaurants
 	 */
 	class RelevantRestaurant extends Restaurant{
-		public $relevance; //similarity of this restaurant to the searched one
+		public $relevance; //similarity of this restaurant to user's favorite
 	}
 	
 	/*
@@ -114,31 +116,68 @@
 	
 	
 	/*
-	 * returns the restaurant info with 
+	 * returns the restaurant info with given restaurant name
 	 */
 	function get_restaurant($new_restaurant_name){
 		
-		$restaurant_file = file_get_contents(RESTAURANT_DATA);
+		$restaurant_file = file_get_contents(RESTAURANT_DATA_FILE);
 		$restaurant_json = json_decode($restaurant_file, true);
 		return $restaurant_json[$new_restaurant_name];
 		
 	}
 	
 
-	
+	/*
+	 * return an instance of FavoriteRestaurant with the given restaurant info
+	 */ 
 	function generate_favorite_restaurant($restaurant_info){
 		
+		$f_restaurant = new FavoriteRestaurant();
+		$f_restaurant->name = $restaurant_info[BUSINESS_NAME];
+		$f_restaurant->price = $restaurant_info[PRICE_RANGE];
+		$f_restaurant->all_details = $restaurant_info;
+		$f_category = explode(', ', $restaurant_info[CATEGORY]);
+		//get rid of "Restaurants" from category
+		for($i = 0; $i < count($f_category); $i++){
+			if($f_category[$i] == RESTAURANT){
+				unset($f_category[$i]);
+				break;
+			}
+		}
+		$f_restaurant->category = $f_category;
 		
+		return $f_restaurant;
 	}
 	
 	
 	/*
 	 * search database to find relevant restaurants;
 	 */
-	function generate_relevant_restaurants_list(){
+	function generate_relevant_restaurants_list($favorite_restaurants_list){
 		$relevant_restaurants_list = array();
 		
+		//store favorite restaurants' categories and their frequence in the array.
+		$category_list = array();
+		foreach($favorite_restaurants_list as $f_restaurant){
+			$categories = $f_restaurant->category;
+			foreach($categories as $category){
+				//creat such category if not exist, otherwise, increase by one.
+				$category_list[$category]++;
+			}
+		}
+		
+		$category_file = file_get_contents(CATEGORY_DATA_FILE);
+		$category_json = json_decode($category_file)
+		$relevant_restaurants_count = array();
+		foreach($category_list as $category){
+			$restaurants_array = $category_json[$category];
+			foreach($restaurants_array as $restaurant){
+				$relevant_restaurants_count[$restaurant]++;
+			}
+		}
+		
 		//create random relevant restaurant list so far
+/*
 		for($i = 0; $i < 10; $i++){
 			$r = new RelevantRestaurant();
 			$r->name = random_string(10);//set name to random string with length of 10 chars
@@ -156,23 +195,25 @@
 										
 			$relevant_restaurants_list[] = $r; //append new restaurant
 		}
+*/
 		return $relevant_restaurants_list;
 	}
 	
-	
-	
+
 	/*
-	 * return user's favorite restaurant list. This list is sotred in database
+	 * add given restaurant to user's favorite restaurant list, then return this list.
 	 */
-	function get_favorite_restaurants(){
+	function add_to_favorite_restaurants_list($new_restaurant){
+		//this list should get from database, which is part of milestone 3;
 		$favorite_restaurants_list = array();
 		
+		$favorite_restaurants_list[] = $new_restaurant;
 		return $favorite_restaurants_list;
 	}
 	
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		foreach($relevant_restaurants_list as $r){
-			?>name: <?= $r->name?> price: <?= $r->price?>  relevance: <?= $r->relevance?> 
+			?> name: <?= $r->name?> price: <?= $r->price?>  relevance: <?= $r->relevance?> 
 					 reviews_weight: <?= print_r ($r->reviews_weight) ?><br/><?php;
 		}
 	}
@@ -197,20 +238,15 @@
 		
 		<?php
 		
-			foreach($search_result as $r_name => $attr_array){
-				?>
-				
-				<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
-				</a><br/>
-				
-				<?php
-				
-			}
-		
-		?>
-		
-		<?php
+		foreach($search_result as $r_name => $attr_array){
+			?>
+			
+			<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+				<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+			</a><br/>
+			
+			<?php
+		}
 	}
 	
 	
@@ -218,10 +254,9 @@
 	 * tells user that the given restaurant name can not be found
 	 */
 	function print_not_restaurant_found($new_restaurant_name){
-		
 		?>
-			<br/> 
-			Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
+		<br/> 
+		Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
 		<?php
 	}
 	
@@ -230,12 +265,9 @@
 	 */
 	function print_restaurant_info($restaurant_info){
 		foreach($restaurant_info as $key => $value){
-			
 			?>
 			<p><span><?=$key?>: </span><span><?=$value?></span></p><br/>
-			
 			<?php
-			
 		}
 	}
 ?>

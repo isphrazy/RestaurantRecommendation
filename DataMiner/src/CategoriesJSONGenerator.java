@@ -34,7 +34,7 @@ public class CategoriesJSONGenerator {
 			for(String name : JSONObject.getNames(allData)){
 				JSONObject restaurant = allData.getJSONObject(name);
 				String[] categoryList = restaurant.getString(CATEGORY).split(", *");
-				System.out.println(categoryList.length);
+//				if(categoryList.length > 2) System.out.println(restaurant.getString("Business Name"));
 				for(String category : categoryList){
 					//we don't want the word "restaurants", since it's in all of them
 					if(!category.equals(KEY_WORD)){
