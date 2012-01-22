@@ -2,14 +2,17 @@
 	
 	include 'pattern.php';
 	
-	define('SEARCH_FILE', 'DataMiner/SearchDatabase.data');
-	define('RESTAURANT_DATA_FILE', 'DataMiner/Restaurants.data');
-	define('CATEGORY_DATA_FILE', 'DataMiner/Category.data')
+	define('SEARCH_FILE', 'data/SearchDatabase.data');
+	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
+	define('CATEGORY_DATA_FILE', 'data/Category.data');
 	define('BUSINESS_NAME', 'Business Name');
 	define('ADDRESS', 'Address');
 	define('PRICE_RANGE', 'Price Range');
 	define('CATEGORY', 'Category');
+	define('CATEGORY_COUNT', 'Category Count');
 	define('RESTAURANT', 'Restaurants');
+	
+	$restaurants_basic_info_json;
 	
 	print_head();
 	
@@ -22,12 +25,13 @@
 	//if not set, then we will search restaurant name to find the restaurant.
 	$found = isset($_REQUEST["sure"]);
 	
+	
 	if(!$found){
 		$search_result = search_restaurant($new_restaurant_name);
 
 		$nFound = count($search_result);
 		if($nFound === 0){
-			print_not_restaurant_found($new_restaurant_name);
+			print_not_restaurant_found();
 		}else if($nFound === 1){
 			$found = true;
 			$name_array = array_keys($search_result);
@@ -40,13 +44,18 @@
 	
 	if($found){
 		
-		$restaurant_info = get_restaurant($new_restaurant_name);
-		print_restaurant_info($restaurant_info);
+		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 		
-		$new_restaurant = generate_favorite_restaurant($restaurant_info);
+		$restaurant_basic_info = get_restaurant_basic_info($new_restaurant_name);
+/*
+		var_dump($restaurant_basic_info);
+*/
+		print_restaurant_info($restaurant_basic_info);
+		
+		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
 		
 		//this list contains user's favorite restaurants
-		$favorite_restaurants_list = add_to_favorite_restaurants_list($new_restaurant);
+		$favorite_restaurants_list = add_to_favorite_restaurants_list($new_f_restaurant);
 			
 		//the list contains relevant restaurants
 		$relevant_restaurants_list = generate_relevant_restaurants_list($favorite_restaurants_list);
@@ -99,7 +108,7 @@
 				}
 				return ( $r1->reviews_weight[0] < $r2->reviews_weight[0] ) ? 1 : -1;
 			}
-			return ( $r1->price < $r2->price ) ? -1 : 1 // ascending order
+			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 	}
@@ -107,13 +116,13 @@
 	/*
 	 * search the given restaurant name in database. 
 	 * */
-	function search_restaurant($restaurant_name){
+	function search_restaurant($new_restaurant_name){
 		
 		$search_file = file_get_contents(SEARCH_FILE);
 		$search_json = json_decode($search_file, true);
 		$search_result = array();
 		foreach($search_json as $r_name => $attr_array){
-			if(strlen(stristr($attr_array[BUSINESS_NAME], $restaurant_name)) > 0){
+			if(strlen(stristr($attr_array[BUSINESS_NAME], $new_restaurant_name)) > 0){
 				$search_result[$r_name] = $attr_array;
 			}
 		}
@@ -124,11 +133,13 @@
 	/*
 	 * returns the restaurant info with given restaurant name
 	 */
-	function get_restaurant($new_restaurant_name){
+	function get_restaurant_basic_info($new_restaurant_name){
 		
-		$restaurant_file = file_get_contents(RESTAURANT_DATA_FILE);
-		$restaurant_json = json_decode($restaurant_file, true);
-		return $restaurant_json[$new_restaurant_name];
+/*
+		$restaurant_file = file_get_contents(RESTAURANT_BASIC_DATA_FILE);
+*/
+		global $restaurants_basic_info_json;
+		return $restaurants_basic_info_json[$new_restaurant_name];
 		
 	}
 	
@@ -136,21 +147,13 @@
 	/*
 	 * return an instance of FavoriteRestaurant with the given restaurant info
 	 */ 
-	function generate_favorite_restaurant($restaurant_info){
+	function generate_favorite_restaurant($restaurant_basic_info){
 		
 		$f_restaurant = new FavoriteRestaurant();
-		$f_restaurant->name = $restaurant_info[BUSINESS_NAME];
-		$f_restaurant->price = $restaurant_info[PRICE_RANGE];
-		$f_restaurant->all_details = $restaurant_info;
-		$f_category = explode(', ', $restaurant_info[CATEGORY]);
-		//get rid of "Restaurants" from category
-		for($i = 0; $i < count($f_category); $i++){
-			if($f_category[$i] == RESTAURANT){
-				unset($f_category[$i]);
-				break;
-			}
-		}
-		$f_restaurant->category = $f_category;
+		$f_restaurant->name = $restaurant_basic_info[BUSINESS_NAME];
+		$f_restaurant->price = $restaurant_basic_info[PRICE_RANGE];
+		//$f_restaurant->all_details = $restaurant_info;
+		$f_restaurant->category = $restaurant_basic_info[CATEGORY];
 		
 		return $f_restaurant;
 	}
@@ -160,26 +163,48 @@
 	 * search database to find relevant restaurants;
 	 */
 	function generate_relevant_restaurants_list($favorite_restaurants_list){
+		
+		global $restaurants_basic_info_json;
+		
 		$relevant_restaurants_list = array();
 		
-		//store favorite restaurants' categories and their frequence in the array.
+		//store favorite restaurants' categories and their frequences in the array.
 		$category_list = array();
+		$category_count = 0;
 		foreach($favorite_restaurants_list as $f_restaurant){
 			$categories = $f_restaurant->category;
 			foreach($categories as $category){
 				//creat such category if not exist, otherwise, increase by one.
 				$category_list[$category]++;
+				$category_count++;
 			}
 		}
 		
-		$category_file = file_get_contents(CATEGORY_DATA_FILE);
-		$category_json = json_decode($category_file)
+		$unique_category = 'Unique Category';
+		$total_category_count = 'total category count';
+		
+		$category_json = json_decode(file_get_contents(CATEGORY_DATA_FILE), true);
 		$relevant_restaurants_count = array();
-		foreach($category_list as $category){
+		foreach($category_list as $category => $frequency){
 			$restaurants_array = $category_json[$category];
 			foreach($restaurants_array as $restaurant){
-				$relevant_restaurants_count[$restaurant]++;
+				$relevant_restaurants_count[$restaurant][$total_category_count] += $frequency;
+				$relevant_restaurants_count[$restaurant][$unique_category_count] ++;
 			}
+		}
+		
+		foreach($relevant_restaurants_count as $r_name => $category_count_array){
+			$relevant_restaurant = new RelevantRestaurant();
+			$relevant_restaurant->name = $r_name;
+			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
+			$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
+			$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
+			
+			$relevant_restaurant -> relevance = 
+				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
+					* (1.0 * $category_count_array[$total_category_count] / $category_count);
+			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
+			
 		}
 		
 		//create random relevant restaurant list so far
@@ -259,7 +284,8 @@
 	/*
 	 * tells user that the given restaurant name can not be found
 	 */
-	function print_not_restaurant_found($new_restaurant_name){
+	function print_not_restaurant_found(){
+		global $new_restaurant_name;
 		?>
 		<br/> 
 		Sorry, we can not find the restaurant <?= $new_restaurant_name ?>, please try again.
@@ -270,10 +296,15 @@
 	 * print all overview infos about the given restaurant
 	 */
 	function print_restaurant_info($restaurant_info){
-		foreach($restaurant_info as $key => $value){
+		//foreach($restaurant_info as $key => $value){
+			$category_string;
+			foreach($restaurant_info[CATEGORY] as $category){
+				$category_string .= $category;
+			}
 			?>
-			<p><span><?=$key?>: </span><span><?=$value?></span></p><br/>
+			<p><span>Category: </span><span><?=$category_string?></span></p><br/>
+			<p><span>Price Range: </span><span><?=$restaurant_info[PRICE_RANGE]?></span></p><br/>
 			<?php
-		}
+		//}
 	}
 ?>
