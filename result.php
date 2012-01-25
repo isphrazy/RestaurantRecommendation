@@ -86,6 +86,7 @@
 	class RelevantRestaurant extends Restaurant{
 		public $relevance; //similarity of this restaurant to user's favorite
 		public $reviews; //(eg: 12, 27, -3)
+		public $ranking_score;
 	}
 	
 	/*
