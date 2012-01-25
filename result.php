@@ -114,6 +114,13 @@
 			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
+		// F, S, D are global variables
+		// a, b are weights
+		/*
+		$r1->ranking_score = $r1->relevance * a + ($r1->f * F + $r1->s * S  + $r1->d * D) * b
+		$r2->ranking_score = $r2->relevance * a + ($r2->f * F + $r2->s * S  + $r2->d * D) * b
+		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
+		*/
 	}
 	
 	/*
