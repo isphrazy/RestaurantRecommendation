@@ -182,8 +182,8 @@
 			}
 		}
 		
-		$unique_category = 'Unique Category';
-		$total_category_count = 'total category count';
+		$unique_category = 0;
+		$total_category_count = 1;
 		
 		$category_json = json_decode(file_get_contents(CATEGORY_DATA_FILE), true);
 		$relevant_restaurants_count = array();
