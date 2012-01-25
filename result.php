@@ -77,7 +77,6 @@
 	abstract class Restaurant{
 		public $name;
 		public $price;
-		public $reviews_weight;
 		public $all_detail;
 	}
 	
@@ -86,6 +85,7 @@
 	 */
 	class RelevantRestaurant extends Restaurant{
 		public $relevance; //similarity of this restaurant to user's favorite
+		public $reviews; //(eg: 12, 27, -3)
 	}
 	
 	/*
@@ -93,6 +93,8 @@
 	 */
 	class FavoriteRestaurant extends Restaurant{
 		public $category;
+		public $reviews_weight; //(eg: 0.25, 0.5, 0.25)
+		
 	}
 
 	function cmp($r1, $r2) {
@@ -296,15 +298,13 @@
 	 * print all overview infos about the given restaurant
 	 */
 	function print_restaurant_info($restaurant_info){
-		//foreach($restaurant_info as $key => $value){
-			$category_string;
-			foreach($restaurant_info[CATEGORY] as $category){
-				$category_string .= $category;
-			}
-			?>
-			<p><span>Category: </span><span><?=$category_string?></span></p><br/>
-			<p><span>Price Range: </span><span><?=$restaurant_info[PRICE_RANGE]?></span></p><br/>
-			<?php
-		//}
+		$category_string;
+		foreach($restaurant_info[CATEGORY] as $category){
+			$category_string .= $category;
+		}
+		?>
+		<p><span>Category: </span><span><?=$category_string?></span></p><br/>
+		<p><span>Price Range: </span><span><?=$restaurant_info[PRICE_RANGE]?></span></p><br/>
+		<?php
 	}
 ?>
