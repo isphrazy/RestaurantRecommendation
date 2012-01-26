@@ -118,15 +118,6 @@
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 		* */	
-		$F = favorite_restaurants_weight[0];
-		$S = favorite_restaurants_weight[1];
-		$D = favorite_restaurants_weight[2];
-		$a = 0.5;
-		$b = 0.5; // a, b are weights
-		$r1->ranking_score = $r1->relevance * $a + ($r1->reviews_weight[0] * $F 
-			+ $r1->reviews_weight[1] * $S + $r1->reviews_weight[2] * $D) * $b
-		$r2->ranking_score = $r2->relevance * $a + ($r2->reviews_weight[0] * $F
-			+ $r2->reviews_weight[1] * $S + $r2->reviews_weight[2] * $D) * $b
 		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
 	}
@@ -178,6 +169,7 @@
 	function generate_relevant_restaurants_list($favorite_restaurants_list){
 		
 		global $restaurants_basic_info_json;
+		global $favorite_restaurants_weight;
 		
 		$relevant_restaurants_list = array();
 		
@@ -193,6 +185,8 @@
 			}
 		}
 		
+		
+		//calculate the categories count of each restaurants
 		$unique_category = 0;
 		$total_category_count = 1;
 		
@@ -206,16 +200,32 @@
 			}
 		}
 		
+		
+		
+		$F = $favorite_restaurants_weight[0];
+		$S = $favorite_restaurants_weight[1];
+		$D = $favorite_restaurants_weight[2];
+		$relevance_weight = 0.5;
+		$reviews_weight = 0.5; // a, b are weights
+		
+		var_dump($favorite_restaurants_weight);
+
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
 			$relevant_restaurant = new RelevantRestaurant();
 			$relevant_restaurant->name = $r_name;
 			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
 			$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
 			$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
+			$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
 			
 			$relevant_restaurant -> relevance = 
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
+					
+			$relevant_restaurant->ranking_score = $relevant_restaurant->relevance * $relevance_weight + 
+													($relevant_restaurant->reviews[0] * $F 
+												   + $relevant_restaurant->reviews[1] * $S 
+												   + $relevant_restaurant->reviews[2] * $D) * $reviews_weight;
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
 			
 		}
