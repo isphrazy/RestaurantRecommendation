@@ -116,9 +116,9 @@
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 		* */	
-		$F = favorite_restaurants_weight[0];
-		$S = favorite_restaurants_weight[1];
-		$D = favorite_restaurants_weight[2];
+		$F = $favorite_restaurants_weight[0];
+		$S = $favorite_restaurants_weight[1];
+		$D = $favorite_restaurants_weight[2];
 		$a = 0.5;
 		$b = 0.5; // a, b are weights
 		$r1->ranking_score = $r1->relevance * $a + ($r1->reviews_weight[0] * $F 
