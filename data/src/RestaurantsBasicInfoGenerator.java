@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import org.json.JSONException;
@@ -23,6 +24,7 @@ public class RestaurantsBasicInfoGenerator {
 	private static final String FOOD = "Food";
 	private static final String SERVICE = "Service";
 	private static final String DECOR = "Decor";
+	private static final String BUSINESS_NAME = "Business Name";
 	
 	
 	private static JSONObject restaurantsReviews;
@@ -86,8 +88,11 @@ public class RestaurantsBasicInfoGenerator {
 			Integer categoryCount = category.length;
 			info.put(CATEGORY_COUNT, categoryCount);
 			
-			int[] scores = getScores(name);
+			double[] scores = getScores(name);
 			info.put(REVIEWS, scores);
+			
+			String businessName = restaurant.getString(BUSINESS_NAME);
+			info.put(BUSINESS_NAME, businessName);
 			
 			basicRestaurants.put(name, info);
 		}
@@ -105,26 +110,39 @@ public class RestaurantsBasicInfoGenerator {
 	 * @throws JSONException
 	 * @throws FileNotFoundException
 	 */
-	private static int[] getScores(String name) throws JSONException, FileNotFoundException {
+	private static double[] getScores(String name) throws JSONException, FileNotFoundException {
 		
-		int[] result = new int[3]; // food, service and decor
+		double[] scoresArray = new double[3]; // food, service and decor
+		int[] totalArray = new int[3];
 		JSONObject reviews = restaurantsReviews.getJSONObject(name);
 		for(String typeName : JSONObject.getNames(reviews)){
 			String type = attr.getString(typeName);
 			JSONObject reviewAdjs = reviews.getJSONObject(typeName);
-			int score = 0;
+			double score = 0;
+			int total = 0;
 			for(String adj : JSONObject.getNames(reviewAdjs)){
-				score += reviewAdjs.getInt(adj) * adjScore.getInt(adj);
+				int t = reviewAdjs.getInt(adj);
+				total += t;
+				score += t * adjScore.getDouble(adj);
 			}
+			double finalScore = 1.0 * score / total;
 			if(type.equals(FOOD)){
-				result[0] += score;
+				totalArray[0] += total;
+				scoresArray[0] += score;
 			}else if(type.equals(SERVICE)){
-				result[1] += score;
+				totalArray[1] += total;
+				scoresArray[1] += score;
 			}else if(type.equals(DECOR)){
-				result[2] += score;
+				totalArray[2] += total;
+				scoresArray[2] += score;
 			}
 		}
 		
+		double result[] = new double[3];
+		for(int i = 0; i < result.length; i++){
+			if(totalArray[i] == 0) result[i] = 0;
+			else result[i] = scoresArray[i] / totalArray[i];
+		}
 		
 		return result;
 	}

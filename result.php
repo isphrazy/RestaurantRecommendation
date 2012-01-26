@@ -80,6 +80,9 @@
 		public $name;
 		public $price;
 		public $all_detail;
+		public $category;
+		public $business_name;
+		
 	}
 	
 	/*
@@ -95,7 +98,6 @@
 	 * restaurant that is saved as user's favorite restaurant
 	 */
 	class FavoriteRestaurant extends Restaurant{
-		public $category;
 		public $reviews_weight; //(eg: 0.25, 0.5, 0.25)
 		
 	}
@@ -150,14 +152,16 @@
 		//$f_restaurant->all_details = $restaurant_info;
 		$f_restaurant->category = $restaurant_basic_info[CATEGORY];
 		$reviews = $restaurant_basic_info[REVIEWS];
+		var_dump($restaurant_basic_info);
 		$total_score = 0;
 		for($i = 0; $i < count($reviews); $i++){
 			$total_score += $reviews[$i];
 		}
 		
-		$f_restaurant->reviews_weight = array(1.0 * $reviews[0] / $total_score, 
-											  1.0 * $reviews[1] / $total_score,
-											  1.0 * $reviews[2] / $total_score);
+		if($total_score === 0) $f_restaurant->reviews_weight = array(0, 0, 0);
+		else $f_restaurant->reviews_weight = array(1.0 * $reviews[0] / $total_score, 
+												   1.0 * $reviews[1] / $total_score,
+												   1.0 * $reviews[2] / $total_score);
 		
 		return $f_restaurant;
 	}
@@ -208,8 +212,6 @@
 		$relevance_weight = 0.5;
 		$reviews_weight = 0.5; // a, b are weights
 		
-		var_dump($favorite_restaurants_weight);
-
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
 			$relevant_restaurant = new RelevantRestaurant();
 			$relevant_restaurant->name = $r_name;
@@ -217,6 +219,7 @@
 			$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
 			$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
 			$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
+			$relevant_restaurant->category = $relevant_restaurant_basic_info[CATEGORY];
 			
 			$relevant_restaurant -> relevance = 
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
@@ -226,6 +229,8 @@
 													($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
 												   + $relevant_restaurant->reviews[2] * $D) * $reviews_weight;
+			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];									   
+												   
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
 			
 		}
@@ -238,9 +243,16 @@
 	 * add given restaurant to user's favorite restaurant list, then return this list.
 	 */
 	function add_to_favorite_restaurants_list($new_restaurant){
+		
+		global $favorite_restaurants_weight;
+		
 		//this list should get from database, which is part of milestone 3;
 		$favorite_restaurants_list = array();
 		
+/*
+		for($favorite_restaurants_list as $restaurant_name)
+*/
+		//wrong, will be changed in next milestone when login supported
 		$favorite_restaurants_weight = $new_restaurant->reviews_weight;
 		$favorite_restaurants_list[] = $new_restaurant;
 		return $favorite_restaurants_list;
@@ -248,7 +260,7 @@
 	
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		foreach($relevant_restaurants_list as $r){
-			?> name: <?= $r->name?> price: <?= $r->price?>  relevance: <?= $r->relevance?> 
+			?> name: <?= $r->business_name?> category: <?= $r->category?> reviews: <?= $r->reviews?>  price: <?= $r->price?>  relevance: <?= $r->relevance?> 
 					 reviews_weight: <?= print_r ($r->reviews_weight) ?><br/><?php;
 		}
 	}
@@ -269,19 +281,19 @@
 	 */
 	function print_restaurant_choices($search_result){
 		?>
+		<div id="choices">
 		Do you mean:<br/>
-		
 		<?php
 		
 		foreach($search_result as $r_name => $attr_array){
-			?>
-			
-			<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+			?>			
+			<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
 				<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
 			</a><br/>
-			
 			<?php
-		}
+		}?>
+		</div>
+		<?php
 	}
 	
 	
