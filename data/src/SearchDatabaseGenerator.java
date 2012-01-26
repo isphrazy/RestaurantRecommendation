@@ -19,8 +19,12 @@ public class SearchDatabaseGenerator {
 	public static void main(String[] args) throws JSONException, IOException{
 		
 		Scanner scn = new Scanner(new File(SOURCE_FILE_NAME));
+		StringBuilder sb2 = new StringBuilder();
+		while(scn.hasNextLine()){
+			sb2.append(scn.nextLine());
+		}
 		
-		JSONObject restaurants = new JSONObject(scn.nextLine());
+		JSONObject restaurants = new JSONObject(sb2.toString());
 		
 //		Map<String, String> map = new HashMap<String, String>();
 		
