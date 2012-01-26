@@ -119,7 +119,7 @@
 			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
-		* */	
+		* */
 		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
 	}
