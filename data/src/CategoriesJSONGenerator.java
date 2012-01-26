@@ -23,8 +23,12 @@ public class CategoriesJSONGenerator {
 		Scanner scn = new Scanner(new File(SOURCE_FILE_NAME));
 //		System.out.println("length: " + scn.nextLine().length());
 		JSONObject allData = null;
+		StringBuilder sb = new StringBuilder();
+		while(scn.hasNext()){
+			sb.append(scn.nextLine());
+		}
 		try{
-			allData = new JSONObject(scn.nextLine());
+			allData = new JSONObject(sb.toString());
 			
 		}catch (Exception e){
 //			e.printStackTrace();

@@ -15,6 +15,7 @@ public class RestaurantsJSONGenerator {
 	
 	private static final String SOURCE_FILE_NAME = "all.metaData";
 	private static final String TARGET_FILE_NAME = "Restaurants.data";
+	private static final String RESTAURANTS_REVIEW_FILE_NAME = "all.placeData";
 	private static final String CATEGORY = "Category";
 	private static final String KEY_WORD = "Restaurants";
 
@@ -24,6 +25,13 @@ public class RestaurantsJSONGenerator {
 		
 		JSONObject allData = new JSONObject(scn.nextLine());
 		
+		Scanner rReviewScn = new Scanner(new File(RESTAURANTS_REVIEW_FILE_NAME));
+		StringBuilder sb2 = new StringBuilder();
+		while(rReviewScn.hasNextLine()){
+			sb2.append(rReviewScn.nextLine());
+		}
+		JSONObject restaurantsReviews = new JSONObject(sb2.toString());
+		
 		for(String name : JSONObject.getNames(allData)){
 //			System.out.println(name);
 			JSONObject restaurant = allData.getJSONObject(name);
@@ -31,6 +39,10 @@ public class RestaurantsJSONGenerator {
 			try{
 				//if the place do not have category, remove it
 				category = restaurant.getString(CATEGORY);
+				//if no reviews found, remove it
+				if(restaurantsReviews.getJSONObject(name).length() < 1){
+					allData.remove(name);
+				}
 			}catch (org.json.JSONException e){
 				allData.remove(name);
 //				System.out.println("no category: " + name);
