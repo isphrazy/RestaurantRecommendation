@@ -15,3 +15,23 @@
 #search button {
 	height: 32px;
 }
+
+#choices {
+	text-align: left;
+	border: 8px dashed #b0c4de;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	width: 45%;
+	padding: 10px;
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#choice {
+	line-height: 2.5;
+}
+
+tr:nth-child(odd)    { background-color:#EFF7FF; }
+tr:nth-child(even)    { background-color:#DDEEFF; }
