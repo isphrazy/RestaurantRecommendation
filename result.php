@@ -104,6 +104,7 @@
 		  $r->reviews_weight (an array of size 3, representing food, service and decor)
 		  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
 		*/
+		/*
 		if ( $r1->relevance == $r2->relevance ) {
 			if ( $r1->price == $r2->price ) {
 				if ( $r1->reviews_weight[0] == $r2->reviews_weight[0] ) {
@@ -114,13 +115,18 @@
 			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
-		// F, S, D are global variables
-		// a, b are weights
-		/*
-		$r1->ranking_score = $r1->relevance * a + ($r1->f * F + $r1->s * S  + $r1->d * D) * b
-		$r2->ranking_score = $r2->relevance * a + ($r2->f * F + $r2->s * S  + $r2->d * D) * b
+		* */	
+		$F = favorite_restaurants_weight[0];
+		$S = favorite_restaurants_weight[1];
+		$D = favorite_restaurants_weight[2];
+		$a = 0.5;
+		$b = 0.5; // a, b are weights
+		$r1->ranking_score = $r1->relevance * $a + ($r1->reviews_weight[0] * $F 
+			+ $r1->reviews_weight[1] * $S + $r1->reviews_weight[2] * $D) * $b
+		$r2->ranking_score = $r2->relevance * $a + ($r2->reviews_weight[0] * $F
+			+ $r2->reviews_weight[1] * $S + $r2->reviews_weight[2] * $D) * $b
+		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
-		*/
 	}
 	
 	/*
