@@ -11,8 +11,10 @@
 	define('CATEGORY', 'Category');
 	define('CATEGORY_COUNT', 'Category Count');
 	define('RESTAURANT', 'Restaurants');
+	define('REVIEWS', 'Reviews');
 	
 	$restaurants_basic_info_json;
+	$favorite_restaurants_weight;
 	
 	print_head();
 	
@@ -46,7 +48,7 @@
 		
 		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 		
-		$restaurant_basic_info = get_restaurant_basic_info($new_restaurant_name);
+		$restaurant_basic_info = $restaurants_basic_info_json[$new_restaurant_name];;
 /*
 		var_dump($restaurant_basic_info);
 */
@@ -147,20 +149,6 @@
 	
 	
 	/*
-	 * returns the restaurant info with given restaurant name
-	 */
-	function get_restaurant_basic_info($new_restaurant_name){
-		
-/*
-		$restaurant_file = file_get_contents(RESTAURANT_BASIC_DATA_FILE);
-*/
-		global $restaurants_basic_info_json;
-		return $restaurants_basic_info_json[$new_restaurant_name];
-		
-	}
-	
-
-	/*
 	 * return an instance of FavoriteRestaurant with the given restaurant info
 	 */ 
 	function generate_favorite_restaurant($restaurant_basic_info){
@@ -170,6 +158,15 @@
 		$f_restaurant->price = $restaurant_basic_info[PRICE_RANGE];
 		//$f_restaurant->all_details = $restaurant_info;
 		$f_restaurant->category = $restaurant_basic_info[CATEGORY];
+		$reviews = $restaurant_basic_info[REVIEWS];
+		$total_score = 0;
+		for($i = 0; $i < count($reviews); $i++){
+			$total_score += $reviews[$i];
+		}
+		
+		$f_restaurant->reviews_weight = array(1.0 * $reviews[0] / $total_score, 
+											  1.0 * $reviews[1] / $total_score,
+											  1.0 * $reviews[2] / $total_score);
 		
 		return $f_restaurant;
 	}
@@ -196,8 +193,8 @@
 			}
 		}
 		
-		$unique_category = 'Unique Category';
-		$total_category_count = 'total category count';
+		$unique_category = 0;
+		$total_category_count = 1;
 		
 		$category_json = json_decode(file_get_contents(CATEGORY_DATA_FILE), true);
 		$relevant_restaurants_count = array();
@@ -223,26 +220,6 @@
 			
 		}
 		
-		//create random relevant restaurant list so far
-/*
-		for($i = 0; $i < 10; $i++){
-			$r = new RelevantRestaurant();
-			$r->name = random_string(10);//set name to random string with length of 10 chars
-			$r->price = rand(1, 100);
-			$r->relevance = rand(1, 100) / 100;
-			
-			//reviews weight generator
-			$food_weight = rand(1, 100);
-			$service_weight = rand(1, 100);
-			$decor_weight = rand(1, 100);
-			$total_weight = $food_weight + $service_weight + $decor_weight;
-			$r->reviews_weight = array( $food_weight / $total_weight, 
-										$service_weight / $total_weight, 
-										$decor_weight / $total_weight);
-										
-			$relevant_restaurants_list[] = $r; //append new restaurant
-		}
-*/
 		return $relevant_restaurants_list;
 	}
 	
@@ -254,6 +231,7 @@
 		//this list should get from database, which is part of milestone 3;
 		$favorite_restaurants_list = array();
 		
+		$favorite_restaurants_weight = $new_restaurant->reviews_weight;
 		$favorite_restaurants_list[] = $new_restaurant;
 		return $favorite_restaurants_list;
 	}
