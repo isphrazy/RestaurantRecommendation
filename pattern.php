@@ -19,16 +19,13 @@
 	function print_search_bar(){
 	?>
 		<div id="search">
-			<div>
-				<img src="logo.png" alt="logo"/>
-			<div>
+			<img src="logo.png" alt="logo"/>
 			<form action="http://www.pingyang.me/454/result.php">
 				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
 				<button type="submit">Stumble!</button>
 			</form>
 		</div>
-	<?php	
-		
+	<?php
 	}
 
 	function print_bottom(){
