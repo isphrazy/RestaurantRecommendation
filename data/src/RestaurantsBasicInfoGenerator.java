@@ -141,7 +141,7 @@ public class RestaurantsBasicInfoGenerator {
 		double result[] = new double[3];
 		for(int i = 0; i < result.length; i++){
 			if(totalArray[i] == 0) result[i] = 0;
-			else result[i] = scoresArray[i] / totalArray[i];
+			else result[i] = scoresArray[i] / totalArray[i] * 5 + 5;
 		}
 		
 		return result;

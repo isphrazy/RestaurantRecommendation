@@ -280,6 +280,7 @@
 	 * select from these restaurants.
 	 */
 	function print_restaurant_choices($search_result){
+		/*
 		?>
 		<div id="choices">
 		Do you mean:<br/>
@@ -294,8 +295,24 @@
 		}?>
 		</div>
 		<?php
-	}
-	
+		*/
+		?>
+		<table id="choices">
+		<tr><th>Do you mean:</th></tr>
+		<?php
+		
+		foreach($search_result as $r_name => $attr_array){
+			?>
+			<tr><td>
+				<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+				</a>
+			</td></tr>
+			<?php
+		}?>
+		</table>
+		<?php
+	}	
 	
 	/*
 	 * tells user that the given restaurant name can not be found
