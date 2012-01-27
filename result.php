@@ -294,7 +294,7 @@
 		foreach($search_result as $r_name => $attr_array){
 			?>
 			<tr><td>
-				<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+				<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
 					<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
 					<?=$attr_array[Address]?>
 				</a>
