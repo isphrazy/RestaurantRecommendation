@@ -215,7 +215,7 @@
 												   + $relevant_restaurant->reviews[1] * $S 
 												   + $relevant_restaurant->reviews[2] * $D)) * $reviews_weight;
 			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
-			$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];									   
+			$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
 												   
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
 			
@@ -249,12 +249,13 @@
 		<table>
 		<?php
 		foreach($relevant_restaurants_list as $r){
+			$address = $r->address;
 			?><tr><th colspan="3"><?=$r->business_name?></th></tr>
 			<tr>
-				<td>Category:
-				<?php
-				print implode(", ", $r->category);
-				?>
+				<td>
+				<a href="http://maps.google.com/maps?q=<?= $address;?>" target="_blank"><?= $address;?></a><br/>
+				Category:
+				<?= implode(", ", $r->category);?>
 				<br />
 				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
 				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
@@ -263,8 +264,6 @@
 				Price: <?=$r->price?>
 				</td>
 			</tr>
-			<!--<td>Relevance: <?=$r->relevance?></td>-->
-			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td>-->
 			<?php
 		}?>
 		</table>
