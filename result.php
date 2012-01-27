@@ -91,7 +91,7 @@
 	class RelevantRestaurant extends Restaurant{
 		public $relevance; //similarity of this restaurant to user's favorite
 		public $reviews; //(eg: 12, 27, -3)
-		public $ranking_score;
+		public $confidence;
 	}
 	
 	/*
@@ -120,8 +120,8 @@
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 		* */	
-		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
-		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
+		if ( $r1->confidence == $r2->confidence){ return 0 ; }
+		return ( $r1->confidence < $r2->confidence ) ? 1 : -1; // descending order
 	}
 	
 	/*
@@ -225,7 +225,7 @@
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
 					
-			$relevant_restaurant->ranking_score = $relevant_restaurant->relevance * $relevance_weight + 
+			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $relevance_weight + 
 													($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
 												   + $relevant_restaurant->reviews[2] * $D) * $reviews_weight;
@@ -267,14 +267,12 @@
 			<tr>
 				<td>Category:
 				<?php
-				foreach($r->category as $category){
-					print $category . ' ';
-				}
+				print implode(", ", $r->category);
 				?>
 				<br />
-				Food: <?=round($r->reviews[0], 1)?>
-				Service: <?=round($r->reviews[1], 1)?>
-				Decor: <?= round($r->reviews[2], 1)?>
+				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
+				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
+				Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
 				<br />
 				Price: <?=$r->price?>
 				</td>
