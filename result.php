@@ -259,10 +259,20 @@
 	}
 	
 	function print_relevant_restaurants_list($relevant_restaurants_list){
+		?>
+		<table>
+		<?php
 		foreach($relevant_restaurants_list as $r){
-			?> name: <?= $r->business_name?> category: <?= $r->category?> reviews: <?= $r->reviews?>  price: <?= $r->price?>  relevance: <?= $r->relevance?> 
-					 reviews_weight: <?= print_r ($r->reviews_weight) ?><br/><?php;
-		}
+			?><tr><th>Name: <?= $r->business_name?></th></tr>
+			<tr><td>Category: <?= $r->category?></td>
+			<td>reviews: <?= $r->reviews?></td>
+			<td>price: <?= $r->price?></td>
+			<td>relevance: <?= $r->relevance?></td>
+			<td>reviews_weight: <?= print_r ($r->reviews_weight) ?></td></tr>
+			<?php
+		}?>
+		</table>
+		<?php
 	}
 
 	function random_string($length){      
@@ -280,24 +290,8 @@
 	 * select from these restaurants.
 	 */
 	function print_restaurant_choices($search_result){
-		/*
 		?>
-		<div id="choices">
-		Do you mean:<br/>
-		<?php
-		
-		foreach($search_result as $r_name => $attr_array){
-			?>			
-			<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-				<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
-			</a><br/>
-			<?php
-		}?>
-		</div>
-		<?php
-		*/
-		?>
-		<table id="choices">
+		<table>
 		<tr><th>Do you mean:</th></tr>
 		<?php
 		
