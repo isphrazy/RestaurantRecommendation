@@ -1,6 +1,6 @@
 #searchBox {
-    width: 400px;
-    font-size: 1.2em;
+    width: 280px;
+	font-size: 1.5em;
     padding: 0.2em;
 }
 
@@ -28,9 +28,9 @@
 	display:inline-block;
 	color:#777777;
 	font-family:arial;
-	font-size:15px;
+	font-size:27px;
 	font-weight:bold;
-	padding:4px 24px;
+	padding:8px 20px;
 	text-decoration:none;
 	text-shadow:1px 1px 0px #ffffff;
 }.myButton:hover {
