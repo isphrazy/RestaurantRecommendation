@@ -1,6 +1,6 @@
 #searchBox {
     width: 400px;
-	font-size: 1.2em;
+    font-size: 1.2em;
     padding: 0.2em;
 }
 
@@ -43,7 +43,7 @@
 	top:1px;
 }
 
-#choices {
+table {
 	text-align: left;
 	border: 8px dashed #b0c4de;
 	-webkit-border-radius: 30px;
