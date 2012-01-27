@@ -54,12 +54,6 @@
 		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 		
 		$restaurant_basic_info = $restaurants_basic_info_json[$new_restaurant_name];;
-/*
-		var_dump($restaurant_basic_info);
-*/
-/*
-		print_restaurant_info($restaurant_basic_info);
-*/
 		
 		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
 		
@@ -86,7 +80,7 @@
 	abstract class Restaurant{
 		public $name;
 		public $price;
-		public $all_detail;
+		public $all_detail;//will be used in next milestone
 		public $category;
 		public $business_name;
 		public $address;
@@ -239,15 +233,14 @@
 		//this list should get from database, which is part of milestone 3;
 		$favorite_restaurants_list = array();
 		
-/*
-		for($favorite_restaurants_list as $restaurant_name)
-*/
-		//wrong, will be changed in next milestone when login supported
 		$favorite_restaurants_weight = $new_restaurant->reviews_weight;
 		$favorite_restaurants_list[] = $new_restaurant;
 		return $favorite_restaurants_list;
 	}
 	
+	/*
+	 * print the list of relevant restaurants
+	 */
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		?>
 		<table>
@@ -274,16 +267,6 @@
 		<?php
 	}
 
-	function random_string($length){      
-		$chars = 'bcdfghjklmnprstvwxzaeiou';
-
-		for ($p = 0; $p < $length; $p++){
-			$result .= ($p%2) ? $chars[mt_rand(19, 23)] : $chars[mt_rand(0, 18)];
-		}
-
-		return $result;
-	}
-	
 	/*
 	 * if the more than one restaurant match the serched restaurant, then let user
 	 * select from these restaurants.
