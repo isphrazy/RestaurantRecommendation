@@ -263,12 +263,21 @@
 		<table>
 		<?php
 		foreach($relevant_restaurants_list as $r){
-			?><tr><th>Name: <?= $r->business_name?></th></tr>
-			<tr><td>Category: <?= $r->category?></td>
-			<td>reviews: <?= $r->reviews?></td>
-			<td>price: <?= $r->price?></td>
-			<td>relevance: <?= $r->relevance?></td>
-			<td>reviews_weight: <?= print_r ($r->reviews_weight) ?></td></tr>
+			?><tr><th>Name: <?=$r->business_name?></th></tr>
+			<tr><td>Category:
+				<?php
+				foreach($r->category as $category){
+					print $category . ' ';
+				}
+				?></td>
+			<td>
+				Food: <?=round($r->reviews[0], 1)?>
+				Service: <?=round($r->reviews[1], 1)?>
+				Decor: <?= round($r->reviews[2], 1)?>
+			</td>
+			<td>Price: <?=$r->price?></td>
+			<!--<td>Relevance: <?=$r->relevance?></td>-->
+			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td></tr>-->
 			<?php
 		}?>
 		</table>
