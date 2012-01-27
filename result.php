@@ -275,9 +275,9 @@
 				Service: <?=round($r->reviews[1], 1)?>
 				Decor: <?= round($r->reviews[2], 1)?>
 			</td>
-			<td>Price: <?=$r->price?></td>
+			<td>Price: <?=$r->price?></td></tr>
 			<!--<td>Relevance: <?=$r->relevance?></td>-->
-			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td></tr>-->
+			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td>-->
 			<?php
 		}?>
 		</table>
