@@ -13,6 +13,8 @@
 	define('RESTAURANT', 'Restaurants');
 	define('REVIEWS', 'Reviews');
 	define('ADDRESS', 'Address');
+	define('RELEVANCE_WEIGHT', 0.5);
+	define('REVIEWS_WEIGHT', 0.5);
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -192,8 +194,6 @@
 		$F = $favorite_restaurants_weight[0];
 		$S = $favorite_restaurants_weight[1];
 		$D = $favorite_restaurants_weight[2];
-		$relevance_weight = 0.5;
-		$reviews_weight = 0.5; // a, b are weights
 		
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
 			$relevant_restaurant = new RelevantRestaurant();
@@ -208,10 +208,10 @@
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
 					
-			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $relevance_weight + 
+			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $RELEVANCE_WEIGHT + 
 												   (($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
-												   + $relevant_restaurant->reviews[2] * $D)) * $reviews_weight;
+												   + $relevant_restaurant->reviews[2] * $D)) * $REVIEWS_WEIGHT;
 			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
 			$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
 												   

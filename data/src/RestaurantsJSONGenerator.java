@@ -52,6 +52,7 @@ public class RestaurantsJSONGenerator {
 		for(String name : JSONObject.getNames(allData)){
 			JSONObject restaurant = allData.getJSONObject(name);
 			String category = null;
+			String businessType = null;
 			try{
 				//if the place do not have category, remove it
 				category = restaurant.getString(CATEGORY);
