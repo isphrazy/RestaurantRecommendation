@@ -119,7 +119,7 @@
 			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
-		* */
+		* */	
 		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
 	}
@@ -263,19 +263,22 @@
 		<table>
 		<?php
 		foreach($relevant_restaurants_list as $r){
-			?><tr><th>Name: <?=$r->business_name?></th></tr>
-			<tr><td>Category:
+			?><tr><th colspan="3"><?=$r->business_name?></th></tr>
+			<tr>
+				<td>Category:
 				<?php
 				foreach($r->category as $category){
 					print $category . ' ';
 				}
-				?></td>
-			<td>
+				?>
+				<br />
 				Food: <?=round($r->reviews[0], 1)?>
 				Service: <?=round($r->reviews[1], 1)?>
 				Decor: <?= round($r->reviews[2], 1)?>
-			</td>
-			<td>Price: <?=$r->price?></td></tr>
+				<br />
+				Price: <?=$r->price?>
+				</td>
+			</tr>
 			<!--<td>Relevance: <?=$r->relevance?></td>-->
 			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td>-->
 			<?php
@@ -301,21 +304,22 @@
 	function print_restaurant_choices($search_result){
 		?>
 		<table>
-		<tr><th>Do you mean:</th></tr>
+		<tr><td class='didyou'>Did you mean:</td></tr>
 		<?php
 		
 		foreach($search_result as $r_name => $attr_array){
 			?>
 			<tr><td>
 				<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+					<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
+					<?=$attr_array[Address]?>
 				</a>
 			</td></tr>
 			<?php
 		}?>
 		</table>
 		<?php
-	}	
+	}
 	
 	/*
 	 * tells user that the given restaurant name can not be found
