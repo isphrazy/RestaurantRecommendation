@@ -229,11 +229,14 @@
 			$relevant_restaurant -> relevance = 
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
-					
+			$denominator = 3;
+			foreach($relevant_restaurant->reviews as $r){
+				if($r) $denominator--;
+			}
 			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $relevance_weight + 
 													($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
-												   + $relevant_restaurant->reviews[2] * $D) * $reviews_weight;
+												   + $relevant_restaurant->reviews[2] * $D / $denominator) * $reviews_weight;
 			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];									   
 												   
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
