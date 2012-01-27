@@ -244,6 +244,7 @@
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		?>
 		<table>
+		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
 		foreach($relevant_restaurants_list as $r){
 			$address = $r->address;
