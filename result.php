@@ -52,7 +52,9 @@
 /*
 		var_dump($restaurant_basic_info);
 */
+/*
 		print_restaurant_info($restaurant_basic_info);
+*/
 		
 		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
 		
@@ -103,30 +105,9 @@
 	}
 
 	function cmp($r1, $r2) {
-		/*Take the following factors into consideration:
-		  $r->price
-		  $r->reviews_weight (an array of size 3, representing food, service and decor)
-		  $r->relevance (related to FavoriteRestaurant's $category; currently a random decimal)	  
-		*/
-		/*
-		if ( $r1->relevance == $r2->relevance ) {
-			if ( $r1->price == $r2->price ) {
-				if ( $r1->reviews_weight[0] == $r2->reviews_weight[0] ) {
-					return 0;
-				}
-				return ( $r1->reviews_weight[0] < $r2->reviews_weight[0] ) ? 1 : -1;
-			}
-			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
-		}
-		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
-		* */	
-<<<<<<< HEAD
-		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
-		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
-=======
+		
 		if ( $r1->confidence == $r2->confidence){ return 0 ; }
 		return ( $r1->confidence < $r2->confidence ) ? 1 : -1; // descending order
->>>>>>> 63f9f1b2199da041531f5c285c076e7789c158ec
 	}
 	
 	/*
@@ -157,7 +138,6 @@
 		//$f_restaurant->all_details = $restaurant_info;
 		$f_restaurant->category = $restaurant_basic_info[CATEGORY];
 		$reviews = $restaurant_basic_info[REVIEWS];
-		var_dump($restaurant_basic_info);
 		$total_score = 0;
 		for($i = 0; $i < count($reviews); $i++){
 			$total_score += $reviews[$i];
@@ -209,8 +189,6 @@
 			}
 		}
 		
-		
-		
 		$F = $favorite_restaurants_weight[0];
 		$S = $favorite_restaurants_weight[1];
 		$D = $favorite_restaurants_weight[2];
@@ -229,14 +207,11 @@
 			$relevant_restaurant -> relevance = 
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
-			$denominator = 3;
-			foreach($relevant_restaurant->reviews as $r){
-				if($r) $denominator--;
-			}
+					
 			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $relevance_weight + 
-													($relevant_restaurant->reviews[0] * $F 
+												   (($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
-												   + $relevant_restaurant->reviews[2] * $D / $denominator) * $reviews_weight;
+												   + $relevant_restaurant->reviews[2] * $D)) * $reviews_weight;
 			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];									   
 												   
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
