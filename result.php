@@ -275,11 +275,7 @@
 			<tr>
 				<td>Category:
 				<?php
-<<<<<<< HEAD
-				print implode(", ", $category)
-=======
 				print implode(", ", $r->category);
->>>>>>> 63f9f1b2199da041531f5c285c076e7789c158ec
 				?>
 				<br />
 				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
