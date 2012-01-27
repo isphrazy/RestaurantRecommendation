@@ -2,13 +2,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
+/**
+ * @author Pingyang He
+ * This class generates the basic restaurants info json object, and output it onto disk
+ */
 public class RestaurantsBasicInfoGenerator {
 	
 	private static final String SOURCE_FILE_NAME = "Restaurants.data";
@@ -25,20 +27,88 @@ public class RestaurantsBasicInfoGenerator {
 	private static final String SERVICE = "Service";
 	private static final String DECOR = "Decor";
 	private static final String BUSINESS_NAME = "Business Name";
+	private static final String ADDRESS = "Address";
 	
 	
 	private static JSONObject restaurantsReviews;
 	private static JSONObject attr;
 	private static JSONObject adjScore;
+	private static JSONObject restaurants;
+	private static JSONObject basicRestaurants;
 	
+	/**
+	 * Main method of the class
+	 * @param args
+	 * @throws JSONException
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws JSONException, IOException{
+		
+		readJSONFiles();
+		
+		buildInfoJSONObject();
+
+		outputFile();
+		
+	}
+
+	/*
+	 * output the json object to the file
+	 */
+	private static void outputFile() throws IOException {
+		FileWriter out = new FileWriter(TARGET_FILE_NAME);
+		out.write(basicRestaurants.toString());
+		out.close();
+	}
+
+	/*
+	 * Build the json object of all restaurants that contains their basic info
+	 */
+	private static void buildInfoJSONObject() throws JSONException, FileNotFoundException {
+		for(String name : JSONObject.getNames(restaurants)){
+			JSONObject restaurant = restaurants.getJSONObject(name);
+			
+			JSONObject info = new JSONObject();
+			try{
+				info.put(PRICE_RANGE, restaurant.getString(PRICE_RANGE));
+			}catch (JSONException e){
+				info.put(PRICE_RANGE, "");
+			}
+			
+			String[] pre_category = restaurant.getString(CATEGORY).split(", *");
+			//get rid of "Restaurant" category.
+			String[] category = new String[pre_category.length - 1];
+			int offset = 0;
+			for(int i = 0; i < pre_category.length; i++){
+				if(!pre_category[i].equals(RESTAURANTS)){
+					category[i - offset] = pre_category[i];
+				}else offset ++;
+			}
+			info.put(CATEGORY, category);
+			
+			info.put(CATEGORY_COUNT, category.length);
+			
+			info.put(REVIEWS, getScores(name));
+			
+			info.put(BUSINESS_NAME, restaurant.getString(BUSINESS_NAME));
+			
+			info.put(ADDRESS, restaurant.getString(ADDRESS));
+			
+			basicRestaurants.put(name, info);
+		}
+	}
+
+	/*
+	 * returns the JSON files from disk, bring them to memory
+	 */
+	private static void readJSONFiles() throws FileNotFoundException, JSONException {
 		Scanner scn = new Scanner(new File(SOURCE_FILE_NAME));
 		StringBuilder sb = new StringBuilder();
 		while(scn.hasNext()){
 			sb.append(scn.nextLine());
 		}
-		JSONObject restaurants = new JSONObject(sb.toString());
-		JSONObject basicRestaurants = new JSONObject();
+		restaurants = new JSONObject(sb.toString());
+		basicRestaurants = new JSONObject();
 		
 		Scanner rReviewScn = new Scanner(new File(RESTAURANTS_REVIEW_FILE_NAME));
 		StringBuilder sb2 = new StringBuilder();
@@ -61,54 +131,11 @@ public class RestaurantsBasicInfoGenerator {
 			sb4.append(adjScn.nextLine());
 		}
 		adjScore = new JSONObject(sb4.toString());
-		
 
-		for(String name : JSONObject.getNames(restaurants)){
-			JSONObject restaurant = restaurants.getJSONObject(name);
-			
-			JSONObject info = new JSONObject();
-			try{
-				String price = restaurant.getString(PRICE_RANGE);
-				info.put(PRICE_RANGE, restaurant.getString(PRICE_RANGE));
-			}catch (JSONException e){
-				info.put(PRICE_RANGE, "");
-			}
-			
-			String[] pre_category = restaurant.getString(CATEGORY).split(", *");
-			//get rid of "Restaurant" category.
-			String[] category = new String[pre_category.length - 1];
-			int offset = 0;
-			for(int i = 0; i < pre_category.length; i++){
-				if(!pre_category[i].equals(RESTAURANTS)){
-					category[i - offset] = pre_category[i];
-				}else offset ++;
-			}
-			info.put(CATEGORY, category);
-			
-			Integer categoryCount = category.length;
-			info.put(CATEGORY_COUNT, categoryCount);
-			
-			double[] scores = getScores(name);
-			info.put(REVIEWS, scores);
-			
-			String businessName = restaurant.getString(BUSINESS_NAME);
-			info.put(BUSINESS_NAME, businessName);
-			
-			basicRestaurants.put(name, info);
-		}
-		
-		FileWriter out = new FileWriter(TARGET_FILE_NAME);
-		out.write(basicRestaurants.toString());
-		out.close();
-			
 	}
 
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 * @throws JSONException
-	 * @throws FileNotFoundException
+	/*
+	 * returns the review score of the given restaurant
 	 */
 	private static double[] getScores(String name) throws JSONException, FileNotFoundException {
 		
@@ -125,7 +152,6 @@ public class RestaurantsBasicInfoGenerator {
 				total += t;
 				score += t * adjScore.getDouble(adj);
 			}
-			double finalScore = 1.0 * score / total;
 			if(type.equals(FOOD)){
 				totalArray[0] += total;
 				scoresArray[0] += score;
@@ -140,12 +166,9 @@ public class RestaurantsBasicInfoGenerator {
 		double result[] = new double[3];
 		for(int i = 0; i < result.length; i++){
 			if(totalArray[i] == 0 || scoresArray[i] == 0) result[i] = 0;
-			else{
-				result[i] = scoresArray[i] / totalArray[i] * 2;
-			}
+			else result[i] = scoresArray[i] / totalArray[i] * 2;
+			
 		}
-		
-		
 		
 		return result;
 	}

@@ -12,6 +12,7 @@
 	define('CATEGORY_COUNT', 'Category Count');
 	define('RESTAURANT', 'Restaurants');
 	define('REVIEWS', 'Reviews');
+	define('ADDRESS', 'Address');
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -84,6 +85,7 @@
 		public $all_detail;
 		public $category;
 		public $business_name;
+		public $address;
 		
 	}
 	
@@ -212,7 +214,8 @@
 												   (($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
 												   + $relevant_restaurant->reviews[2] * $D)) * $reviews_weight;
-			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];									   
+			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
+			$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];									   
 												   
 			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
 			
