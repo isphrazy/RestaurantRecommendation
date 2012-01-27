@@ -22,7 +22,7 @@
 			<img src="logo.png" alt="logo"/>
 			<form action="http://www.pingyang.me/454/result.php">
 				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
-				<button type="submit">Stumble!</button>
+				<button class="myButton" type="submit">Stumble!</button>
 			</form>
 		</div>
 	<?php

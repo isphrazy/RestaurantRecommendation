@@ -91,7 +91,7 @@
 	class RelevantRestaurant extends Restaurant{
 		public $relevance; //similarity of this restaurant to user's favorite
 		public $reviews; //(eg: 12, 27, -3)
-		public $ranking_score;
+		public $confidence;
 	}
 	
 	/*
@@ -120,8 +120,13 @@
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
 		* */	
+<<<<<<< HEAD
 		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
+=======
+		if ( $r1->confidence == $r2->confidence){ return 0 ; }
+		return ( $r1->confidence < $r2->confidence ) ? 1 : -1; // descending order
+>>>>>>> 63f9f1b2199da041531f5c285c076e7789c158ec
 	}
 	
 	/*
@@ -225,7 +230,7 @@
 				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 					* (1.0 * $category_count_array[$total_category_count] / $category_count);
 					
-			$relevant_restaurant->ranking_score = $relevant_restaurant->relevance * $relevance_weight + 
+			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $relevance_weight + 
 													($relevant_restaurant->reviews[0] * $F 
 												   + $relevant_restaurant->reviews[1] * $S 
 												   + $relevant_restaurant->reviews[2] * $D) * $reviews_weight;
@@ -267,7 +272,11 @@
 			<tr>
 				<td>Category:
 				<?php
+<<<<<<< HEAD
 				print implode(", ", $category)
+=======
+				print implode(", ", $r->category);
+>>>>>>> 63f9f1b2199da041531f5c285c076e7789c158ec
 				?>
 				<br />
 				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
