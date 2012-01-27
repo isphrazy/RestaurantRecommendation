@@ -119,7 +119,7 @@
 			return ( $r1->price < $r2->price ) ? -1 : 1; // ascending order
 		}
 		return ( $r1->relevance < $r2->relevance ) ? 1 : -1;
-		* */
+		* */	
 		if ( $r1->ranking_score == $r2->ranking_score){ return 0 ; }
 		return ( $r1->ranking_score < $r2->ranking_score ) ? 1 : -1; // descending order
 	}
@@ -259,10 +259,30 @@
 	}
 	
 	function print_relevant_restaurants_list($relevant_restaurants_list){
+		?>
+		<table>
+		<?php
 		foreach($relevant_restaurants_list as $r){
-			?> name: <?= $r->business_name?> category: <?= $r->category?> reviews: <?= $r->reviews?>  price: <?= $r->price?>  relevance: <?= $r->relevance?> 
-					 reviews_weight: <?= print_r ($r->reviews_weight) ?><br/><?php;
-		}
+			?><tr><th colspan="3"><?=$r->business_name?></th></tr>
+			<tr>
+				<td>Category:
+				<?php
+				print implode(", ", $category)
+				?>
+				<br />
+				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
+				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
+				Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
+				<br />
+				Price: <?=$r->price?>
+				</td>
+			</tr>
+			<!--<td>Relevance: <?=$r->relevance?></td>-->
+			<!--<td>reviews_weight: <?=print_r ($r->reviews_weight)?></td>-->
+			<?php
+		}?>
+		</table>
+		<?php
 	}
 
 	function random_string($length){      
@@ -280,39 +300,24 @@
 	 * select from these restaurants.
 	 */
 	function print_restaurant_choices($search_result){
-		/*
 		?>
-		<div id="choices">
-		Do you mean:<br/>
-		<?php
-		
-		foreach($search_result as $r_name => $attr_array){
-			?>			
-			<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-				<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
-			</a><br/>
-			<?php
-		}?>
-		</div>
-		<?php
-		*/
-		?>
-		<table id="choices">
-		<tr><th>Do you mean:</th></tr>
+		<table>
+		<tr><td class='didyou'>Did you mean:</td></tr>
 		<?php
 		
 		foreach($search_result as $r_name => $attr_array){
 			?>
 			<tr><td>
 				<a id="choice" href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-					<?=$attr_array[BUSINESS_NAME] . ', ' . $attr_array[Address]?>
+					<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
+					<?=$attr_array[Address]?>
 				</a>
 			</td></tr>
 			<?php
 		}?>
 		</table>
 		<?php
-	}	
+	}
 	
 	/*
 	 * tells user that the given restaurant name can not be found

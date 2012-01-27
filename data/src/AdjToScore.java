@@ -27,8 +27,6 @@ public class AdjToScore {
 		JSONObject adjs = new JSONObject(sb.toString());
 		JSONObject adjScoreJSON = new JSONObject();
 		
-//		Map<String, Integer> adjScoreMap = new HashMap<String, Integer>();
-		
 		for(String adj : JSONObject.getNames(adjs)){
 			JSONArray scores = adjs.getJSONArray(adj);
 			int score = 0;
@@ -37,10 +35,15 @@ public class AdjToScore {
 			for(int i = 0; i < scores.length(); i++){
 				int partScore = scores.getInt(i);
 				total += partScore;
-				score += (i - offset) * scores.getInt(i);
+				score += i * (i - 1) * partScore;
 			}
-			double finalScore = 1.0 * score / (offset * total);
+			double finalScore = 1.0 * score / (2 * total);
 			adjScoreJSON.put(adj, finalScore);
+//			
+//			double finalScore = 1.0 * score / (offset * total);
+//			if(finalScore < 0) finalScore -= 0.1;
+//			finalScore = (int) (finalScore * 5);
+//			adjScoreJSON.put(adj, finalScore + 1);
 		}
 		
 		
