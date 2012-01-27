@@ -20,7 +20,7 @@
 	function print_search_bar(){
 	?>
 		<div id="search">
-			<img src="logo.png" alt="logo"/>
+			<a href="index.php"><img src="logo.png" alt="logo"/></a>
 			<form action="http://www.pingyang.me/454/result.php">
 				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
 				<button class="myButton" type="submit">Stumble!</button>
