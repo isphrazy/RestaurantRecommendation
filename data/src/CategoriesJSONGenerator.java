@@ -13,7 +13,7 @@ import org.json.JSONObject;
 /**
  * 
  * @author Pingyang He
- * 
+ * This class generates a json file that maps from category to restaurants which contain the category
  */
 public class CategoriesJSONGenerator {
 	
