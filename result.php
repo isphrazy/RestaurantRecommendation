@@ -30,9 +30,13 @@
 	
 	
 	if(!$found){
-		$search_result = search_restaurant($new_restaurant_name);
+		$nFound = 0;
+		if($new_restaurant_name != ''){
+			
+			$search_result = search_restaurant($new_restaurant_name);
 
-		$nFound = count($search_result);
+			$nFound = count($search_result);
+		}
 		if($nFound === 0){
 			print_not_restaurant_found();
 		}else if($nFound === 1){
@@ -257,7 +261,7 @@
 				Category:
 				<?= implode(", ", $r->category);?>
 				<br />
-				Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
+				Reviews: Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
 				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
 				Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
 				<br />
