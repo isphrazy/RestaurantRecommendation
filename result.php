@@ -18,7 +18,7 @@
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
-	
+	$restaurant_basic_info;
 	print_head();
 	
 	print_search_bar();
@@ -149,6 +149,7 @@
 		else $f_restaurant->reviews_weight = array(1.0 * $reviews[0] / $total_score, 
 												   1.0 * $reviews[1] / $total_score,
 												   1.0 * $reviews[2] / $total_score);
+		$f_restaurant->address = $restaurant_basic_info[ADDRESS];
 		
 		return $f_restaurant;
 	}
@@ -161,6 +162,7 @@
 		
 		global $restaurants_basic_info_json;
 		global $favorite_restaurants_weight;
+		global $restaurant_basic_info;
 		
 		$relevant_restaurants_list = array();
 		
@@ -196,26 +198,30 @@
 		$D = $favorite_restaurants_weight[2];
 		
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
-			$relevant_restaurant = new RelevantRestaurant();
-			$relevant_restaurant->name = $r_name;
 			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
-			$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
-			$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
-			$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
-			$relevant_restaurant->category = $relevant_restaurant_basic_info[CATEGORY];
-			
-			$relevant_restaurant -> relevance = 
-				      (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
-					* (1.0 * $category_count_array[$total_category_count] / $category_count);
-					
-			$relevant_restaurant->confidence = $relevant_restaurant->relevance * $RELEVANCE_WEIGHT + 
-												   (($relevant_restaurant->reviews[0] * $F 
-												   + $relevant_restaurant->reviews[1] * $S 
-												   + $relevant_restaurant->reviews[2] * $D)) * $REVIEWS_WEIGHT;
-			$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
-			$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
-												   
-			$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
+			//more advanced check are required
+			if($r_name != $relevant_restaurant_basic_info->name){
+				
+				$relevant_restaurant = new RelevantRestaurant();
+				$relevant_restaurant->name = $r_name;
+				$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
+				$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
+				$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
+				$relevant_restaurant->category = $relevant_restaurant_basic_info[CATEGORY];
+				
+				$relevant_restaurant -> relevance = 
+						  (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
+						* (1.0 * $category_count_array[$total_category_count] / $category_count);
+						
+				$relevant_restaurant->confidence = $relevant_restaurant->relevance * $RELEVANCE_WEIGHT + 
+													   (($relevant_restaurant->reviews[0] * $F 
+													   + $relevant_restaurant->reviews[1] * $S 
+													   + $relevant_restaurant->reviews[2] * $D)) * $REVIEWS_WEIGHT;
+				$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
+				$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
+													   
+				$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
+			}
 			
 		}
 		
