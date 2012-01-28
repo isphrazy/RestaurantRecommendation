@@ -18,7 +18,8 @@
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
-	$restaurant_basic_info;
+	$new_restaurant_name;
+	
 	print_head();
 	
 	print_search_bar();
@@ -162,7 +163,7 @@
 		
 		global $restaurants_basic_info_json;
 		global $favorite_restaurants_weight;
-		global $restaurant_basic_info;
+		global $new_restaurant_name;
 		
 		$relevant_restaurants_list = array();
 		
@@ -200,7 +201,7 @@
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
 			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
 			//more advanced check are required
-			if($r_name != $relevant_restaurant_basic_info->name){
+			if($r_name != $new_restaurant_name && $relevant_restaurant_basic_info[BUSINESS_NAME] != $new_restaurant_name){
 				
 				$relevant_restaurant = new RelevantRestaurant();
 				$relevant_restaurant->name = $r_name;
@@ -213,12 +214,20 @@
 						  (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
 						* (1.0 * $category_count_array[$total_category_count] / $category_count);
 						
-				$relevant_restaurant->confidence = $relevant_restaurant->relevance * $RELEVANCE_WEIGHT + 
-													   (($relevant_restaurant->reviews[0] * $F 
-													   + $relevant_restaurant->reviews[1] * $S 
-													   + $relevant_restaurant->reviews[2] * $D)) * $REVIEWS_WEIGHT;
-				$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
-				$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
+				$f = $relevant_restaurant->reviews[0];
+				$s = $relevant_restaurant->reviews[1];
+				$d = $relevant_restaurant->reviews[2];
+				$de = 3;
+				if($f === 0)$de --;
+				if($s === 0)$de --;
+				if($d === 0)$de --;
+				if($de != 0){
+					$relevant_restaurant->confidence = $relevant_restaurant->relevance * RELEVANCE_WEIGHT + 
+														($f * $F + $s* $S + $d * $D) / 3 * REVIEWS_WEIGHT;
+					$relevant_restaurant->business_name = $relevant_restaurant_basic_info[BUSINESS_NAME];
+					$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
+					
+				}
 													   
 				$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
 			}
@@ -265,7 +274,7 @@
 				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
 				Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
 				<br />
-				Price: <?=$r->price?>
+				Price: <?=$r->price?><br/>
 				</td>
 			</tr>
 			<?php

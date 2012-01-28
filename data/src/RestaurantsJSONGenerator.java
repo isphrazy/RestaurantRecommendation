@@ -19,6 +19,8 @@ public class RestaurantsJSONGenerator {
 	private static final String RESTAURANTS_REVIEW_FILE_NAME = "all.placeData";
 	private static final String CATEGORY = "Category";
 	private static final String KEY_WORD = "Restaurants";
+	private static final String BUSINESS_TYPE = "Business Type";
+	private static final String FOOD = "Food";
 	
 	private static JSONObject allData;
 	private static JSONObject restaurantsReviews;
@@ -63,7 +65,15 @@ public class RestaurantsJSONGenerator {
 			}catch (org.json.JSONException e){
 				allData.remove(name);
 			}
-			if(category != null && !category.contains(KEY_WORD)) allData.remove(name);
+			try{
+				businessType = restaurant.getString(BUSINESS_TYPE);
+			}catch (org.json.JSONException e){
+				
+			}
+			if(category != null && !category.contains(KEY_WORD) 
+								&& !category.contains(FOOD)
+								&& (businessType == null ? true : !businessType.equals(KEY_WORD)))
+					allData.remove(name);
 			
 		}
 	}
