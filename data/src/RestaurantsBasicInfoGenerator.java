@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.JSONException;
@@ -77,16 +78,15 @@ public class RestaurantsBasicInfoGenerator {
 			
 			String[] pre_category = restaurant.getString(CATEGORY).split(", *");
 			//get rid of "Restaurant" category.
-			String[] category = new String[pre_category.length - 1];
-			int offset = 0;
+			ArrayList<String> category = new ArrayList<String>();
 			for(int i = 0; i < pre_category.length; i++){
 				if(!pre_category[i].equals(RESTAURANTS)){
-					category[i - offset] = pre_category[i];
-				}else offset ++;
+					category.add(pre_category[i]);
+				}
 			}
 			info.put(CATEGORY, category);
 			
-			info.put(CATEGORY_COUNT, category.length);
+			info.put(CATEGORY_COUNT, category.size());
 			
 			info.put(REVIEWS, getScores(name));
 			
