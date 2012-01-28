@@ -59,12 +59,13 @@ public class AdjToScore {
 			JSONArray scores = adjs.getJSONArray(adj);
 			int score = 0;
 			int total = 0;
+			int offset = 2;
 			for(int i = 0; i < scores.length(); i++){
 				int partScore = scores.getInt(i);
 				total += partScore;
-				score += i * (i - 1) * partScore;
+				score += (i - offset) * partScore;
 			}
-			double finalScore = 1.0 * score / (2 * total);
+			double finalScore = 1.0 * score / (offset * total);
 			adjScoreJSON.put(adj, finalScore);
 		}
 		
