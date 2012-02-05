@@ -13,10 +13,16 @@
 			</head>
 
 			<body>
-	<?php
-		
+	<?php		
 	}
 	
+	function print_login(){
+	?>
+		<div id="login">
+		</div>
+	<?php
+	}
+
 	function print_search_bar(){
 	?>
 		<div id="search">
