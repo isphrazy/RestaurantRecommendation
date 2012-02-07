@@ -5,7 +5,7 @@
 }
 
 #search {
-	margin-top: 10%;
+	margin-top: 15%;
 	text-align: center;
 }
 
@@ -77,4 +77,20 @@ tr:nth-child(odd) {
 .didyou {
 	background-color: white;
 	color: #CC0000;
+}
+
+#login {
+	height: 30px;
+	border-bottom: 1px solid #EBEBEB;
+	margin-top: 5px;
+	position:absolute;
+	top: 0;
+	width: 100%;
+	font-family:arial;
+	font-size: 15pt;
+	text-align: center;
+}
+
+#login a {
+	color: #3366BB;
 }
