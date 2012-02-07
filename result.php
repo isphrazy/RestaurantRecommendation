@@ -74,7 +74,7 @@
 		
 	}
 	
-	
+	print_login();
 	print_bottom();
 		
 	/*
