@@ -19,6 +19,7 @@
 	function print_login(){
 	?>
 		<div id="login">
+			<a href="">Sign in</a> 
 		</div>
 	<?php
 	}
@@ -37,8 +38,8 @@
 
 	function print_bottom(){
 	?>
-			</body>
-		</html>
+		</body>
+	</html>
 	<?php
 	}
 ?>
