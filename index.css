@@ -88,9 +88,10 @@ tr:nth-child(odd) {
 	width: 100%;
 	font-family:arial;
 	font-size: 15pt;
-	text-align: center;
+	text-align: right;
 }
 
 #login a {
 	color: #3366BB;
+	margin-right: 20px;
 }
