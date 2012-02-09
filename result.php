@@ -22,6 +22,8 @@
 	
 	print_head();
 	
+	print_login();
+	
 	print_search_bar();
 	
 	$new_restaurant_name = $_REQUEST["restaurant_name"];
@@ -74,7 +76,6 @@
 		
 	}
 	
-	print_login();
 	print_bottom();
 		
 	/*
