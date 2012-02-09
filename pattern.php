@@ -1,5 +1,6 @@
 <?php
-	function print_head(){
+	function print_head() {
+		session_start();
 	?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 
@@ -9,7 +10,7 @@
 				<title>RevMiner Likeness</title>
 				<link href="index.css" type="text/css" rel="stylesheet" />
 				<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
-				<script src="index.js" type="text/javascript"></script>
+				<!--<script src="index.js" type="text/javascript"></script>-->
 			</head>
 
 			<body>
@@ -17,18 +18,26 @@
 	}
 	
 	function print_login(){
-	?>
-		<div id="login">
-			<a href="">Sign in</a> 
-		</div>
-	<?php
+		if ( isset($_SESSION['SESS_USERNAME']) ) {
+			?><span id="hello">Hello, <?=$_SESSION['SESS_USERNAME']?>.</span>
+			<div id="login">
+				<a href="logout.php">Log out</a> 
+			</div>
+		<?php
+		} else {
+		?>
+			<div id="login">
+				<a href="./main_login.php">Sign In</a> 
+			</div>
+		<?php
+		}
 	}
 
 	function print_search_bar(){
 	?>
 		<div id="search">
 			<a href="index.php"><img src="logo.png" alt="logo"/></a>
-			<form action="http://www.pingyang.me/454/result.php">
+			<form action="result.php">
 				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
 				<button class="myButton" type="submit">Stumble!</button>
 			</form>
