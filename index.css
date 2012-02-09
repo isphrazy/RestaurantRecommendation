@@ -58,6 +58,7 @@ table {
 }
 
 a {
+	color: #3366BB;
 	text-decoration: none;
 }
 
@@ -79,6 +80,12 @@ tr:nth-child(odd) {
 	color: #CC0000;
 }
 
+#hello {
+	font-family: Arial,sans-serif;
+	color: #E47911;
+    font-weight: bold;
+}
+
 #login {
 	height: 30px;
 	border-bottom: 1px solid #EBEBEB;
@@ -92,6 +99,5 @@ tr:nth-child(odd) {
 }
 
 #login a {
-	color: #3366BB;
 	margin-right: 20px;
 }
