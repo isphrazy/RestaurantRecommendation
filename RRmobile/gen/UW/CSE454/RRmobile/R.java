@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package org.CSE454.RestaurantRecommendation;
+package UW.CSE454.RRmobile;
 
 public final class R {
     public static final class attr {
