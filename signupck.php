@@ -68,7 +68,12 @@ if(isset($todo) and $todo=="post") {
 	if($status<>"OK") {
 		echo "<font face='Verdana' size='2' color=red>$msg</font><br><input type='button' value='Retry' onClick='history.go(-1)'>";
 	} else {
-		if(mysql_query("insert into members(username,password,email) values('$username','$password','$email')")) {
+		if(mysql_query("INSERT INTO members(username,password,email) VALUES('$username','$password','$email')")) {
+			// insert access_token for Android app			
+			$id = "SELECT id FROM members WHERE username='$username' and password='$password'";
+			$access_token = md5($id);
+			mysql_query("UPDATE members SET access_token='$access_token' WHERE username='$username' and password='$password'");
+			// welcome message
 			echo "<font face='Verdana' size='2' color=green>Welcome! You have succesfully signed up.</font>";
 			echo "<br />";
 			echo "Redirect in 3 seconds...";
