@@ -73,11 +73,16 @@ if(isset($todo) and $todo=="post") {
 			$id = "SELECT id FROM members WHERE username='$username' and password='$password'";
 			$access_token = md5($id);
 			mysql_query("UPDATE members SET access_token='$access_token' WHERE username='$username' and password='$password'");
+			
 			// welcome message
 			echo "<font face='Verdana' size='2' color=green>Welcome! You have succesfully signed up.</font>";
 			echo "<br />";
 			echo "Redirect in 3 seconds...";
+			
+			// register sessions
 			$_SESSION['SESS_USERNAME'] = $username;
+			$_SESSION['SESS_ACESS_TOKEN'] = $access_token;
+			
 			// redirect
 			$seconds = 3;
 			$url = "index.php";
