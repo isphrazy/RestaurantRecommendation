@@ -60,9 +60,6 @@
 		return mysql_query($sql);
 
 	}
-	
-	
-	
 	?>
 </body>
 </html>
