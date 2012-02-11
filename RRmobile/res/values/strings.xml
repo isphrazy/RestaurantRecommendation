@@ -4,6 +4,6 @@
     <string name="hello">Hello World, SearchPage!</string>
     <string name="app_name">AndroidRestaurantRecommendation</string>
     <string name="stumble">Stumble!</string>
-    <string name="search_hint">Please insert the restaurant you like</string>
+    <string name="search_hint">Type in the restaurant you like</string>
 	
 </resources>

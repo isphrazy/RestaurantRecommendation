@@ -18,6 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SearchResultPage"></activity>
+        <activity android:name=".RegisterPage"></activity>
+        <activity android:name=".LoginPage"></activity>
     </application>
 
 </manifest>
