@@ -81,7 +81,7 @@ if(isset($todo) and $todo=="post") {
 			
 			// register sessions
 			$_SESSION['SESS_USERNAME'] = $username;
-			$_SESSION['SESS_ACESS_TOKEN'] = $access_token;
+			$_SESSION['SESS_ACCESS_TOKEN'] = $access_token;
 			
 			// redirect
 			$seconds = 3;
