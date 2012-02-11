@@ -18,9 +18,11 @@
 	}
 	
 	function print_login(){
-		if ( isset($_SESSION['SESS_USERNAME']) ) {
-			?><span id="hello">Hello, <?=$_SESSION['SESS_USERNAME']?>.</span>
+		#if ( isset($_SESSION['SESS_USERNAME']) ) {
+		if ( isset($_SESSION['SESS_ACCESS_TOKEN']) ) {
+			?>
 			<div id="login">
+				<a id="hello" href="profile.php">Hello, <?=$_SESSION['SESS_USERNAME']?>.</a>
 				<a href="logout.php">Log out</a> 
 			</div>
 		<?php
