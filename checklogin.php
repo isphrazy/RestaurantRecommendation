@@ -35,7 +35,7 @@
 
 	ob_end_flush();
 	
-	function connect_database(){	
+	function connect_database(){
 		global $myusername;
 		global $mypassword;
 		
