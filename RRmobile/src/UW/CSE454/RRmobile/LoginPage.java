@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class LoginPage extends Activity{
 	
@@ -53,26 +54,30 @@ public class LoginPage extends Activity{
 
 	private void login() {
 		Log.e("login", "loging");
-		String query = "http://www.kurlin.com/454/api_login.php?"
-						+ USERNAME_Q + "=" + usernameEt.getText().toString() + "&"
-						+ PASSWORD_Q + "=" + passwordEt.getText().toString();
-		Log.e("login", query);
-		HttpClient client = new DefaultHttpClient();
-		HttpResponse hr = null;
-		String response = null;
-		try {
-			hr = client.execute(new HttpPost(query));
-			HttpEntity entity = hr.getEntity();
-			
-			BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-			String buff = null;
-			while ((buff = br.readLine()) != null)
-				response += buff;
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		String username = usernameEt.getText().toString().trim();
+		String password = passwordEt.getText().toString().trim();
+		if(username.length() < 1 || password.length() < 1){
+			Toast.makeText(this, "username or password should not be empty", Toast.LENGTH_SHORT);
+		}else{
+			String query = "http://kurlin.com/454/api_login.php?"
+					+ USERNAME_Q + "=" + username + "&"
+					+ PASSWORD_Q + "=" + password;
+			Log.e("login", query);
+			HttpClient client = new DefaultHttpClient();
+			HttpResponse hr = null;
+			try {
+				hr = client.execute(new HttpGet(query));
+				HttpEntity entity = hr.getEntity();
+				
+				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+				String response = br.readLine();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+//			if(response == null) Log.e("response", "nullll");
+//			else Log.e("response", response);
 		}
-		if(response == null) Log.e("response", "null");
 	}
 }

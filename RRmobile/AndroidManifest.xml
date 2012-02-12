@@ -5,6 +5,12 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="10" />
+    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-library android:name="com.google.android.maps" />
 
     <application
         android:icon="@drawable/ic_launcher"
