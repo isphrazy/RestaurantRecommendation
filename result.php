@@ -53,7 +53,7 @@
 		
 		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 		
-		$restaurant_basic_info = $restaurants_basic_info_json[$new_restaurant_name];;
+		$restaurant_basic_info = $restaurants_basic_info_json[$new_restaurant_name];
 		
 		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
 		
