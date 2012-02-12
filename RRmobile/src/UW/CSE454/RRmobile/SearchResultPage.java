@@ -17,10 +17,15 @@ public class SearchResultPage extends Activity {
         
         initiateVar();
         
+        connect();
+        
+	}
+
+	private void connect() {
+		String query = "http://www.kurlin.com/454/api/api_search.php?restaurant_name=" + keyword;
 	}
 
 	private void initiateVar() {
 		keyword = getIntent().getStringExtra("keyword");
-		Log.e("keywords", keyword);
 	}
 }

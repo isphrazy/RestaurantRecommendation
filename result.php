@@ -19,6 +19,7 @@
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
 	$new_restaurant_name;
+	$found;
 	
 	print_head();
 	
@@ -26,13 +27,7 @@
 	
 	print_search_bar();
 	
-	$new_restaurant_name = $_REQUEST["restaurant_name"];
-	$new_restaurant_name = trim($new_restaurant_name);
-	//if it's true, then this call is by this file itself, and $new_restaurant_name
-	//is the key of the restaurant.
-	//if not set, then we will search restaurant name to find the restaurant.
-	$found = isset($_REQUEST["sure"]);
-	
+	get_r_name();
 	
 	if(!$found){
 		$nFound = 0;
@@ -106,6 +101,18 @@
 	class FavoriteRestaurant extends Restaurant{
 		public $reviews_weight; //(eg: 0.25, 0.5, 0.25)
 		
+	}
+	
+	function get_r_name(){
+		
+		global $new_restaurant_name, $found;
+		
+		$new_restaurant_name = $_REQUEST["restaurant_name"];
+		$new_restaurant_name = trim($new_restaurant_name);
+		//if it's true, then this call is by this file itself, and $new_restaurant_name
+		//is the key of the restaurant.
+		//if not set, then we will search restaurant name to find the restaurant.
+		$found = isset($_REQUEST["sure"]);
 	}
 
 	function cmp($r1, $r2) {
@@ -262,7 +269,10 @@
 		<table>
 		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
+		$count = 10;
 		foreach($relevant_restaurants_list as $r){
+			if($count < 1) break;
+			$count --;
 			$address = $r->address;
 			?><tr><th colspan="3"><?=$r->business_name?></th></tr>
 			<tr>

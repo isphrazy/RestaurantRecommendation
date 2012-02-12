@@ -3,6 +3,6 @@
 	include 'checklogin.php'
 	
 	$result = connect_database();
-	return 
+	
 
 ?>

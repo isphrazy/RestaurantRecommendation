@@ -29,7 +29,9 @@ public final class R {
         public static final int linearLayout1=0x7f060000;
         public static final int linearLayout2=0x7f060004;
         public static final int login_b=0x7f060006;
+        public static final int progressBar1=0x7f060007;
         public static final int register_b=0x7f060005;
+        public static final int result_text=0x7f060008;
         public static final int search_b=0x7f060003;
         public static final int search_bar=0x7f060002;
     }
