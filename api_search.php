@@ -1,6 +1,6 @@
 <?php
 	
-	include '../search.php';
+	include 'search.php';
 	
 	define('NO_RESTAURANT_FOUND_MESSAGE', -1);
 	define('MANY_RESTAURANTS_FOUND_MESSAGE', 0);

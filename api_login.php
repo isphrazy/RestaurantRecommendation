@@ -1,8 +1,8 @@
 <?php
 
-	include 'checklogin.php'
+	include 'connect_database.php';
 	
-	$result = connect_database();
+	var_dump(connect_database());
 	
 
 ?>
