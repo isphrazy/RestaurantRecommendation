@@ -1,10 +1,6 @@
 <?php
 	session_start();
-	/*
-	if ( isset($_SESSION['SESS_ACCESS_TOKEN']) ) {
-		echo $_SESSION['SESS_ACCESS_TOKEN'];
-	}
-	*/
+
 	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');	
 	$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 	
@@ -28,7 +24,12 @@
 		mysql_select_db("$db_name")or die("cannot select DB");
 
 		// Define $access_token
-		$access_token=$_SESSION['SESS_ACCESS_TOKEN'];
+		if ( isset($_SESSION['SESS_ACCESS_TOKEN']) ) {
+			$access_token=$_SESSION['SESS_ACCESS_TOKEN'];
+		} else {
+			//$access_token=$_GET["access_token"];
+			$access_token=$_POST["access_token"]; // TODO Pingyang access token query
+		}
 
 		// To protect MySQL injection
 		$access_token = stripslashes($access_token);
