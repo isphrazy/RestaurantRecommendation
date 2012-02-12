@@ -2,7 +2,10 @@
 
 	include 'connect_database.php';
 	
-	var_dump(connect_database());
+	$result = connect_database();
+	$result2 = mysql_fetch_assoc($result);
+	
+	echo $result2['access_token'];
 	
 
 ?>
