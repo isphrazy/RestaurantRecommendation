@@ -10,12 +10,10 @@
 	$mypassword;
 	
 	$result = connect_database();
-/*
-	echo $myusername;
-	echo $mypassword;
-*/
 	$result2 = mysql_fetch_assoc($result);
-	
+/*
+	print $result2;
+*/
 	print(json_encode($result2));
 	
 	

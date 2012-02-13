@@ -9,10 +9,12 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,11 +24,17 @@ import android.widget.Toast;
 
 public class LoginPage extends Activity{
 	
+	private final String LOGIN_TITLE = "Login";
+	private final String LOGIN_MESSAGE = "Please wait...";
+	private final String LOGIN_FAIL = "username or password is wrong, please try again";
+	private final String EMPTY_PU = "username or password should not be empty";
 	private final String USERNAME_Q = "myusername";
 	private final String PASSWORD_Q = "mypassword";
 	
 	private EditText usernameEt;
 	private EditText passwordEt;
+	private Class next;
+	private ProgressDialog pd;
 	
 	public void onCreate(Bundle savedInstanceState){
     	this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -37,31 +45,50 @@ public class LoginPage extends Activity{
         
 	}
 	
+	//initiate variables
 	private void initiateVar() {
 		usernameEt = (EditText) findViewById(R.id.username_et);
 		passwordEt = (EditText) findViewById(R.id.password_et);
+		try {
+			next = Class.forName(getIntent().getStringExtra("nextactivity"));
+		} catch (ClassNotFoundException e) {
+			next = null;
+		}
 	}
 
+	/**
+	 * deal with click events
+	 * @param view the view that has been clicked
+	 */
 	public void onClick(View view){
 		switch(view.getId()){
 			case R.id.register_b:
+				
 				break;
 			case R.id.login_b:
-				login();
+				String username = usernameEt.getText().toString().trim();
+				String password = passwordEt.getText().toString().trim();
+				if(username.length() < 1 || password.length() < 1){
+					Toast.makeText(LoginPage.this, EMPTY_PU, Toast.LENGTH_SHORT);
+				}else{
+					pd = ProgressDialog.show(LoginPage.this, LOGIN_TITLE, LOGIN_MESSAGE);
+					new LoginAsync().execute(new String[]{username, password});
+				}
 				break;
 		}
 	}
 
-	private void login() {
-		Log.e("login", "loging");
-		String username = usernameEt.getText().toString().trim();
-		String password = passwordEt.getText().toString().trim();
-		if(username.length() < 1 || password.length() < 1){
-			Toast.makeText(this, "username or password should not be empty", Toast.LENGTH_SHORT);
-		}else{
+	//fetch response from server
+	private class LoginAsync extends AsyncTask<String, Void, Void>{
+		
+		private String response;
+		@Override
+		protected Void doInBackground(String... arg0) {
+
+			Log.e("login", "loging");
 			String query = "http://kurlin.com/454/api_login.php?"
-					+ USERNAME_Q + "=" + username + "&"
-					+ PASSWORD_Q + "=" + password;
+					+ USERNAME_Q + "=" + arg0[0] + "&"
+					+ PASSWORD_Q + "=" + arg0[1];
 			Log.e("login", query);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
@@ -70,14 +97,33 @@ public class LoginPage extends Activity{
 				HttpEntity entity = hr.getEntity();
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-				String response = br.readLine();
+				response = br.readLine();
+				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//			if(response == null) Log.e("response", "nullll");
-//			else Log.e("response", response);
+		
+			return null;
+			
 		}
+		
+		protected void onProgressUpdate(Void... v){
+			Log.e("onProgressUpdate", response);
+			pd.dismiss();
+			if(response.equals("false")){
+				Toast.makeText(LoginPage.this, LOGIN_FAIL, Toast.LENGTH_SHORT);
+			}else{
+				Settings.getInstance(LoginPage.this).saveUserInfo(response);
+				Intent intent = new Intent();
+				intent.setClass(LoginPage.this, next);
+				startActivity(intent);
+				finish();
+			}
+		}
+		
 	}
+
+	
 }

@@ -30,6 +30,10 @@ public class FrontPage extends Activity {
     
     private void getLayouts(){
     	et = (EditText) findViewById(R.id.search_bar);
+    	//if the user has already loged in, then login options could be removed
+    	if(Settings.getInstance(this).hasAt())
+    		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
+    	
     }
     
 //    private void initiateVar() {

@@ -50,27 +50,34 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/login_b"
+    <LinearLayout
+        android:id="@+id/member_layouts"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="@drawable/white_button"
-        android:onClick="onClick"
-        android:layout_marginTop="60dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:text="Login" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="60dp" >
 
+        <Button
+            android:id="@+id/login_b"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/white_button"
+            android:onClick="onClick"
+            android:text="Login" />
 
-    <Button
-        android:id="@+id/register_b"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/white_button"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:onClick="onClick"
-        android:text="Register" />
+        <Button
+            android:id="@+id/register_b"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/white_button"
+            android:onClick="onClick"
+            android:text="Register" />
+
+    </LinearLayout>
 
 </LinearLayout>
