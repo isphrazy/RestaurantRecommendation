@@ -13,6 +13,8 @@ public final class R {
     public static final class color {
         public static final int background_color=0x7f040000;
         public static final int black=0x7f040003;
+        public static final int gray=0x7f040006;
+        public static final int red=0x7f040007;
         public static final int themeBlue=0x7f040001;
         public static final int themeLighterBlue=0x7f040002;
         public static final int themeOrange=0x7f040005;
@@ -32,11 +34,14 @@ public final class R {
         public static final int linearLayout4=0x7f06000a;
         public static final int login_b=0x7f060008;
         public static final int member_layouts=0x7f060007;
+        public static final int message=0x7f060012;
         public static final int password_et=0x7f06000e;
-        public static final int progressBar1=0x7f060010;
+        public static final int progressBar=0x7f060013;
         public static final int register_b=0x7f060009;
-        public static final int relativeLayout1=0x7f06000f;
-        public static final int restaurant_l=0x7f060011;
+        public static final int relativeLayout1=0x7f060011;
+        public static final int restaurant_l=0x7f060014;
+        public static final int result_address=0x7f060010;
+        public static final int result_b_name=0x7f06000f;
         public static final int search_b=0x7f060003;
         public static final int search_bar=0x7f060002;
         public static final int textView1=0x7f06000b;
@@ -49,7 +54,8 @@ public final class R {
         public static final int front_page_layout=0x7f030000;
         public static final int login_layout=0x7f030001;
         public static final int main=0x7f030002;
-        public static final int search_result_layout=0x7f030003;
+        public static final int search_result_entry=0x7f030003;
+        public static final int search_result_layout=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

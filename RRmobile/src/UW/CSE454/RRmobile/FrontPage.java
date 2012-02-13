@@ -37,7 +37,6 @@ public class FrontPage extends Activity {
     		username.setVisibility(View.VISIBLE);
     	}
     	findViewById(R.id.user_profile_b).setVisibility(View.VISIBLE);
-    	
     }
     
 
