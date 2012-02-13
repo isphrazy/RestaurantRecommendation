@@ -113,8 +113,9 @@ public class LoginPage extends Activity{
 			Log.e("onProgressUpdate", response);
 			pd.dismiss();
 			if(response.equals("false")){
-				Toast.makeText(LoginPage.this, LOGIN_FAIL, Toast.LENGTH_SHORT);
+				Toast.makeText(LoginPage.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
 			}else{
+				
 				Settings.getInstance(LoginPage.this).saveUserInfo(response);
 				Intent intent = new Intent();
 				intent.setClass(LoginPage.this, next);

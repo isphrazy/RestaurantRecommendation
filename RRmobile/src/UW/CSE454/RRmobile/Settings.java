@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class Settings {
 	
@@ -23,18 +24,19 @@ public class Settings {
 	}
 	
 	public static Settings getInstance(Context c){
-		if(instance == null) instance = new Settings();
 		if(context == null) context = c;
+		if(instance == null) instance = new Settings();
 		return instance;
 	}
 	
 	public void saveUserInfo(String ui){
 		if(hasAt()) throw new IllegalStateException("access token has already exist");
-		
+		Log.e("saveUserInfo", ui);
 		try {
 			JSONObject user = new JSONObject(ui);
 			settingsEditor.putString(USERNAME, user.getString("username"));
 			settingsEditor.putString(ACCESS_TOKEN, user.getString("access_token"));
+			settingsEditor.commit();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -42,6 +44,16 @@ public class Settings {
 	
 	public boolean hasAt(){
 		return settings.getString(ACCESS_TOKEN, null) != null;
+	}
+	
+	public String getUsername(){
+		return settings.getString(USERNAME, null);
+	}
+	
+	public void logout(){
+		settingsEditor.remove(USERNAME);
+		settingsEditor.remove(ACCESS_TOKEN);
+		settingsEditor.commit();
 	}
 	
 }

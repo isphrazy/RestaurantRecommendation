@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" 
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="90dp"
         android:gravity="center_horizontal">
         
 	    <ImageView
@@ -51,33 +51,58 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/member_layouts"
+        android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="60dp" >
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp" >
+
+        <TextView
+            android:id="@+id/username_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Large Text"
+            android:visibility="invisible"
+            android:textColor="@color/themeOrange"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
-            android:id="@+id/login_b"
-            android:layout_width="match_parent"
+            android:id="@+id/user_profile_b"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
             android:background="@drawable/white_button"
-            android:onClick="onClick"
-            android:text="Login" />
-
-        <Button
-            android:id="@+id/register_b"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/white_button"
-            android:onClick="onClick"
-            android:text="Register" />
-
-    </LinearLayout>
+            android:visibility="invisible"
+            android:text="My Profile"
+            android:layout_marginTop="20dp" />
+	
+	    <LinearLayout
+	        android:id="@+id/member_layouts"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <Button
+	            android:id="@+id/login_b"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:layout_marginLeft="40dp"
+	            android:layout_marginRight="40dp"
+	            android:background="@drawable/white_button"
+	            android:onClick="onClick"
+	            android:text="Login" />
+	
+	        <Button
+	            android:id="@+id/register_b"
+	            android:layout_width="match_parent"
+	            android:layout_height="40dp"
+	            android:layout_marginLeft="40dp"
+	            android:layout_marginRight="40dp"
+	            android:layout_marginTop="20dp"
+	            android:background="@drawable/white_button"
+	            android:onClick="onClick"
+	            android:text="Register" />
+	    </LinearLayout>
+	</LinearLayout>
 
 </LinearLayout>
