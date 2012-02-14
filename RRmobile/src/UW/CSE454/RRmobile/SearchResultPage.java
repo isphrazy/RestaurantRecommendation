@@ -26,10 +26,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchResultPage extends Activity {
 	
@@ -39,6 +41,7 @@ public class SearchResultPage extends Activity {
 	private RestaurantsArrayAdapter adapter;
 	private TextView messageEt;
 	private int entry;
+	private String sure;
 	
 	private List<Restaurant> list;
 	
@@ -65,17 +68,19 @@ public class SearchResultPage extends Activity {
 		messageEt = (TextView) findViewById(R.id.message);
 		
 		list = new ArrayList<Restaurant>();
+		sure = "";
+		
 		
 	}
 	
 	//fetch response from server
 	private class SearchAsync extends AsyncTask<Void, Void, Void>{
 
-		private String response;
+		private String response = "";
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			String query = "http://kurlin.com/454/api_search.php?restaurant_name=" + keyword;
+			String query = "http://kurlin.com/454/api_search.php?restaurant_name=" + keyword + sure;
 			query = query.replace(" ", "%20");
 			Log.e("qquery: ", query);
 			HttpClient client = new DefaultHttpClient();
@@ -98,6 +103,7 @@ public class SearchResultPage extends Activity {
 		protected void onProgressUpdate(Void... v){
 			JSONArray resp = null;
 			String first = null;
+			Log.e("RESP: ", response);
 			try {
 				resp = new JSONArray(response);
 				first = resp.getString(0);
@@ -175,6 +181,7 @@ public class SearchResultPage extends Activity {
 			if(entry != R.layout.relevant_restaurants_entry){
 				((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
 				((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
+				lv.setOnItemClickListener(new RestaurantsClickListener());
 			}else{
 				((TextView) rowView.findViewById(R.id.restaurant_name)).setText(r.businessName);
 				((TextView) rowView.findViewById(R.id.address)).setText(r.address);
@@ -186,12 +193,33 @@ public class SearchResultPage extends Activity {
 				((TextView) rowView.findViewById(R.id.category)).setText("Category: " + category);
 				
 				String review = "Reviews: Food:" + (new DecimalFormat("0.0").format(r.reviews[0]))
-										+ "Service: " + (new DecimalFormat("0.0").format(r.reviews[1]))
-										+ "Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
+										+ " Service: " + (new DecimalFormat("0.0").format(r.reviews[1]))
+										+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 				((TextView) rowView.findViewById(R.id.review)).setText(review);
+				lv.setOnItemClickListener(new RelevantClickListener());
 			}
 			
 			return rowView;
 		}
 	}
+	
+	
+	private class RestaurantsClickListener implements OnItemClickListener{
+		
+		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+			Restaurant r = list.get(position);
+			keyword = r.id;
+			sure= "&sure=yes";
+			list.clear();
+			new SearchAsync().execute();
+		}
+	}
+	
+	private class RelevantClickListener implements OnItemClickListener{
+		
+		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+			
+		}
+	}
+
 }
