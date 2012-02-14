@@ -3,6 +3,8 @@ package UW.CSE454.RRmobile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -36,6 +38,7 @@ public class SearchResultPage extends Activity {
 	private ListView lv;
 	private RestaurantsArrayAdapter adapter;
 	private TextView messageEt;
+	private int entry;
 	
 	private List<Restaurant> list;
 	
@@ -61,9 +64,7 @@ public class SearchResultPage extends Activity {
 		lv = (ListView) findViewById(R.id.restaurant_l);
 		messageEt = (TextView) findViewById(R.id.message);
 		
-		adapter = new RestaurantsArrayAdapter(this, list);
-		lv.setAdapter(adapter);
-		
+		list = new ArrayList<Restaurant>();
 		
 	}
 	
@@ -74,8 +75,9 @@ public class SearchResultPage extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			String query = "http://www.kurlin.com/454/api/api_search.php?restaurant_name=" + keyword;
-			
+			String query = "http://kurlin.com/454/api_search.php?restaurant_name=" + keyword;
+			query = query.replace(" ", "%20");
+			Log.e("qquery: ", query);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -90,27 +92,65 @@ public class SearchResultPage extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-//			Log.e("response", response);
 			return null;
 		}
 		
 		protected void onProgressUpdate(Void... v){
-			JSONArray restaurants = null;
+			JSONArray resp = null;
 			String first = null;
 			try {
-				restaurants = new JSONArray(response);
-				first = restaurants.getString(0);
+				resp = new JSONArray(response);
+				first = resp.getString(0);
+				if(first.equals("-1")){//no restaurant found
+					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
+				}else{
+					if(first.equals("0")){
+						messageEt.setText("Do you mean:");
+						entry = R.layout.search_result_entry;
+						JSONObject restaurants = resp.getJSONObject(1);
+						JSONArray rNames  = restaurants.names();
+						for(int i = 0; i < rNames.length(); i++){
+							String id = rNames.getString(i);
+							JSONObject restaurant = restaurants.getJSONObject(id);
+							Restaurant r = new Restaurant();
+							r.businessName = restaurant.getString("Business Name");
+							r.address = restaurant.getString("Address");
+							r.id = id;
+							list.add(r);
+						}
+					}else{
+						messageEt.setText("You may also like:");
+						for(int i = 0; i < resp.length(); i++){
+							JSONObject restaurant = resp.getJSONObject(i);
+							Restaurant r = new Restaurant();
+							r.businessName = restaurant.getString("business_name");
+							r.address = restaurant.getString("address");
+							r.id = restaurant.getString("name");
+							r.priceLevel = restaurant.getString("price");
+							
+							JSONArray jCategory = restaurant.getJSONArray("category");
+							String[] category = new String[jCategory.length()];
+							for(int j = 0; j < jCategory.length(); j++){
+								category[j] = jCategory.getString(j);
+							}
+							r.category = category;
+							
+							JSONArray jReviews = restaurant.getJSONArray("reviews");
+							double[] reviews = new double[jReviews.length()];
+							for(int j = 0; j < jReviews.length(); j++){
+								reviews[j] = jReviews.getDouble(j);
+							}
+							r.reviews = reviews;
+							list.add(r);
+						}
+						entry = R.layout.relevant_restaurants_entry;
+					}
+					adapter = new RestaurantsArrayAdapter(SearchResultPage.this, list);
+					lv.setAdapter(adapter);
+				}
+				pb.setVisibility(View.INVISIBLE);
 			} catch (JSONException e) {
 				e.printStackTrace();
-			}
-			if(first.equals(-1)){//no restaurant found
-				messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
-			}else if(first.equals(0)){
-				messageEt.setText("Do you mean:");
-			}else{
-				messageEt.setText("You may also like");
-				adapter.notifyDataSetChanged();
-				pb.setVisibility(View.INVISIBLE);
 			}
 			
 		}
@@ -123,17 +163,33 @@ public class SearchResultPage extends Activity {
 		private List<Restaurant> list;
 		
 		public RestaurantsArrayAdapter(Context context, List<Restaurant> list) {
-			super(context, R.layout.search_result_entry, list);
+			super(context, entry, list);
 			this.context = context;
 			this.list = list;
 		}
 		
 		public View getView(int position, View convertView, ViewGroup parent){
-			Restaurant restaurant = list.get(position);
+			Restaurant r = list.get(position);
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-			View rowView = inflater.inflate(R.layout.search_result_entry, null, true);
-			((TextView) findViewById(R.id.result_b_name)).setText(restaurant.businessName);
-			((TextView) findViewById(R.id.result_address)).setText(restaurant.address);
+			View rowView = inflater.inflate(entry, null, true);
+			if(entry != R.layout.relevant_restaurants_entry){
+				((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
+				((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
+			}else{
+				((TextView) rowView.findViewById(R.id.restaurant_name)).setText(r.businessName);
+				((TextView) rowView.findViewById(R.id.address)).setText(r.address);
+				((TextView) rowView.findViewById(R.id.price)).setText("Price level: " + r.priceLevel);
+				String category = "";
+				for(int i = 0; i < r.category.length; i ++)
+					category +=  r.category[i] + " ";
+				
+				((TextView) rowView.findViewById(R.id.category)).setText("Category: " + category);
+				
+				String review = "Reviews: Food:" + (new DecimalFormat("0.0").format(r.reviews[0]))
+										+ "Service: " + (new DecimalFormat("0.0").format(r.reviews[1]))
+										+ "Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
+				((TextView) rowView.findViewById(R.id.review)).setText(review);
+			}
 			
 			return rowView;
 		}

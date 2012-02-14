@@ -15,6 +15,10 @@
 	
 	ob_start();
 	
+	// Define $myusername and $mypassword
+	$myusername=$_POST[USERNAME_Q];
+	$mypassword=$_POST[PASSWORD_Q];
+	
 	// Mysql_num_row is counting table row
 	$result = connect_database();
 	$count=mysql_num_rows($result);

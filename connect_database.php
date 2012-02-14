@@ -20,10 +20,6 @@
 		mysql_connect("$host", "$username", "$password")or die("cannot connect");
 		mysql_select_db("$db_name")or die("cannot select DB");
 
-		// Define $myusername and $mypassword
-		$myusername=$_POST[USERNAME_Q];
-		$mypassword=$_POST[PASSWORD_Q];
-
 		// To protect MySQL injection
 		$myusername = stripslashes($myusername);
 		$mypassword = stripslashes($mypassword);

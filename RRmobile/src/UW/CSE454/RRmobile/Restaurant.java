@@ -5,4 +5,6 @@ public class Restaurant {
 	public String businessName;
 	public String address;
 	public double[] reviews;
+	public String[] category;
+	public String priceLevel;
 }

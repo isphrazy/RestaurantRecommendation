@@ -21,7 +21,7 @@
 			$found = true;
 			$name_array = array_keys($search_result);
 			$new_restaurant_name = $name_array[0];
-		}else{//found several restaurant
+		}else{//found several restaurants
 			print(json_encode(array(MANY_RESTAURANTS_FOUND_MESSAGE, $search_result)));
 		}
 	}
