@@ -16,7 +16,7 @@ foreach ($restaurants as $rid => $restaurant) {
 	?>
 	<tr id="<?=$rid?>">
 		<td>
-			<a href="">
+			<a href="detail.php?name=<?=$rid?>">
 				<b><?=$restaurant["Business Name"] . ', '?></b>
 				<?=$restaurant["Address"]?>
 			</a>

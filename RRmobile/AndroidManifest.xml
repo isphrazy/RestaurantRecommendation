@@ -29,6 +29,7 @@
         <activity android:name=".RegisterPage"></activity>
         <activity android:name=".LoginPage"></activity>
         <activity android:name=".DetailPage"></activity>
+        <activity android:name=".ProfilePage"></activity>
     </application>
 
 </manifest>
