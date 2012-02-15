@@ -11,6 +11,7 @@
 	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-library android:name="com.google.android.maps" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -27,6 +28,7 @@
         <activity android:name=".SearchResultPage"></activity>
         <activity android:name=".RegisterPage"></activity>
         <activity android:name=".LoginPage"></activity>
+        <activity android:name=".DetailPage"></activity>
     </application>
 
 </manifest>

@@ -23,12 +23,6 @@
             
         </TextView>
         
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
-
         <ListView
             android:id="@+id/restaurant_l"
             android:layout_width="match_parent"

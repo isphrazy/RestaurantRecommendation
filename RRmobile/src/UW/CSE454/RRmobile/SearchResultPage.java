@@ -18,8 +18,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,8 +38,11 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchResultPage extends Activity {
 	
+	private String PD_TITLE = "Loading Data";
+	private String PD_MESSAGE = "Please wait...";
+	
 	private String keyword;
-	private ProgressBar pb;
+	private ProgressDialog pd;
 	private ListView lv;
 	private RestaurantsArrayAdapter adapter;
 	private TextView messageEt;
@@ -64,7 +69,7 @@ public class SearchResultPage extends Activity {
 
 	private void initiateVar() {
 		keyword = getIntent().getStringExtra("keyword");
-		pb = (ProgressBar) findViewById(R.id.progressBar);
+		
 		lv = (ListView) findViewById(R.id.restaurant_l);
 		messageEt = (TextView) findViewById(R.id.message);
 		
@@ -80,11 +85,14 @@ public class SearchResultPage extends Activity {
 
 		private String response = "";
 		
+		protected void onPreExecute (){
+			pd = ProgressDialog.show(SearchResultPage.this, PD_TITLE, PD_MESSAGE);
+		}
+		
 		@Override
 		protected Void doInBackground(Void... params) {
 			String query = "http://kurlin.com/454/api_search.php?restaurant_name=" + keyword + sure;
 			query = query.replace(" ", "%20");
-			Log.e("qquery: ", query);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -105,11 +113,11 @@ public class SearchResultPage extends Activity {
 		protected void onProgressUpdate(Void... v){
 			JSONArray resp = null;
 			String first = null;
-			Log.e("RESP: ", response);
+//			Log.e("RESP: ", response);
 			try {
 				resp = new JSONArray(response);
 				first = resp.getString(0);
-				if(first.equals("-1")){//no restaurant found
+				if(response.equals("-1")){//no restaurant found
 					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
 				}else{
 					if(first.equals("0")){
@@ -156,7 +164,7 @@ public class SearchResultPage extends Activity {
 					adapter = new RestaurantsArrayAdapter(SearchResultPage.this, list);
 					lv.setAdapter(adapter);
 				}
-				pb.setVisibility(View.INVISIBLE);
+				pd.dismiss();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -221,8 +229,20 @@ public class SearchResultPage extends Activity {
 	private class RelevantClickListener implements OnItemClickListener{
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-			
+			Intent i = new Intent();
+			i.setClass(SearchResultPage.this, DetailPage.class);
+			i.putExtra("name", list.get(position).id);
+			startActivity(i);
 		}
+	}
+	
+	private void getDirection(){
+//		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+//		Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
+//		startActivity(intent);
+		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
+				Uri.parse("google.navigation:q=an+address+city"));
+		startActivity(intent);
 	}
 
 }

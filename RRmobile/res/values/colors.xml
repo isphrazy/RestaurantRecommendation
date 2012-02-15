@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="background_color">#FAFAFA</color>
+    <color name="b_blue">#DCE0E3</color>
     <color name="themeBlue">#0878A2</color>
     <color name="themeLighterBlue">#4AA0E0</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="themeOrange">#FBAC48</color>
     <color name="gray">#A7A7A7</color>
-    <color name="darkGray">#999999</color>
+    <color name="darkGray">#4E4E51</color>
     <color name="red">#CC0000</color>
 </resources>
