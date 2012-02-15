@@ -220,7 +220,15 @@
 			if($count < 1) break;
 			$count --;
 			$address = $r->address;
-			?><tr><th colspan="3"><a href="http://kurlin.com/454/detail.php?name=<?=$r->name?>"><?=$r->business_name?></a></th></tr>
+			?>
+			<tr>
+				<th colspan="3">
+					<a href="http://kurlin.com/454/detail.php?name=<?=$r->name?>"><?=$r->business_name?></a>
+					<a href="javascript:void(0)" onclick="removeLike('<?=$rid?>');">
+						<img src="b_drop.png" alt="b_drop.png" class="like" />
+					</a>
+				</th>
+			</tr>
 			<tr>
 				<td>
 				<a href="http://maps.google.com/maps?q=<?= $address;?>" target="_blank"><?= $address;?></a><br/>
