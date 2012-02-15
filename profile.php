@@ -21,7 +21,7 @@ foreach ($restaurants as $rid => $restaurant) {
 				<?=$restaurant["Address"]?>
 			</a>
 			<a href="javascript:void(0)" onclick="removeLike('<?=$rid?>');">
-				<img src="b_drop.png" alt="b_drop.png" id="remove_like" />
+				<img src="b_drop.png" alt="b_drop.png" class="like" />
 			</a>
 		</td>
 	</tr>
