@@ -32,11 +32,11 @@ public class FrontPage extends Activity {
     	Settings settings = Settings.getInstance(this);
     	if(settings.hasAt()){
     		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
+    		findViewById(R.id.user_profile_b).setVisibility(View.VISIBLE);
     		TextView username = (TextView) findViewById(R.id.username_t);
     		username.setText("Welcome: " + settings.getUsername());
     		username.setVisibility(View.VISIBLE);
     	}
-    	findViewById(R.id.user_profile_b).setVisibility(View.VISIBLE);
     }
     
 
