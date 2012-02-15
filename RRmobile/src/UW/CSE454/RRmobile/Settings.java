@@ -56,4 +56,8 @@ public class Settings {
 		settingsEditor.commit();
 	}
 	
+	public String getAt(){
+		return settings.getString(ACCESS_TOKEN, null);
+	}
+	
 }

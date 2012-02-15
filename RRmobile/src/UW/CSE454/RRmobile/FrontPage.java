@@ -65,6 +65,7 @@ public class FrontPage extends Activity {
         	finish();
     		break;
     	case R.id.user_profile_b:
+    		c = ProfilePage.class;
     		break;
     	}
     	if(flag){
