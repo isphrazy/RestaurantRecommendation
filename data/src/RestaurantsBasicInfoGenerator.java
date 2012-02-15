@@ -19,6 +19,7 @@ public class RestaurantsBasicInfoGenerator {
 	private static final String RESTAURANTS_REVIEW_FILE_NAME = "all.placeData";
 	private static final String ATTRIBUTE_CATEGORY_FILE_NAME = "attributeCategories";
 	private static final String TARGET_FILE_NAME = "restaurants_basic_info.data";
+	private static final String REVIEW_TARGET_FILE_NAME = "reviews.data";
 	private static final String PRICE_RANGE = "Price Range";
 	private static final String CATEGORY = "Category";
 	private static final String CATEGORY_COUNT = "Category Count";
@@ -36,6 +37,7 @@ public class RestaurantsBasicInfoGenerator {
 	private static JSONObject adjScore;
 	private static JSONObject restaurants;
 	private static JSONObject basicRestaurants;
+	private static JSONObject reviews;
 	
 	/**
 	 * Main method of the class
@@ -60,6 +62,10 @@ public class RestaurantsBasicInfoGenerator {
 		FileWriter out = new FileWriter(TARGET_FILE_NAME);
 		out.write(basicRestaurants.toString());
 		out.close();
+		
+		FileWriter rOut = new FileWriter(REVIEW_TARGET_FILE_NAME);
+		rOut.write(reviews.toString());
+		rOut.close();
 	}
 
 	/*
@@ -88,13 +94,16 @@ public class RestaurantsBasicInfoGenerator {
 			
 			info.put(CATEGORY_COUNT, category.size());
 			
-			info.put(REVIEWS, getScores(name));
+			double[] scores = getScores(name);
+			info.put(REVIEWS, scores);
+			reviews.put(name, scores);
 			
 			info.put(BUSINESS_NAME, restaurant.getString(BUSINESS_NAME));
 			
 			info.put(ADDRESS, restaurant.getString(ADDRESS));
 			
 			basicRestaurants.put(name, info);
+			
 		}
 	}
 
@@ -109,6 +118,7 @@ public class RestaurantsBasicInfoGenerator {
 		}
 		restaurants = new JSONObject(sb.toString());
 		basicRestaurants = new JSONObject();
+		reviews = new JSONObject();
 		
 		Scanner rReviewScn = new Scanner(new File(RESTAURANTS_REVIEW_FILE_NAME));
 		StringBuilder sb2 = new StringBuilder();
