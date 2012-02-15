@@ -122,7 +122,7 @@ public class SearchResultPage extends Activity {
 				}else{
 					if(first.equals("0")){
 						messageEt.setText("Do you mean:");
-						entry = R.layout.search_result_entry;
+						entry = R.layout.basic_r_info_entry;
 						JSONObject restaurants = resp.getJSONObject(1);
 						JSONArray rNames  = restaurants.names();
 						for(int i = 0; i < rNames.length(); i++){

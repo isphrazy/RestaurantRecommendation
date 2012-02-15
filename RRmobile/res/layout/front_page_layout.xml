@@ -74,6 +74,7 @@
             android:background="@drawable/white_button"
             android:visibility="invisible"
             android:text="My Profile"
+            android:onClick="onClick"
             android:layout_marginTop="20dp" />
 	
 	    <LinearLayout
