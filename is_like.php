@@ -1,7 +1,9 @@
 <?php
-  session_start();
+	session_start();
 
 	$rid = $_POST["rid"];
+	$is_like = $_POST["like"];
+	
 	$host="mysql17.000webhost.com"; // Host name
 	$username="a6591147_jinghao"; // Mysql username
 	$password="admin123"; // Mysql password
@@ -22,6 +24,10 @@
 	$row = mysql_fetch_assoc($result);
 	$uid = $row['id'];
 	
-	$removelike="DELETE FROM likes WHERE uid='$uid' AND rid='$rid'";
-	mysql_query($removelike);
+	if ($is_like==1) {
+		$sql="INSERT likes VALUES('$uid','$rid')";
+	} elseif ($is_like==0) {
+		$sql="DELETE FROM likes WHERE uid='$uid' AND rid='$rid'";
+	}
+	mysql_query($sql);
 ?>
