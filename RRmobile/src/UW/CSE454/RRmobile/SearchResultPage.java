@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,7 +69,8 @@ public class SearchResultPage extends Activity {
 		messageEt = (TextView) findViewById(R.id.message);
 		
 		list = new ArrayList<Restaurant>();
-		sure = "";
+		sure = getIntent().getStringExtra("sure");
+		if(sure == null) sure = "";
 		
 		
 	}
@@ -158,11 +160,10 @@ public class SearchResultPage extends Activity {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
 		}
-		
 	}
 	
+	//array adapter for restaurant listview
 	private class RestaurantsArrayAdapter extends ArrayAdapter<Restaurant>{
 		
 		private Context context;
@@ -208,10 +209,12 @@ public class SearchResultPage extends Activity {
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
 			Restaurant r = list.get(position);
-			keyword = r.id;
-			sure= "&sure=yes";
-			list.clear();
-			new SearchAsync().execute();
+			sure = "&sure=yes";
+			Intent i = new Intent();
+			i.setClass(SearchResultPage.this, SearchResultPage.class);
+			i.putExtra("sure", sure);
+			i.putExtra("keyword", r.id);
+			startActivity(i);
 		}
 	}
 	
