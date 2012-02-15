@@ -10,11 +10,12 @@
 				<title>RevMiner Likeness</title>
 				<link href="index.css" type="text/css" rel="stylesheet" />
 				<script src="script.js" type="text/javascript"></script>
+				<script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
 				<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
 			</head>
 
 			<body>
-	<?php		
+	<?php	
 	}
 	
 	function print_login(){
