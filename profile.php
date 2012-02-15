@@ -12,14 +12,19 @@ print_search_bar();
 <tr><td class='didyou'>You liked the following restaurants:</td></tr>
 <?php
 get_restaurants();
-foreach ($restaurants as $restaurant) {
-  ?>
-	<tr><td>
-		<a href="">
-			<b><?=$restaurant["Business Name"] . ', '?></b>
-			<?=$restaurant["Address"]?>
-		</a>
-	</td></tr>
+foreach ($restaurants as $rid => $restaurant) {
+	?>
+	<tr id="<?=$rid?>">
+		<td>
+			<a href="">
+				<b><?=$restaurant["Business Name"] . ', '?></b>
+				<?=$restaurant["Address"]?>
+			</a>
+			<a href="javascript:void(0)" onclick="removeLike('<?=$rid?>');">
+				<img src="b_drop.png" alt="b_drop.png" id="remove_like" />
+			</a>
+		</td>
+	</tr>
 	<?php
 }?>
 </table>
