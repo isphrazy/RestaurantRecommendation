@@ -101,3 +101,9 @@ tr:nth-child(odd) {
 #login a {
 	margin-right: 20px;
 }
+
+#profile {
+	color: #3366BB;
+	font-family: arial,sans-serif;
+	font-size: 120%;
+}
