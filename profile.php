@@ -20,7 +20,7 @@ foreach ($restaurants as $rid => $restaurant) {
 				<b><?=$restaurant["Business Name"] . ', '?></b>
 				<?=$restaurant["Address"]?>
 			</a>
-			<a href="javascript:void(0)" onclick="removeLike('<?=$rid?>');">
+			<a href="javascript:void(0)" onclick="unlike('<?=$rid?>');">
 				<img src="b_drop.png" alt="b_drop.png" class="like" />
 			</a>
 		</td>
