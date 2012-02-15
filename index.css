@@ -107,3 +107,7 @@ tr:nth-child(odd) {
 	font-family: arial,sans-serif;
 	font-size: 120%;
 }
+
+#remove_like {
+	float: right;
+}
