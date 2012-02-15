@@ -70,7 +70,10 @@ if(isset($todo) and $todo=="post") {
 	} else {
 		if(mysql_query("INSERT INTO members(username,password,email) VALUES('$username','$password','$email')")) {
 			// insert access_token for Android app			
-			$id = "SELECT id FROM members WHERE username='$username' and password='$password'";
+			$getid = "SELECT id FROM members WHERE username='$username' and password='$password'";
+			$result = mysql_query($getid);
+			$row = mysql_fetch_assoc($result);
+			$id = $row['id'];
 			$access_token = md5($id);
 			mysql_query("UPDATE members SET access_token='$access_token' WHERE username='$username' and password='$password'");
 			
