@@ -223,9 +223,11 @@
 			?>
 			<tr>
 				<th colspan="3">
-					<a href="http://kurlin.com/454/detail.php?name=<?=$r->name?>"><?=$r->business_name?></a>
-					<a href="javascript:void(0)" onclick="removeLike('<?=$rid?>');">
-						<img src="b_drop.png" alt="b_drop.png" class="like" />
+					<a href="detail.php?name=<?=$r->name?>" target="_blank">
+						<?=$r->business_name?>
+					</a>
+					<a href="javascript:void(0)" onclick="like('<?=$r->name?>');">
+						<img id="<?=$r_name?>" src="like.jpg" alt="like.jpg" class="like" />
 					</a>
 				</th>
 			</tr>
@@ -264,6 +266,9 @@
 				<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
 					<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
 					<?=$attr_array[Address]?>
+				</a>
+				<a href="javascript:void(0)" onclick="like('<?=$r_name?>');">
+					<img id="<?=$r_name?>" src="like.jpg" alt="like.jpg" class="like" />
 				</a>
 			</td></tr>
 			<?php
