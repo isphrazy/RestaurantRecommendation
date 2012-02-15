@@ -9,7 +9,7 @@ function like(rid) {
 	);
 }
 
-function removeLike(rid) {
+function unlike(rid) {
 	new Ajax.Request("is_like.php",
 	  {
 		parameters: {rid: rid, like: 0},
