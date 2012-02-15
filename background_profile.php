@@ -1,5 +1,5 @@
 <?php
-  define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
+	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
 	$restaurants = array();
 	
 	function get_restaurants(){
@@ -27,8 +27,7 @@
 		if ( isset($_SESSION['SESS_ACCESS_TOKEN']) ) {
 			$access_token=$_SESSION['SESS_ACCESS_TOKEN'];
 		} else {
-			//$access_token=$_GET["access_token"];
-			$access_token=$_GET["access_token"]; // TODO Pingyang access token query
+			$access_token=$_REQUEST["access_token"];
 		}
 
 		// To protect MySQL injection
