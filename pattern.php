@@ -9,8 +9,8 @@
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<title>RevMiner Likeness</title>
 				<link href="index.css" type="text/css" rel="stylesheet" />
+				<script src="script.js" type="text/javascript"></script>
 				<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
-				<!--<script src="index.js" type="text/javascript"></script>-->
 			</head>
 
 			<body>
