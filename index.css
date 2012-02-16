@@ -115,3 +115,35 @@ tr:nth-child(odd) {
 .like_dull {
 	opacity: 0.2;
 }
+
+/* Restaurant detail */
+#detail {
+	margin-top: 50px;
+	font-family: arial,sans-serif;
+}
+
+h1 {
+    color: SlateGray;
+    font-family: 'century gothic','Verdana',helvetica,arial,sans-serif;
+    font-size: 20px;
+}
+
+.detail_top {
+	padding-top: 0;
+}
+
+#overview {
+	font-size: 18px;
+	color: #000000;
+}
+
+.metadataAttr {
+    color: #FF6600;
+}
+.metadataValue {
+	color: #007700;
+}
+
+.right {
+	float:right;
+}
