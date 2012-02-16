@@ -325,7 +325,7 @@
 			<?php
 		}
 		?>
-			<img id="<?=$rname?>" src="<?=$islike?>" alt="like.png" class="<?=$class?>" />
+			<img id="<?=$rname?>" src="<?=$islike?>" alt="<?=$islike?>" class="<?=$class?>" />
 		</a>
 		<?php
 	}
