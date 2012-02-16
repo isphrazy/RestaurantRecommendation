@@ -41,7 +41,8 @@
 	        android:id="@+id/username_et"
 	        android:layout_width="match_parent"
 	        android:layout_height="40dp"
-	        android:background="@drawable/m_edittext_background" >
+	        android:background="@drawable/m_edittext_background"
+	        android:paddingLeft="5dp" >
 	
 	        <requestFocus />
 	    </EditText>
@@ -66,7 +67,8 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="40dp"
 	        android:inputType="textPassword"
-	        android:background="@drawable/m_edittext_background" />
+	        android:background="@drawable/m_edittext_background"
+	        android:paddingLeft="5dp" />
 	
 	    <Button
 	        android:id="@+id/login_b"

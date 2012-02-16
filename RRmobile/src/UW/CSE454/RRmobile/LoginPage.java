@@ -49,11 +49,6 @@ public class LoginPage extends Activity{
 	private void initiateVar() {
 		usernameEt = (EditText) findViewById(R.id.username_et);
 		passwordEt = (EditText) findViewById(R.id.password_et);
-		try {
-			next = Class.forName(getIntent().getStringExtra("nextactivity"));
-		} catch (ClassNotFoundException e) {
-			next = null;
-		}
 	}
 
 	/**
@@ -63,7 +58,16 @@ public class LoginPage extends Activity{
 	public void onClick(View view){
 		switch(view.getId()){
 			case R.id.register_b:
-				
+				Intent i = new Intent();
+				i.setClass(this, SignUpPage.class);
+				if(getIntent().getStringExtra("return") == null){
+					i.putExtra("nextactivity", getIntent().getStringExtra("nextactivity"));
+					startActivity(i);
+				}else{
+					i.putExtra("return","1");
+					startActivityForResult(i, 0);
+					finish();
+				}
 				break;
 			case R.id.login_b:
 				String username = usernameEt.getText().toString().trim();
@@ -118,9 +122,17 @@ public class LoginPage extends Activity{
 				
 				Settings.getInstance(LoginPage.this).saveUserInfo(response);
 				Intent intent = new Intent();
-				intent.setClass(LoginPage.this, next);
-				startActivity(intent);
-				finish();
+				if(getIntent().getStringExtra("return") == null){
+					try {
+						next = Class.forName(getIntent().getStringExtra("nextactivity"));
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					intent.setClass(LoginPage.this, next);
+					startActivity(intent);
+					finish();
+				}
+				finishActivity(0);
 			}
 		}
 	}

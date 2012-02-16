@@ -31,9 +31,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class SearchResultPage extends Activity {
@@ -203,6 +205,9 @@ public class SearchResultPage extends Activity {
 										+ " Service: " + (new DecimalFormat("0.0").format(r.reviews[1]))
 										+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 				((TextView) rowView.findViewById(R.id.review)).setText(review);
+				
+				rowView.findViewById(R.id.pic).setTag(r.id);
+				
 				lv.setOnItemClickListener(new RelevantClickListener());
 			}
 			
@@ -244,7 +249,22 @@ public class SearchResultPage extends Activity {
 	}
 	
 	public void onClick(View view){
-		
+		Settings s = Settings.getInstance(this);
+		if(s.hasAt()){
+			new IsLikeAsyncTask().execute(new String[]{(String)view.getTag(), "1", Settings.getInstance(this).getAt()});
+			((ImageView)view).setImageResource(R.drawable.liked);
+		}else{
+			Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
+			try {
+				Thread.sleep(500);
+				Intent i = new Intent();
+				i.setClass(this, LoginPage.class);
+				i.putExtra("return", "1");
+				startActivityForResult(i, 0);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

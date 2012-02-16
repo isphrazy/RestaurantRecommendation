@@ -161,16 +161,21 @@ public class SignUpPage extends Activity{
 				} catch (JSONException e) {
 				}
 				try {
-					nextActivity = Class.forName(getIntent().getStringExtra("nextactivity"));
+					String next = getIntent().getStringExtra("nextactivity");
+					if(next != null){
+						nextActivity = Class.forName(getIntent().getStringExtra("nextactivity"));
+					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-				Intent i = new Intent();
-				i.setClass(SignUpPage.this, nextActivity);
-				startActivity(i);
+				if(getIntent().getStringExtra("return") == null){
+					Intent i = new Intent();
+					i.setClass(SignUpPage.this, nextActivity);
+					startActivity(i);
+				}
 				finish();
+//				finishActivity(0);
 			}
 		}
 	}
-	
 }
