@@ -20,13 +20,20 @@
 	<?php
 	
 	get_q();
-
+	
 	validation();
 
 	if(isset($todo) and $todo=="post") {
-		
-		if($status) {
-			echo "<font face='Verdana' size='2' color=red>$msg</font><br><input type='button' value='Retry' onClick='history.go(-1)'>";
+		if(!$status) {
+			?>
+				<font face='Verdana' size='2' color=red>
+				<?php
+					foreach($msg as $m){
+						print($msg);
+					} 
+				?>
+				</font><br><input type='button' value='Retry' onClick='history.go(-1)'>
+			<?php
 		} else {
 			
 			$success = insert_into_db();
