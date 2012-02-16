@@ -30,8 +30,6 @@ public class Settings {
 	}
 	
 	public void saveUserInfo(String ui){
-		if(hasAt()) throw new IllegalStateException("access token has already exist");
-		Log.e("saveUserInfo", ui);
 		try {
 			JSONObject user = new JSONObject(ui);
 			settingsEditor.putString(USERNAME, user.getString("username"));

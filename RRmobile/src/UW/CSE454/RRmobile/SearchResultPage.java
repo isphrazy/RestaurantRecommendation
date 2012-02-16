@@ -250,10 +250,7 @@ public class SearchResultPage extends Activity {
 	
 	public void onClick(View view){
 		Settings s = Settings.getInstance(this);
-		if(s.hasAt()){
-			new IsLikeAsyncTask().execute(new String[]{(String)view.getTag(), "1", Settings.getInstance(this).getAt()});
-			((ImageView)view).setImageResource(R.drawable.liked);
-		}else{
+		if(!s.hasAt()){
 			Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
 			try {
 				Thread.sleep(500);
@@ -265,6 +262,8 @@ public class SearchResultPage extends Activity {
 				e.printStackTrace();
 			}
 		}
+		new IsLikeAsyncTask().execute(new String[]{(String)view.getTag(), "1", Settings.getInstance(this).getAt()});
+		((ImageView)view).setImageResource(R.drawable.liked);
 	}
 
 }

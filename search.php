@@ -1,9 +1,6 @@
 <?php
 	session_start();
 	
-	include 'background_profile.php';
-	get_restaurants();
-	
 	define('SEARCH_FILE', 'data/SearchDatabase.data');
 	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
 	define('CATEGORY_DATA_FILE', 'data/Category.data');
@@ -17,6 +14,7 @@
 	define('ADDRESS', 'Address');
 	define('RELEVANCE_WEIGHT', 0.5);
 	define('REVIEWS_WEIGHT', 0.5);
+	define('MAX_RELEVANT_RESTAURANTS', 10);
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -218,7 +216,7 @@
 		<table>
 		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
-		$count = 10;
+		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
 			if($count < 1) break;
 			$count --;
@@ -304,25 +302,15 @@
 	}
 	
 	function print_like($rname) {
-		global $restaurants;
-		
-		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
-		if ( !empty($access_token) ) { // signed in
-			$class="like"; // default css for "like" img
-			if ( array_key_exists($rname, $restaurants) ) { // already liked the restaurant
-				$class .= " like_dull";
-				?><a>
-				<?php
-			} else {
-				?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
+		if ( !empty($_SESSION['SESS_ACCESS_TOKEN']) ) {
+			?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
 			<?php
-			}
-		} else { // not signed in
+		} else {
 			?><a href="javascript:void(0)" onclick="redirect();">
 			<?php
 		}
 		?>
-			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="<?=$class?>" />
+			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="like" />
 		</a>
 		<?php
 	}

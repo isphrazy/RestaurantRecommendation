@@ -130,9 +130,8 @@ public class LoginPage extends Activity{
 					}
 					intent.setClass(LoginPage.this, next);
 					startActivity(intent);
-					finish();
 				}
-				finishActivity(0);
+				finish();
 			}
 		}
 	}
