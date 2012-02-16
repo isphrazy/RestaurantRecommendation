@@ -7,7 +7,7 @@
 	$todo;
 	$email;
 	
-	$status;
+	$status = 1;
 	$msg;
 
 	function connect_db(){
@@ -59,31 +59,32 @@
 		global $username;
 		global $password;
 		global $password2;
+		global $agree;
 		
 		// if username is less than 3 char then status is not ok
 		if(!isset($username) or strlen($username) <3) {
 			$msg=$msg."Username should be =3 or more than 3 char length<BR>";
-			$status= "NOTOK";
+			$status= 0;
 		}					
 
 		if(mysql_num_rows(mysql_query("SELECT username FROM members WHERE username = '$username'"))) {
 			$msg=$msg."Username already exists. Please try another one<BR>";
-			$status= "NOTOK";
+			$status= 0;
 		}			
 
 		if ( strlen($password) < 3 ) {
 			$msg=$msg."Password must be more than 3 char length<BR>";
-			$status= "NOTOK";
+			$status= 0;
 		}			
 
 		if ( $password <> $password2 ) {
 			$msg=$msg."Passwords are not the same<BR>";
-			$status= "NOTOK";
+			$status= 0;
 		}				
 
 		if ($agree<>"yes") {
 			$msg=$msg."You must agree to terms and conditions<BR>";
-			$status= "NOTOK";
+			$status= 0;
 		}
 	}
 	

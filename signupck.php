@@ -25,7 +25,7 @@
 
 	if(isset($todo) and $todo=="post") {
 		
-		if($status<>"OK") {
+		if($status) {
 			echo "<font face='Verdana' size='2' color=red>$msg</font><br><input type='button' value='Retry' onClick='history.go(-1)'>";
 		} else {
 			
