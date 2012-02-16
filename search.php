@@ -17,6 +17,7 @@
 	define('ADDRESS', 'Address');
 	define('RELEVANCE_WEIGHT', 0.5);
 	define('REVIEWS_WEIGHT', 0.5);
+	define('MAX_RELEVANT_RESTAURANTS', 10);
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -218,7 +219,7 @@
 		<table>
 		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
-		$count = 10;
+		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
 			if($count < 1) break;
 			$count --;
