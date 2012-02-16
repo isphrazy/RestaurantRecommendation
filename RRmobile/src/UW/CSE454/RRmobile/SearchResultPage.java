@@ -265,5 +265,5 @@ public class SearchResultPage extends Activity {
 		new IsLikeAsyncTask().execute(new String[]{(String)view.getTag(), "1", Settings.getInstance(this).getAt()});
 		((ImageView)view).setImageResource(R.drawable.liked);
 	}
-
+	
 }

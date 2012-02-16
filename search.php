@@ -302,8 +302,22 @@
 	}
 	
 	function print_like($rname) {
+<<<<<<< HEAD
 		if ( !empty($_SESSION['SESS_ACCESS_TOKEN']) ) {
 			?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
+=======
+		global $restaurants;
+		
+		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
+		$class="like"; // default css for "like" img
+		if ( !empty($access_token) ) { // signed in
+			if ( array_key_exists($rname, $restaurants) ) { // already liked the restaurant
+				$class .= " like_dull";
+				?><a>
+				<?php
+			} else {
+				?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
+>>>>>>> 0378815a759af1ea67df6209c747fd4dd4c05323
 			<?php
 		} else {
 			?><a href="javascript:void(0)" onclick="redirect();">

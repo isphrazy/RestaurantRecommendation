@@ -31,14 +31,23 @@ public class FrontPage extends Activity {
     	et = (EditText) findViewById(R.id.search_bar);
     	//if the user has already loged in, then login options could be removed
     	settings = Settings.getInstance(this);
+    	checkLogin();
+
+    }
+    
+
+	private void checkLogin() {
     	if(settings.hasAt()){
     		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
+    		findViewById(R.id.profile_l).setVisibility(View.VISIBLE);
     		TextView username = (TextView) findViewById(R.id.username_t);
     		username.setText("Welcome: " + settings.getUsername());
     		username.setVisibility(View.VISIBLE);
-    	}else findViewById(R.id.profile_l).setVisibility(View.INVISIBLE);
-    }
-    
+    	}else{
+    		findViewById(R.id.profile_l).setVisibility(View.INVISIBLE);
+    		findViewById(R.id.member_layouts).setVisibility(View.VISIBLE);
+    	}
+	}
 
 	public void onClick(View view){
 		boolean startActivity = true;
@@ -75,8 +84,13 @@ public class FrontPage extends Activity {
     	}
     	if(startActivity){
     		intent.setClass(this, c);
-    		startActivity(intent);
+    		startActivityForResult(intent, 1);
     	}
     	
     }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		checkLogin();
+	}
 }

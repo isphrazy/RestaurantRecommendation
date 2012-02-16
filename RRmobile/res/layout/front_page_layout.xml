@@ -93,6 +93,8 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:src="@drawable/logo"
+	        android:layout_marginLeft="20dp"
+	        android:layout_marginRight="20dp"
 	        android:layout_marginBottom="20dp" />
 	
 	    <EditText
@@ -104,8 +106,9 @@
 	        android:layout_marginRight="20dp"
 	        android:background="@drawable/m_edittext_background"
 	        android:hint="@string/search_hint"
+	        android:maxLines="1"
 	        android:paddingLeft="5dp"
-	        android:maxLines="1" >
+	        android:singleLine="true" >
 	
 	        <requestFocus />
 	    </EditText>

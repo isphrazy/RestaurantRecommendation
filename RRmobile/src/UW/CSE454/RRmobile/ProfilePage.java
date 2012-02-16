@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ public class ProfilePage extends Activity{
 	private ListView lv;
 	private ProgressDialog pd;
 	private List<Restaurant> list;
+	
+	private RestaurantsArrayAdapter adapter;
 	
 	public void onCreate(Bundle savedInstanceState){
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -109,7 +112,8 @@ public class ProfilePage extends Activity{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			lv.setAdapter(new RestaurantsArrayAdapter(ProfilePage.this, list));
+			adapter = new RestaurantsArrayAdapter(ProfilePage.this, list);
+			lv.setAdapter(adapter);
 		}
 	}
 	
@@ -120,7 +124,7 @@ public class ProfilePage extends Activity{
 		private List<Restaurant> list;
 		
 		public RestaurantsArrayAdapter(Context context, List<Restaurant> list) {
-			super(context, R.layout.basic_r_info_entry, list);
+			super(context, R.layout.profile_entry, list);
 			this.list = list;
 			this.context = context;
 		}
@@ -128,11 +132,22 @@ public class ProfilePage extends Activity{
 		public View getView(int position, View convertView, ViewGroup parent){
 			Restaurant r = list.get(position);
 			LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-			View rowView = inflater.inflate(R.layout.basic_r_info_entry, null, true);
+			View rowView = inflater.inflate(R.layout.profile_entry, null, true);
 			((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
 			((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
+			if(rowView.findViewById(R.id.remove_pic) == null) Log.e("getView", "null");
+			rowView.findViewById(R.id.remove_pic).setTag(position);
 			return rowView;
 		}
+	}
+	
+	public void remove(View view){
+		int position = (Integer)view.getTag();
+		Restaurant r = list.get(position);
+		new IsLikeAsyncTask().execute(new String[]{r.id, "0", Settings.getInstance(this).getAt()});
+		((ImageView)view).setImageResource(R.drawable.liked);
+		list.remove(position);
+		adapter.notifyDataSetChanged();
 	}
 		
 }
