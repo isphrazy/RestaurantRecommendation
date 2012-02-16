@@ -1,6 +1,9 @@
 <?php
 	session_start();
 	
+	include 'background_profile.php';
+	get_restaurants();
+	
 	define('SEARCH_FILE', 'data/SearchDatabase.data');
 	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
 	define('CATEGORY_DATA_FILE', 'data/Category.data');
@@ -301,15 +304,25 @@
 	}
 	
 	function print_like($rname) {
-		if ( !empty($_SESSION['SESS_ACCESS_TOKEN']) ) {
-			?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
+		global $restaurants;
+		
+		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
+		if ( !empty($access_token) ) { // signed in
+			$class="like"; // default css for "like" img
+			if ( array_key_exists($rname, $restaurants) ) { // already liked the restaurant
+				$class .= " like_dull";
+				?><a>
+				<?php
+			} else {
+				?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
 			<?php
-		} else {
+			}
+		} else { // not signed in
 			?><a href="javascript:void(0)" onclick="redirect();">
 			<?php
 		}
 		?>
-			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="like" />
+			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="<?=$class?>" />
 		</a>
 		<?php
 	}
