@@ -37,6 +37,7 @@ public final class R {
         public static final int call_iv=0x7f06000e;
         public static final int category=0x7f060009;
         public static final int d_review=0x7f060008;
+        public static final int email_et=0x7f060029;
         public static final int f_review=0x7f060005;
         public static final int imageView1=0x7f060018;
         public static final int linearLayout1=0x7f060002;
@@ -48,6 +49,7 @@ public final class R {
         public static final int member_layouts=0x7f060011;
         public static final int message=0x7f060024;
         public static final int more_ll=0x7f06000f;
+        public static final int password2_et=0x7f060028;
         public static final int password_et=0x7f06001f;
         public static final int phone=0x7f06000d;
         public static final int phone_ll=0x7f06000c;
@@ -62,11 +64,13 @@ public final class R {
         public static final int result_b_name=0x7f060000;
         public static final int review=0x7f060023;
         public static final int s_review=0x7f060007;
+        public static final int scrollView1=0x7f060026;
         public static final int search_b=0x7f06001a;
         public static final int search_bar=0x7f060019;
         public static final int textView1=0x7f06001c;
         public static final int textView2=0x7f06001e;
         public static final int title=0x7f060020;
+        public static final int user_n_et=0x7f060027;
         public static final int user_profile_b=0x7f060017;
         public static final int username_et=0x7f06001d;
         public static final int username_t=0x7f060015;
@@ -80,6 +84,7 @@ public final class R {
         public static final int profile_layout=0x7f030005;
         public static final int relevant_restaurants_entry=0x7f030006;
         public static final int search_result_layout=0x7f030007;
+        public static final int signup_layout=0x7f030008;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

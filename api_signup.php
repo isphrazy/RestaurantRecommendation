@@ -15,7 +15,6 @@
 				print($msg);
 			} 
 		} else {
-			
 			print(insert_into_db() ? $access_token : "database error");
 		}
 	}
