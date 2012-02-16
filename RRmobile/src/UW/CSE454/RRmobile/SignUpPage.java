@@ -11,6 +11,9 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -84,8 +87,10 @@ public class SignUpPage extends Activity{
 			errorMessage += "\n2 passwrods are not the same";
 			valid = false;
 		}
-		Toast.makeText(SignUpPage.this, errorMessage, Toast.LENGTH_SHORT).show();
-		if(valid) new SignUpAsync().execute();
+		if(valid)
+			new SignUpAsync().execute();
+		else
+			Toast.makeText(SignUpPage.this, errorMessage, Toast.LENGTH_SHORT).show();
 	}
 
 	//fetch response from server
@@ -131,7 +136,20 @@ public class SignUpPage extends Activity{
 		
 		protected void onProgressUpdate(Void... v){
 			pd.dismiss();
-			Log.e("response: ", response);
+			if(response.startsWith("[")){
+				
+			}else if(response.equals("-1")){
+				
+			}else{
+				JSONObject ja = new JSONObject();
+				try {
+					ja.put("username", username);
+					ja.put("accessToken", response);
+					Settings.getInstance(SignUpPage.this).saveUserInfo(ja.toString());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
