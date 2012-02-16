@@ -3,7 +3,8 @@ function like(rid) {
 	  {
 		parameters: {rid: rid, like: 1},
 		onSuccess: function() {
-			$(rid).remove();
+			//$(rid).style.opacity = '0.2';
+			$(rid).className += " like_dull";
 		}
 	  }
 	);
@@ -18,4 +19,8 @@ function unlike(rid) {
 		}
 	  }
 	);
+}
+
+function redirect() {
+	window.location = "signup.php";
 }
