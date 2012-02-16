@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,8 +41,9 @@ public class SignUpPage extends Activity{
 	private EditText passwordEt;
 	private EditText password2Et;
 	private EditText emailEt;
-	
 	private ProgressDialog pd;
+	
+	private Class nextActivity;
 	
 	
 	 /** Called when the activity is first created. */
@@ -60,6 +62,7 @@ public class SignUpPage extends Activity{
 		passwordEt = (EditText) findViewById(R.id.password_et);
 		password2Et = (EditText) findViewById(R.id.password2_et);
 		emailEt = (EditText) findViewById(R.id.email_et);
+		
 	}
 	
 	private String username;
@@ -137,18 +140,35 @@ public class SignUpPage extends Activity{
 		protected void onProgressUpdate(Void... v){
 			pd.dismiss();
 			if(response.startsWith("[")){
-				
+				try {
+					JSONArray ja = new JSONArray(response);
+					String message = "";
+					for(int i = 0; i < ja.length(); i++){
+						message += ja.getString(i) + "\n";
+					}
+					Toast.makeText(SignUpPage.this, message, Toast.LENGTH_SHORT).show();
+				} catch (JSONException e) {
+					
+				}
 			}else if(response.equals("-1")){
-				
+				Toast.makeText(SignUpPage.this, "database temporarly unavailable", Toast.LENGTH_SHORT).show();
 			}else{
 				JSONObject ja = new JSONObject();
 				try {
 					ja.put("username", username);
-					ja.put("accessToken", response);
+					ja.put("access_token", response);
 					Settings.getInstance(SignUpPage.this).saveUserInfo(ja.toString());
 				} catch (JSONException e) {
+				}
+				try {
+					nextActivity = Class.forName(getIntent().getStringExtra("nextactivity"));
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
+				Intent i = new Intent();
+				i.setClass(SignUpPage.this, nextActivity);
+				startActivity(i);
+				finish();
 			}
 		}
 	}

@@ -77,7 +77,6 @@ public class SearchResultPage extends Activity {
 		sure = getIntent().getStringExtra("sure");
 		if(sure == null) sure = "";
 		
-		
 	}
 	
 	//fetch response from server
@@ -113,13 +112,13 @@ public class SearchResultPage extends Activity {
 		protected void onProgressUpdate(Void... v){
 			JSONArray resp = null;
 			String first = null;
-//			Log.e("RESP: ", response);
+			pd.dismiss();
 			try {
-				resp = new JSONArray(response);
-				first = resp.getString(0);
 				if(response.equals("-1")){//no restaurant found
 					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
 				}else{
+					resp = new JSONArray(response);
+					first = resp.getString(0);
 					if(first.equals("0")){
 						messageEt.setText("Do you mean:");
 						entry = R.layout.basic_r_info_entry;
@@ -164,7 +163,6 @@ public class SearchResultPage extends Activity {
 					adapter = new RestaurantsArrayAdapter(SearchResultPage.this, list);
 					lv.setAdapter(adapter);
 				}
-				pd.dismiss();
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -243,6 +241,10 @@ public class SearchResultPage extends Activity {
 		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
 				Uri.parse("google.navigation:q=an+address+city"));
 		startActivity(intent);
+	}
+	
+	public void onClick(View view){
+		
 	}
 
 }
