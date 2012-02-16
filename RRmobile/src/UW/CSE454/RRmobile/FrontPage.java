@@ -14,6 +14,7 @@ import android.widget.Toast;
 public class FrontPage extends Activity {
 	
 	private EditText et;
+	private Settings settings;
 	
     /** Called when the activity is first created. */
     @Override
@@ -29,26 +30,25 @@ public class FrontPage extends Activity {
     private void getLayouts(){
     	et = (EditText) findViewById(R.id.search_bar);
     	//if the user has already loged in, then login options could be removed
-    	Settings settings = Settings.getInstance(this);
+    	settings = Settings.getInstance(this);
     	if(settings.hasAt()){
     		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
-    		findViewById(R.id.user_profile_b).setVisibility(View.VISIBLE);
     		TextView username = (TextView) findViewById(R.id.username_t);
     		username.setText("Welcome: " + settings.getUsername());
     		username.setVisibility(View.VISIBLE);
-    	}
+    	}else findViewById(R.id.profile_l).setVisibility(View.INVISIBLE);
     }
     
 
 	public void onClick(View view){
-		boolean flag = true;
+		boolean startActivity = true;
 		Intent intent = new Intent();
 		Class c = null;
 		
     	switch (view.getId()){
     	case R.id.search_b:
     		if(et.getText().toString().length() < 1){
-    			flag = false;
+    			startActivity = false;
     			Toast.makeText(this, "restaurant should not be empty", Toast.LENGTH_SHORT);
     		}
     		c = SearchResultPage.class;
@@ -60,15 +60,19 @@ public class FrontPage extends Activity {
     	case R.id.login_b:
     		intent.putExtra("nextactivity", "UW.CSE454.RRmobile.FrontPage");
     		c = LoginPage.class;
-        	intent.setClass(this, c);
-        	startActivity(intent);
-        	finish();
+//        	finish();
     		break;
     	case R.id.user_profile_b:
     		c = ProfilePage.class;
     		break;
+    	case R.id.logout_b:
+    		startActivity = false;
+    		settings.logout();
+    		findViewById(R.id.member_layouts).setVisibility(View.VISIBLE);
+    		findViewById(R.id.profile_l).setVisibility(View.INVISIBLE);
+    		break;
     	}
-    	if(flag){
+    	if(startActivity){
     		intent.setClass(this, c);
     		startActivity(intent);
     	}
