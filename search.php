@@ -1,5 +1,6 @@
 <?php
-
+	session_start();
+	
 	define('SEARCH_FILE', 'data/SearchDatabase.data');
 	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
 	define('CATEGORY_DATA_FILE', 'data/Category.data');
@@ -28,8 +29,7 @@
 		public $all_detail;//will be used in next milestone
 		public $category;
 		public $business_name;
-		public $address;
-		
+		public $address;	
 	}
 	
 	/*
@@ -226,9 +226,7 @@
 					<a href="detail.php?name=<?=$r->name?>" target="_blank">
 						<?=$r->business_name?>
 					</a>
-					<a href="javascript:void(0)" onclick="like('<?=$r->name?>');">
-						<img id="<?=$r_name?>" src="like.jpg" alt="like.jpg" class="like" />
-					</a>
+					<?php print_like($r->name); ?>
 				</th>
 			</tr>
 			<tr>
@@ -262,15 +260,15 @@
 		
 		foreach($search_result as $r_name => $attr_array){
 			?>
-			<tr><td>
-				<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
-					<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
-					<?=$attr_array[Address]?>
-				</a>
-				<a href="javascript:void(0)" onclick="like('<?=$r_name?>');">
-					<img id="<?=$r_name?>" src="like.jpg" alt="like.jpg" class="like" />
-				</a>
-			</td></tr>
+			<tr>
+				<td>
+					<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+						<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
+						<?=$attr_array[Address]?>
+					</a>
+					<?php print_like($r_name); ?>
+				</td>
+			</tr>
 			<?php
 		}?>
 		</table>
@@ -301,5 +299,18 @@
 		<p><span>Price Range: </span><span><?=$restaurant_info[PRICE_RANGE]?></span></p><br/>
 		<?php
 	}
-
+	
+	function print_like($rname) {
+		if ( !empty($_SESSION['SESS_ACCESS_TOKEN']) ) {
+			?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
+			<?php
+		} else {
+			?><a href="javascript:void(0)" onclick="redirect();">
+			<?php
+		}
+		?>
+			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="like" />
+		</a>
+		<?php
+	}
 ?>
