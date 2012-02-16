@@ -1,6 +1,9 @@
 <?php
-
 	include 'b_detail.php';
+	include 'pattern.php';
+	
+	print_head();
+	print_login();
 	
 	define('B_NAME', 'Business Name');
 	define('ADD', 'Address');
@@ -39,5 +42,4 @@
 		}
 		
 	}
-
 ?>
