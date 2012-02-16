@@ -307,8 +307,8 @@
 		global $restaurants;
 		
 		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
+		$class="like"; // default css for "like" img
 		if ( !empty($access_token) ) { // signed in
-			$class="like"; // default css for "like" img
 			if ( array_key_exists($rname, $restaurants) ) { // already liked the restaurant
 				$class .= " like_dull";
 				?><a>
