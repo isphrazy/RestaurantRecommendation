@@ -111,3 +111,7 @@ tr:nth-child(odd) {
 .like {
 	float: right;
 }
+
+.like_dull {
+	opacity: 0.2;
+}
