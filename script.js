@@ -5,6 +5,8 @@ function like(rid) {
 		onSuccess: function() {
 			//$(rid).style.opacity = '0.2';
 			$(rid).className += " like_dull";
+			$(rid).parentNode.removeAttribute('href');
+			$(rid).parentNode.removeAttribute('onclick');
 		}
 	  }
 	);
