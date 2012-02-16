@@ -15,5 +15,5 @@
 				WHERE uid=(SELECT id FROM members WHERE access_token='$access_token')
 				AND rid='$rid'";
 	}
-	mysql_query($sql);
+	return mysql_query($sql);
 ?>
