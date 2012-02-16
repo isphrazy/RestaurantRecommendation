@@ -219,7 +219,10 @@
 		<table>
 		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
+		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
+			if($count < 1) break;
+			$count --;
 			$address = $r->address;
 			?>
 			<tr>
@@ -306,9 +309,11 @@
 		
 		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
 		$class="like"; // default css for "like" img
+		$islike="like.png";
 		if ( !empty($access_token) ) { // signed in
 			if ( array_key_exists($rname, $restaurants) ) { // already liked the restaurant
-				$class .= " like_dull";
+				//$class .= " like_dull";
+				$islike="liked.png";
 				?><a>
 				<?php
 			} else {
@@ -320,7 +325,7 @@
 			<?php
 		}
 		?>
-			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="<?=$class?>" />
+			<img id="<?=$rname?>" src="<?=$islike?>" alt="<?=$islike?>" class="<?=$class?>" />
 		</a>
 		<?php
 	}
