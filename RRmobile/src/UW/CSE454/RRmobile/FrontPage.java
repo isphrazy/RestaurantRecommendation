@@ -55,7 +55,7 @@ public class FrontPage extends Activity {
     		intent.putExtra("keyword", et.getText().toString());
     		break;
     	case R.id.register_b:
-    		c = RegisterPage.class;
+    		c = SignUpPage.class;
     		break;
     	case R.id.login_b:
     		intent.putExtra("nextactivity", "UW.CSE454.RRmobile.FrontPage");

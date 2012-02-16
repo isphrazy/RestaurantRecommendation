@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SearchResultPage"></activity>
-        <activity android:name=".RegisterPage"></activity>
+        <activity android:name=".SignUpPage"></activity>
         <activity android:name=".LoginPage"></activity>
         <activity android:name=".DetailPage"></activity>
         <activity android:name=".ProfilePage"></activity>

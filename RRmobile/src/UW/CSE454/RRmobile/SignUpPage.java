@@ -9,16 +9,23 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class SignUpPage extends Activity{
+	
+	private String PD_TITLE = "Loading Data";
+	private String PD_MESSAGE = "Please wait...";
 	
 	private final String USER_N_Q = "username";
 	private final String PASSWORD_Q = "password";
@@ -29,8 +36,10 @@ public class SignUpPage extends Activity{
 	private EditText userEt;
 	private EditText passwordEt;
 	private EditText password2Et;
-	private EditText agreeEt;
 	private EditText emailEt;
+	
+	private ProgressDialog pd;
+	
 	
 	 /** Called when the activity is first created. */
     @Override
@@ -40,18 +49,65 @@ public class SignUpPage extends Activity{
         
         setContentView(R.layout.signup_layout);
         
+        initiateVar();
     }
     
-	//fetch response from server
-	private class LoginAsync extends AsyncTask<Void, Void, Void>{
+	private void initiateVar() {
+		userEt = (EditText) findViewById(R.id.user_n_et);
+		passwordEt = (EditText) findViewById(R.id.password_et);
+		password2Et = (EditText) findViewById(R.id.password2_et);
+		emailEt = (EditText) findViewById(R.id.email_et);
+	}
+	
+	private String username;
+	private String pw;
+	private String pw2;
+	private String email;
+	public void onClick(View view){
+		String errorMessage = "";
 		
-		private String response;
+		boolean valid = true;
+		username = userEt.getText().toString().trim();
+		pw = passwordEt.getText().toString().trim();
+		pw2 = password2Et.getText().toString().trim();
+		email = emailEt.getText().toString().trim();
+		
+		if(username.length() < 3){ 
+			errorMessage += "username should not be empty";
+			valid = false;
+		}
+		if(pw.length() < 6){
+			errorMessage += "\npassword should more than 6 chars";
+			valid = false;
+		}
+		if(!pw2.equals(pw)){
+			errorMessage += "\n2 passwrods are not the same";
+			valid = false;
+		}
+		Toast.makeText(SignUpPage.this, errorMessage, Toast.LENGTH_SHORT).show();
+		if(valid) new SignUpAsync().execute();
+	}
+
+	//fetch response from server
+	private class SignUpAsync extends AsyncTask<Void, Void, Void>{
+		
+		private String response = "";
+		
+		protected void onPreExecute (){
+			pd = ProgressDialog.show(SignUpPage.this, PD_TITLE, PD_MESSAGE);
+
+		}
+		
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			String query = "http://kurlin.com/454/api_signup.php?"
-					+ USER_N_Q + "=" + arg0[0] + "&"
-					+ PASSWORD_Q + "=" + arg0[1];
-			Log.e("login", query);
+					+ USER_N_Q + "=" + username + "&"
+					+ PASSWORD_Q + "=" + pw + "&"
+					+ PASSWROD2_Q + "=" + pw2 + "&"
+					+ EMAIL + "=" + email + "&"
+					+ AGREE + "=yes";
+			query = query.replace(" ", "%20");
+			Log.e("query: ", query);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -59,7 +115,9 @@ public class SignUpPage extends Activity{
 				HttpEntity entity = hr.getEntity();
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-				response = br.readLine();
+//				String buff = "";
+//				while((buff = br.readLine()) != null)
+					response += br.readLine();
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -69,6 +127,11 @@ public class SignUpPage extends Activity{
 		
 			return null;
 			
+		}
+		
+		protected void onProgressUpdate(Void... v){
+			pd.dismiss();
+			Log.e("response: ", response);
 		}
 	}
 	

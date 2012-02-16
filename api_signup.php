@@ -4,19 +4,19 @@
 	
 	connect_db();
 	
-	get_q();
+	$username=$_REQUEST['username'];
+	$password=$_REQUEST['password'];
+	$password2=$_REQUEST['password2'];
+	$agree=$_REQUEST['agree'];
+	$email=$_REQUEST['email'];
 
 	validation();
 	
-	if(isset($todo) and $todo=="post") {
-		
-		if(!$status) {
-			foreach($msg as $m){
-				print($msg);
-			} 
-		} else {
-			print(insert_into_db() ? $access_token : "database error");
-		}
+	
+	if(!$status) {
+		print(json_encode($msg));
+	} else {
+		print(insert_into_db() ? $access_token : "-1");
 	}
 
 ?>
