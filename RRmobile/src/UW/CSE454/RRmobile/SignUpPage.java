@@ -16,8 +16,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import android.widget.EditText;
 
 public class SignUpPage extends Activity{
+	
+	private final String USER_N_Q = "username";
+	private final String PASSWORD_Q = "password";
+	private final String PASSWROD2_Q = "password2";
+	private final String AGREE = "agree";
+	private final String EMAIL = "email";
+	
+	private EditText userEt;
+	private EditText passwordEt;
+	private EditText password2Et;
+	private EditText agreeEt;
+	private EditText emailEt;
 	
 	 /** Called when the activity is first created. */
     @Override
@@ -36,7 +49,7 @@ public class SignUpPage extends Activity{
 		@Override
 		protected Void doInBackground(Void... arg0) {
 			String query = "http://kurlin.com/454/api_signup.php?"
-					+ USERNAME_Q + "=" + arg0[0] + "&"
+					+ USER_N_Q + "=" + arg0[0] + "&"
 					+ PASSWORD_Q + "=" + arg0[1];
 			Log.e("login", query);
 			HttpClient client = new DefaultHttpClient();

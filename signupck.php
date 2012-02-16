@@ -22,8 +22,6 @@
 	get_q();
 	
 	validation();
-
-	if(isset($todo) and $todo=="post") {
 		if(!$status) {
 			?>
 				<font face='Verdana' size='2' color=red>
@@ -57,7 +55,6 @@
 				echo "Database Problem, please contact Site admin"; //echo mysql_error();
 			}
 		}
-	}
 ?>
 </body>
 </html>

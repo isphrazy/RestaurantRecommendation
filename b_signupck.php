@@ -4,7 +4,6 @@
 	$password;
 	$password2;
 	$agree;
-	$todo;
 	$email;
 	$access_token;
 	
@@ -41,14 +40,12 @@
 		global $password;
 		global $password2;
 		global $agree;
-		global $todo;
 		global $email;
 		
 		$username=$_POST['username'];
 		$password=$_POST['password'];
 		$password2=$_POST['password2'];
 		$agree=$_POST['agree'];
-		$todo=$_POST['todo'];
 		$email=$_POST['email'];
 			
 	}
