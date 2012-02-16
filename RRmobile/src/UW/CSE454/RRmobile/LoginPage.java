@@ -22,6 +22,11 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Login page for the app
+ * @author Pingyang He
+ *
+ */
 public class LoginPage extends Activity{
 	
 	private final String LOGIN_TITLE = "Login";

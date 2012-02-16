@@ -14,6 +14,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * update user's favoriate restuarants
+ * @author Pingyang He
+ *
+ */
 public class IsLikeAsyncTask extends AsyncTask<String, Void, Void> {
 
 	private String response;
@@ -44,5 +49,4 @@ public class IsLikeAsyncTask extends AsyncTask<String, Void, Void> {
 	
 		return null;
 	}
-	
 }

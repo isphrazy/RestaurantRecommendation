@@ -44,6 +44,9 @@ public class ProfilePage extends Activity{
 	
 	private RestaurantsArrayAdapter adapter;
 	
+	/**
+	 * start the activity
+	 */
 	public void onCreate(Bundle savedInstanceState){
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
@@ -55,6 +58,7 @@ public class ProfilePage extends Activity{
 		
 	}
 	
+	//initiate varaibles
 	private void initiateVar() {
 		settings = Settings.getInstance(ProfilePage.this);
 		aT = settings.getAt();
@@ -63,6 +67,7 @@ public class ProfilePage extends Activity{
 		list = new ArrayList<Restaurant>();
 	}
 
+	//fetch the user's favoriate restaurant list
 	private class FetchDetailAsync extends AsyncTask<Void, Void, Void>{
 		
 		private String response;
@@ -141,6 +146,10 @@ public class ProfilePage extends Activity{
 		}
 	}
 	
+	/**
+	 * remove the given restaurant
+	 * @param view the delete button
+	 */
 	public void remove(View view){
 		int position = (Integer)view.getTag();
 		Restaurant r = list.get(position);

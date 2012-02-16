@@ -38,6 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * search the given restaurant
+ * @author Pingyang He
+ *
+ */
 public class SearchResultPage extends Activity {
 	
 	private String PD_TITLE = "Loading Data";
@@ -53,6 +58,9 @@ public class SearchResultPage extends Activity {
 	
 	private List<Restaurant> list;
 	
+	/**
+	 * start activity
+	 */
 	public void onCreate(Bundle savedInstanceState){
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
@@ -64,11 +72,13 @@ public class SearchResultPage extends Activity {
         connect();
         
 	}
-
+	
+	// connect the database
 	private void connect() {
 		new SearchAsync().execute();
 	}
 
+	//initiate variables
 	private void initiateVar() {
 		keyword = getIntent().getStringExtra("keyword");
 		
@@ -215,7 +225,7 @@ public class SearchResultPage extends Activity {
 		}
 	}
 	
-	
+	//when the restaurant is clicked
 	private class RestaurantsClickListener implements OnItemClickListener{
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
@@ -229,6 +239,7 @@ public class SearchResultPage extends Activity {
 		}
 	}
 	
+	// when relevant restaurant is clicked
 	private class RelevantClickListener implements OnItemClickListener{
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
@@ -238,16 +249,17 @@ public class SearchResultPage extends Activity {
 			startActivity(i);
 		}
 	}
-	
+	//will be implemented in next milestone
 	private void getDirection(){
-//		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
-//		Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345"));
-//		startActivity(intent);
 		Intent intent = new Intent(android.content.Intent.ACTION_VIEW, 
 				Uri.parse("google.navigation:q=an+address+city"));
 		startActivity(intent);
 	}
 	
+	/**
+	 * like the given restaurant
+	 * @param view
+	 */
 	public void onClick(View view){
 		Settings s = Settings.getInstance(this);
 		if(!s.hasAt()){

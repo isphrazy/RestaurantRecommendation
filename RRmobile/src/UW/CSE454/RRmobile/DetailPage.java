@@ -28,6 +28,11 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+/**
+ * This page shows the detail about given restaurant
+ * @author Pingyang He
+ *
+ */
 public class DetailPage extends Activity{
 	
 	private String PD_TITLE = "Loading Data";
@@ -37,6 +42,9 @@ public class DetailPage extends Activity{
 	private ProgressDialog pd;
 	private TextView phoneNum;
 	
+	/**
+	 * start activity
+	 */
 	public void onCreate(Bundle savedInstanceState){
 		
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,16 +57,19 @@ public class DetailPage extends Activity{
 		new FetchDetailAsync().execute();
 	}
 	
+	//initiate variables
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
 		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
 	}
 
+	//fetching data from background
 	private class FetchDetailAsync extends AsyncTask<Void, Void, Void>{
 		
 		private String response;
 		
 		@Override
+		//fetch data from background
 		protected Void doInBackground(Void... params) {
 			String query = "http://kurlin.com/454/api_detail.php?name=" + rId;
 			query = query.replace(" ", "%20");
@@ -79,6 +90,7 @@ public class DetailPage extends Activity{
 			return null;
 		}
 		
+		//update the page
 		protected void onProgressUpdate(Void... v){
 			pd.dismiss();
 			try {
@@ -106,6 +118,10 @@ public class DetailPage extends Activity{
 		}
 	}
 	
+	/**
+	 * make a phone call when the view is pressed
+	 * @param v image view of call
+	 */
 	public void call(View v) {
 		Log.e("call", phoneNum.getText().toString());
 	    try {

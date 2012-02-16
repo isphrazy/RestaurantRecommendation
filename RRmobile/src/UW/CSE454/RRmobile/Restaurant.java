@@ -1,5 +1,10 @@
 package UW.CSE454.RRmobile;
 
+/**
+ * restaurant class
+ * @author Pingyang He
+ *
+ */
 public class Restaurant {
 	public String id;
 	public String businessName;

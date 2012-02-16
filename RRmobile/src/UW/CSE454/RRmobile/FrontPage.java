@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * The first page of program
+ * @author Pingyang He
+ *
+ */
 public class FrontPage extends Activity {
 	
 	private EditText et;
@@ -27,6 +32,7 @@ public class FrontPage extends Activity {
         getLayouts();
     }
     
+    //set layouts
     private void getLayouts(){
     	et = (EditText) findViewById(R.id.search_bar);
     	//if the user has already loged in, then login options could be removed
@@ -35,7 +41,7 @@ public class FrontPage extends Activity {
 
     }
     
-
+    //see if the user has already logged in
 	private void checkLogin() {
     	if(settings.hasAt()){
     		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
@@ -48,7 +54,11 @@ public class FrontPage extends Activity {
     		findViewById(R.id.member_layouts).setVisibility(View.VISIBLE);
     	}
 	}
-
+	
+	/**
+	 * the method is a click listener method
+	 * @param view is the view that is clicked
+	 */
 	public void onClick(View view){
 		boolean startActivity = true;
 		Intent intent = new Intent();
@@ -90,6 +100,7 @@ public class FrontPage extends Activity {
     }
 	
 	@Override
+	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		checkLogin();
 	}

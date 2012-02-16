@@ -26,6 +26,11 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * user sign up page
+ * @author Pingyang
+ *
+ */
 public class SignUpPage extends Activity{
 	
 	private String PD_TITLE = "Loading Data";
@@ -57,6 +62,7 @@ public class SignUpPage extends Activity{
         initiateVar();
     }
     
+    // initiate varaibles
 	private void initiateVar() {
 		userEt = (EditText) findViewById(R.id.user_n_et);
 		passwordEt = (EditText) findViewById(R.id.password_et);
@@ -69,6 +75,10 @@ public class SignUpPage extends Activity{
 	private String pw;
 	private String pw2;
 	private String email;
+	/**
+	 * signup
+	 * @param view signup button
+	 */
 	public void onClick(View view){
 		String errorMessage = "";
 		
