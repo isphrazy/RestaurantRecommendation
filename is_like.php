@@ -2,8 +2,8 @@
 	include 'background_profile.php';
 	session_start();
 
-	$rid = $_POST["rid"];
-	$is_like = $_POST["like"];
+	$rid = $_REQUEST["rid"];
+	$is_like = $_REQUEST["like"];
 
 	connect_db_and_define_access_token();
 
