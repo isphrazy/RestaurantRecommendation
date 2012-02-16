@@ -6,7 +6,7 @@
 	$myusername;
 	$mypassword;
 	
-	function connect_database(){
+	function get_member(){
 		global $myusername;
 		global $mypassword;
 		

@@ -11,7 +11,7 @@
 <body>
 <?php
 
-	include 'connect_database.php';
+	include 'check_member.php';
 	
 	ob_start();
 	
@@ -20,7 +20,7 @@
 	$mypassword=$_POST[PASSWORD_Q];
 	
 	// Mysql_num_row is counting table row
-	$result = connect_database();
+	$result = get_member();
 	$count=mysql_num_rows($result);
 	// If result matched $myusername and $mypassword, table row must be 1 row
 

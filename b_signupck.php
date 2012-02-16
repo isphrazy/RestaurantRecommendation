@@ -21,14 +21,16 @@
 		$dbname='a6591147_mydata';
 
 		connecttodb($servername,$dbname,$dbusername,$dbpassword);
-		function connecttodb($servername,$dbname,$dbuser,$dbpassword)
+
+			
+	}
+	
+	function connecttodb($servername,$dbname,$dbuser,$dbpassword)
 		{
 			global $link;
 			$link=mysql_connect("$servername","$dbuser","$dbpassword");
 			if(!$link){die("Could not connect to MySQL");}
 			mysql_select_db("$dbname",$link) or die ("could not open db".mysql_error());
-		}
-			
 	}
 
 
@@ -54,6 +56,9 @@
 		
 		global $status;
 		global $msg;
+		global $username;
+		global $password;
+		global $password2;
 		
 		// if username is less than 3 char then status is not ok
 		if(!isset($username) or strlen($username) <3) {

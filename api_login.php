@@ -1,12 +1,12 @@
 <?php
 
-	include 'connect_database.php';
+	include 'check_member.php';
 	
 	// Define $myusername and $mypassword
 	$myusername=$_REQUEST[USERNAME_Q];
 	$mypassword=$_REQUEST[PASSWORD_Q];
 	
-	$result = connect_database();
+	$result = get_member();
 	$result2 = mysql_fetch_assoc($result);
 /*
 	print $result2;
