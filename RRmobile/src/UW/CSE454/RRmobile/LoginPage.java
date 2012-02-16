@@ -113,11 +113,12 @@ public class LoginPage extends Activity{
 			
 		}
 		
+		
 		protected void onProgressUpdate(Void... v){
-			Log.e("onProgressUpdate", response);
+//			Log.e("onProgressUpdate", response);
 			pd.dismiss();
 			if(response.equals("false")){
-				Toast.makeText(LoginPage.this, LOGIN_FAIL, Toast.LENGTH_SHORT).show();
+				Toast.makeText(LoginPage.this, LOGIN_FAIL, Toast.LENGTH_LONG).show();
 			}else{
 				
 				Settings.getInstance(LoginPage.this).saveUserInfo(response);
@@ -135,6 +136,4 @@ public class LoginPage extends Activity{
 			}
 		}
 	}
-
-	
 }

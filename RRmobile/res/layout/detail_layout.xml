@@ -36,7 +36,8 @@
 		        android:layout_height="wrap_content"
 		        android:textColor="@color/black"
 		        android:textSize="20dp"
-		        android:text="Loading..." />
+		        android:text="Food: " />
+
    	    </LinearLayout>
 		    
 		<LinearLayout
@@ -50,7 +51,7 @@
 		        android:layout_height="wrap_content"
 		        android:textColor="@color/black"
 		        android:textSize="20dp"
-		        android:text="Loading..." />
+		        android:text="Service: " />
    	    </LinearLayout>
 	    <LinearLayout
 	        android:id="@+id/linearLayout2"
@@ -63,7 +64,7 @@
 		        android:layout_height="wrap_content"
 		        android:textColor="@color/black"
 		        android:textSize="20dp"
-		        android:text="Loading..." />
+		        android:text="Decor: " />
    	    </LinearLayout>
 	    
 	    <TextView
@@ -73,7 +74,7 @@
 	        android:textSize="20dp"
 	        android:layout_marginBottom="5dp"
 	        android:textColor="@color/black"
-	        android:text="Loading..." />
+	        android:text="empty" />
 	
 	    <TextView
 	        android:id="@+id/price"
@@ -82,7 +83,7 @@
 	        android:textSize="20dp"
 	        android:layout_marginBottom="5dp"
 	        android:textColor="@color/black"
-	        android:text="Loading..."/>
+	        android:text="empty"/>
 	
 	    <TextView
 	        android:id="@+id/address"
@@ -108,7 +109,7 @@
 		        android:textColor="@color/black"
 		        android:textSize="20dp"
 		        android:layout_marginRight="10dp"
-		        android:text="Loading..." />
+		        android:text="empty" />
 		    
 	        <ImageView
 	            android:id="@+id/call_iv"

@@ -1,6 +1,9 @@
 <?php
 	session_start();
 	
+	include 'background_profile.php';
+	get_restaurants();
+	
 	define('SEARCH_FILE', 'data/SearchDatabase.data');
 	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
 	define('CATEGORY_DATA_FILE', 'data/Category.data');
@@ -216,10 +219,7 @@
 		<table>
 		<tr><td class='didyou'>You may also like:</td></tr>
 		<?php
-		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
-			if($count < 1) break;
-			$count --;
 			$address = $r->address;
 			?>
 			<tr>
@@ -302,10 +302,6 @@
 	}
 	
 	function print_like($rname) {
-<<<<<<< HEAD
-		if ( !empty($_SESSION['SESS_ACCESS_TOKEN']) ) {
-			?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
-=======
 		global $restaurants;
 		
 		$access_token = $_SESSION['SESS_ACCESS_TOKEN'];
@@ -317,14 +313,14 @@
 				<?php
 			} else {
 				?><a href="javascript:void(0)" onclick="like('<?=$rname?>');">
->>>>>>> 0378815a759af1ea67df6209c747fd4dd4c05323
 			<?php
-		} else {
+			}
+		} else { // not signed in
 			?><a href="javascript:void(0)" onclick="redirect();">
 			<?php
 		}
 		?>
-			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="like" />
+			<img id="<?=$rname?>" src="like.jpg" alt="like.jpg" class="<?=$class?>" />
 		</a>
 		<?php
 	}

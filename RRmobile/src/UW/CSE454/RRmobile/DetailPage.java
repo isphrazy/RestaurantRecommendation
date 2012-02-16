@@ -91,10 +91,9 @@ public class DetailPage extends Activity{
 				
 				JSONArray ja = r.getJSONArray("review");
 				DecimalFormat df = new DecimalFormat("0.0");
-				String review = "Food: " + (df.format(ja.get(0)))
-									+ "\nService: " + (df.format(ja.get(1)))
-									+ "\nDecor: " + (df.format(ja.get(2)));
-//				((TextView) findViewById(R.id.f_review)).setText(df.format(ja.get(0));
+				((TextView) findViewById(R.id.f_review)).setText("Food: " + df.format(ja.get(0)));
+				((TextView) findViewById(R.id.s_review)).setText("Service: " + df.format(ja.get(1)));
+				((TextView) findViewById(R.id.d_review)).setText("Decor: " + df.format(ja.get(2)));
 				
 				phoneNum = ((TextView) findViewById(R.id.phone));
 				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);

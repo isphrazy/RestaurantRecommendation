@@ -42,6 +42,9 @@
 
 		//sorts the relevant restaurants list based on relevance, qualities, and price 
 		usort($relevant_restaurants_list, 'cmp');
+		
+		//we only want the first MAX_RELEVANT_RESTAURANTS restaurants
+		array_splice($relevant_restaurants_list, MAX_RELEVANT_RESTAURANTS);
 
 		//prints the relevant restaurants list.
 		print(json_encode($relevant_restaurants_list));
