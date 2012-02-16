@@ -24,5 +24,5 @@ function unlike(rid) {
 }
 
 function redirect() {
-	window.location = "signup.php";
+	window.location = "main_login.php";
 }
