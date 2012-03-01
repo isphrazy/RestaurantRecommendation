@@ -1,6 +1,7 @@
 <?php
 
 	include 'b_signupck.php';
+	include 'connect_db.php';
 	
 	session_start();
 	
@@ -49,7 +50,7 @@
 				
 				// redirect
 				$seconds = 3;
-				$url = "index.php";
+				$url = "../index.php";
 				echo "<script language=\"JavaScript\">window.setTimeout(\"window.location.href=\'$url\'\", $seconds*1000); </script>";
 			}else{
 				echo "Database Problem, please contact Site admin"; //echo mysql_error();

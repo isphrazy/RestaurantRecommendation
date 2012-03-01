@@ -1,5 +1,5 @@
 <?php
-include 'background_profile.php';
+include 'backend/b_profile.php';
 include 'pattern.php';
 
 print_head();
@@ -21,7 +21,7 @@ foreach ($restaurants as $rid => $restaurant) {
 				<?=$restaurant["Address"]?>
 			</a>
 			<a href="javascript:void(0)" onclick="unlike('<?=$rid?>');">
-				<img src="b_drop.png" alt="b_drop.png" class="like" />
+				<img src="static/b_drop.png" alt="static/b_drop.png" class="like" />
 			</a>
 		</td>
 	</tr>

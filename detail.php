@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include 'b_detail.php';
+include 'backend/b_detail.php';
 include 'pattern.php';
 
 print_head();
