@@ -17,8 +17,9 @@
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000" link="#0000FF" vlink="#800080" alink="#FF0000">
-  <form name="form1" method="post" action="signupck.php" onsubmit='return validate(this)'
+  <form name="form1" method="post" action="backend/signupck.php" onsubmit='return validate(this)'
   id="form1">
+  <input type="hidden" name="todo" value="post" />
 
   <table border='0' width='50%' cellspacing='0' cellpadding='0' align="center">
     <tr bgcolor='#F1F1F1'>

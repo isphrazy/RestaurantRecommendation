@@ -14,7 +14,7 @@
   "#CCCCCC">
     <tr>
       <td>
-        <form name="form1" method="post" action="checklogin.php" id="form1">
+        <form name="form1" method="post" action="backend/checklogin.php" id="form1">
           <table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor=
           "#FFFFFF">
             <tr>

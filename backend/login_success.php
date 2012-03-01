@@ -13,6 +13,6 @@ if ( !isset($_SESSION['SESS_USERNAME']) ) {
 </head>
 
 <body>
-	<?php header("location:index.php"); ?>
+	<?php header("location:../index.php"); ?>
 </body>
 </html>

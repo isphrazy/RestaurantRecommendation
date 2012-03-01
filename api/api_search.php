@@ -1,37 +1,10 @@
 <?php
 	
-	include 'pattern.php';
-	include 'backend/search.php';
+	include '../backend/search.php';
 	
-/*
-	define('SEARCH_FILE', 'data/SearchDatabase.data');
-	define('RESTAURANT_BASIC_DATA_FILE', 'data/restaurants_basic_info.data');
-	define('CATEGORY_DATA_FILE', 'data/Category.data');
-	define('BUSINESS_NAME', 'Business Name');
-	define('ADDRESS', 'Address');
-	define('PRICE_RANGE', 'Price Range');
-	define('CATEGORY', 'Category');
-	define('CATEGORY_COUNT', 'Category Count');
-	define('RESTAURANT', 'Restaurants');
-	define('REVIEWS', 'Reviews');
-	define('ADDRESS', 'Address');
-	define('RELEVANCE_WEIGHT', 0.5);
-	define('REVIEWS_WEIGHT', 0.5);
-*/
-	
-/*
-	$restaurants_basic_info_json;
-	$favorite_restaurants_weight;
-	$new_restaurant_name;
-	$found;
-*/
-	
-	print_head();
-	
-	print_login();
-	
-	print_search_bar();
-	
+	define('NO_RESTAURANT_FOUND_MESSAGE', -1);
+	define('MANY_RESTAURANTS_FOUND_MESSAGE', 0);
+
 	get_r_name();
 	
 	if(!$found){
@@ -43,13 +16,13 @@
 			$nFound = count($search_result);
 		}
 		if($nFound === 0){
-			print_not_restaurant_found();
+			print(NO_RESTAURANT_FOUND_MESSAGE);
 		}else if($nFound === 1){
 			$found = true;
 			$name_array = array_keys($search_result);
 			$new_restaurant_name = $name_array[0];
-		}else{//found several restaurant
-			print_restaurant_choices($search_result);
+		}else{//found several restaurants
+			print(json_encode(array(MANY_RESTAURANTS_FOUND_MESSAGE, $search_result)));
 		}
 	}
 	
@@ -69,12 +42,14 @@
 
 		//sorts the relevant restaurants list based on relevance, qualities, and price 
 		usort($relevant_restaurants_list, 'cmp');
+		
+		//we only want the first MAX_RELEVANT_RESTAURANTS restaurants
+		array_splice($relevant_restaurants_list, MAX_RELEVANT_RESTAURANTS);
 
 		//prints the relevant restaurants list.
-		print_relevant_restaurants_list($relevant_restaurants_list);
+		print(json_encode($relevant_restaurants_list));
 		
 	}
 	
-	print_bottom();
-		
+
 ?>

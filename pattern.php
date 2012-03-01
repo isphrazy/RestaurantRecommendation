@@ -8,8 +8,8 @@
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 				<title>RevMiner Likeness</title>
-				<link href="index.css" type="text/css" rel="stylesheet" />
-				<script src="script.js" type="text/javascript"></script>
+				<link href="static/index.css" type="text/css" rel="stylesheet" />
+				<script src="static/script.js" type="text/javascript"></script>
 				<script src="http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.3/scriptaculous.js" type="text/javascript"></script>
 				<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1.0/prototype.js" type="text/javascript"></script>
 			</head>
@@ -30,7 +30,7 @@
 		} else {
 		?>
 			<div id="login">
-				<a href="./main_login.php">Sign In</a> 
+				<a href="login.php">Sign In</a> 
 			</div>
 		<?php
 		}
@@ -39,7 +39,7 @@
 	function print_search_bar(){
 	?>
 		<div id="search">
-			<a href="index.php"><img src="logo.png" alt="logo"/></a>
+			<a href="index.php"><img src="static/logo.png" alt="logo"/></a>
 			<form action="result.php">
 				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
 				<button class="myButton" type="submit">Stumble!</button>
