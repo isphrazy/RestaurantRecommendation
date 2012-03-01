@@ -78,7 +78,7 @@ public class ProfilePage extends Activity{
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			String query = "http://kurlin.com/454/api_profile.php?access_token=" + aT;
+			String query = "http://kurlin.com/454/api/api_profile.php?access_token=" + aT;
 			query = query.replace(" ", "%20");
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;

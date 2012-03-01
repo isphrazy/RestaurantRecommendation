@@ -26,7 +26,7 @@ public class IsLikeAsyncTask extends AsyncTask<String, Void, Void> {
 	@Override
 	protected Void doInBackground(String... params) {
 		
-		String query = "http://kurlin.com/454/is_like.php?rid=" + params[0] + 
+		String query = "http://kurlin.com/454/backend/is_like.php?rid=" + params[0] + 
 														"&like=" + params[1] + 
 														"&access_token=" + params[2];
 		query = query.replace(" ", "%20");

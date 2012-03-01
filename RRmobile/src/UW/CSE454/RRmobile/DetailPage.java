@@ -71,7 +71,7 @@ public class DetailPage extends Activity{
 		@Override
 		//fetch data from background
 		protected Void doInBackground(Void... params) {
-			String query = "http://kurlin.com/454/api_detail.php?name=" + rId;
+			String query = "http://kurlin.com/454/api/api_detail.php?name=" + rId;
 			query = query.replace(" ", "%20");
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
@@ -114,7 +114,6 @@ public class DetailPage extends Activity{
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	

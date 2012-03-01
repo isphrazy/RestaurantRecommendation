@@ -118,7 +118,7 @@ public class SignUpPage extends Activity{
 		
 		@Override
 		protected Void doInBackground(Void... arg0) {
-			String query = "http://kurlin.com/454/api_signup.php?"
+			String query = "http://kurlin.com/454/api/api_signup.php?"
 					+ USER_N_Q + "=" + username + "&"
 					+ PASSWORD_Q + "=" + pw + "&"
 					+ PASSWROD2_Q + "=" + pw2 + "&"
