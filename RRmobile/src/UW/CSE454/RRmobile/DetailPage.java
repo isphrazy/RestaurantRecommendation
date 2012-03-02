@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
@@ -51,8 +52,6 @@ public class DetailPage extends MapActivity{
 	private TextView phoneNum;
 	private MapView map;
 	
-	private List<Overlay> mapOverlays;
-	private GeoPoint point;
 	/**
 	 * start activity
 	 */
@@ -109,9 +108,11 @@ public class DetailPage extends MapActivity{
 			pd.dismiss();
 			try {
 				JSONObject r = new JSONObject(response);
-				((TextView) findViewById(R.id.b_name)).setText(r.getString("Business Name").replace("&amp;", "and"));
+				String bName = r.getString("Business Name").replace("&amp;", "and");
+				((TextView) findViewById(R.id.b_name)).setText(bName);
 				((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
-				((TextView) findViewById(R.id.address)).setText(r.getString("Address"));
+				String address = r.getString("Address");
+				((TextView) findViewById(R.id.address)).setText(address);
 				
 				((TextView) findViewById(R.id.category)).setText(r.getString("Category"));
 				
@@ -121,18 +122,25 @@ public class DetailPage extends MapActivity{
 				((TextView) findViewById(R.id.s_review)).setText("Service: " + df.format(ja.get(1)));
 				((TextView) findViewById(R.id.d_review)).setText("Decor: " + df.format(ja.get(2)));
 				
+				int lat = (int) (r.getDouble("Latitude") * 1e6);
+				int lon = (int) (r.getDouble("Longitude") * 1e6);
 				phoneNum = ((TextView) findViewById(R.id.phone));
 				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
 				else phoneNum.setText(r.getString("Phone number"));
 				
-				mapOverlays = map.getOverlays();
+				List<Overlay> mapOverlays = map.getOverlays();
 				RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
 																		DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
 																		DetailPage.this);
-				point = new GeoPoint(19240000,-99120000);
-				OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+				GeoPoint point = new GeoPoint(lat, lon);
+				OverlayItem overlayitem = new OverlayItem(point, bName, address);
 				itemizedoverlay.addOverlay(overlayitem);
 				mapOverlays.add(itemizedoverlay);
+				MapController mc = map.getController();
+				mc.setCenter(point);
+				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
+//				mc.setZoom(20);
+				
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
