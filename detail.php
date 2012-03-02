@@ -64,6 +64,7 @@ function print_info($r_info){
 		}
 		?>
 		</table>
+		You may also like these restaurants:
 	</div>
 	<?php
 }
