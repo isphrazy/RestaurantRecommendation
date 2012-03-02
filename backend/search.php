@@ -266,11 +266,11 @@
 			?>
 			<tr>
 				<td>
-					<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>
+					<!--<a href='result.php?restaurant_name=<?=$r_name?>&sure=true'>-->
+					<a href="detail.php?name=<?=$r_name?>" target="_blank">
 						<b><?=$attr_array[BUSINESS_NAME] . ', '?></b>
 						<?=$attr_array[Address]?>
 					</a>
-					<?php print_like($r_name); ?>
 				</td>
 			</tr>
 			<?php

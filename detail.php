@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 include 'backend/b_detail.php';
@@ -14,6 +15,8 @@ define('CATEGORY', 'Category');
 define('PRICE', 'Price Range');
 define('REVIEWS', 'review');
 define('ID', 'id');
+define('LAT', 'Latitude');
+define('LNG', 'Longitude');
 
 $r_info = getR();
 print_info($r_info);
@@ -27,9 +30,9 @@ function print_info($r_info){
 			<td class="didyou detail_top">
 				<h1><?= $r_info[B_NAME]?></h1>
 				<span class="metadataAttr">Categories:</span>
-				<span class="metadataValue"><?= $r_info[CATEGORY]?></span><br />
-				<span class="metadataValue"><?= $r_info[ADD]?></span><br />
-				<span class="metadataValue"><?= $r_info[PHONE_NUM]?></span>
+				<span class="metadataValue"><?=$r_info[CATEGORY]?></span><br />
+				<span class="metadataValue"><?=$r_info[ADD]?></span><br />
+				<span class="metadataValue"><?=$r_info[PHONE_NUM]?></span>
 				<br />
 				<br />
 				<span id="overview">Overview</span><br />
@@ -41,12 +44,16 @@ function print_info($r_info){
 				
 				<span class="metadataAttr">Decor: </span>
 				<span class="metadataValue"><?php $reviews[2] > 0 ? print round($reviews[2], 1) : ''?></span>
+				
+				<span id="latitude" style="visibility:hidden"><?=$r_info[LAT]?></span>
+				<span id="longitude" style="visibility:hidden"><?=$r_info[LNG]?></span>
+				<div id="map_canvas" style="width:290px; height:300px"></div>
 			</td>
 		</tr>
 		<?php
 		foreach($r_info as $entry=>$e_detail){	
 			if($entry != B_NAME && $entry != CATEGORY && $entry != ADD && $entry != PHONE_NUM 
-			&& $entry != ID && $entry != REVIEWS){
+			&& $entry != ID && $entry != REVIEWS && $entry != LAT && $entry != LNG){
 				?>
 					<tr><td>
 						<span class="metadataAttr"><?= $entry?>:</span>
@@ -57,8 +64,10 @@ function print_info($r_info){
 		}
 		?>
 		</table>
+		You may also like these restaurants:
 	</div>
 	<?php
 }
 print_bottom();
+
 ?>
