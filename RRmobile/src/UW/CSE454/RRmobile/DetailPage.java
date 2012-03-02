@@ -15,6 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
@@ -33,7 +36,7 @@ import android.widget.TextView;
  * @author Pingyang He
  *
  */
-public class DetailPage extends Activity{
+public class DetailPage extends MapActivity{
 	
 	private String PD_TITLE = "Loading Data";
 	private String PD_MESSAGE = "Please wait...";
@@ -41,7 +44,7 @@ public class DetailPage extends Activity{
 	private String rId;
 	private ProgressDialog pd;
 	private TextView phoneNum;
-	
+	private MapView map;
 	/**
 	 * start activity
 	 */
@@ -61,6 +64,8 @@ public class DetailPage extends Activity{
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
 		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
+		map = (MapView) findViewById(R.id.mapview);
+		map.setBuiltInZoomControls(true);
 	}
 
 	//fetching data from background
@@ -99,7 +104,7 @@ public class DetailPage extends Activity{
 				((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
 				((TextView) findViewById(R.id.address)).setText(r.getString("Address"));
 				
-				((TextView) findViewById(R.id.category)).setText("Category: " + r.getString("Category"));
+				((TextView) findViewById(R.id.category)).setText(r.getString("Category"));
 				
 				JSONArray ja = r.getJSONArray("review");
 				DecimalFormat df = new DecimalFormat("0.0");
@@ -110,7 +115,7 @@ public class DetailPage extends Activity{
 				phoneNum = ((TextView) findViewById(R.id.phone));
 				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
 				else phoneNum.setText(r.getString("Phone number"));
-
+				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -130,5 +135,11 @@ public class DetailPage extends Activity{
 	    } catch (ActivityNotFoundException e) {
 	        Log.e("helloandroid dialing example", "Call failed", e);
 	    }
+	}
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

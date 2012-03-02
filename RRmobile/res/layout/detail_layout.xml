@@ -160,7 +160,7 @@
 			        android:id="@+id/textView1"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="PRICE_RANGE: "
+			        android:text="PRICE: "
 			        android:textColor="@color/light_blue"
 			        android:layout_marginLeft="5dp"
 			        android:layout_marginTop="5dp"
@@ -232,7 +232,14 @@
 			        
 			    </RelativeLayout>
 			    
-		
+			    <com.google.android.maps.MapView
+				    android:id="@+id/mapview"
+				    android:layout_width="fill_parent"
+				    android:layout_height="fill_parent"
+				    android:clickable="true"
+				    android:apiKey="0ferYEbmmBS3qA3Bvx4YQ-exhhJg2Cy8ia_ktOw"
+				/>
+			    
 		    </LinearLayout>
 		
 		    <LinearLayout
