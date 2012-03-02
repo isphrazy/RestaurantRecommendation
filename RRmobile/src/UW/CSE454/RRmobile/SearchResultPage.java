@@ -102,7 +102,7 @@ public class SearchResultPage extends Activity {
 		
 		@Override
 		protected Void doInBackground(Void... params) {
-			String query = "http://kurlin.com/454/api_search.php?restaurant_name=" + keyword + sure;
+			String query = "http://kurlin.com/454/api/api_search.php?restaurant_name=" + keyword + sure;
 			query = query.replace(" ", "%20");
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
@@ -141,6 +141,7 @@ public class SearchResultPage extends Activity {
 							JSONObject restaurant = restaurants.getJSONObject(id);
 							Restaurant r = new Restaurant();
 							r.businessName = restaurant.getString("Business Name");
+							r.businessName = r.businessName.replace("&amp;", "and");
 							r.address = restaurant.getString("Address");
 							r.id = id;
 							list.add(r);
@@ -151,6 +152,7 @@ public class SearchResultPage extends Activity {
 							JSONObject restaurant = resp.getJSONObject(i);
 							Restaurant r = new Restaurant();
 							r.businessName = restaurant.getString("business_name");
+							r.businessName = r.businessName.replace("&amp;", "and");
 							r.address = restaurant.getString("address");
 							r.id = restaurant.getString("name");
 							r.priceLevel = restaurant.getString("price");
@@ -216,7 +218,7 @@ public class SearchResultPage extends Activity {
 										+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 				((TextView) rowView.findViewById(R.id.review)).setText(review);
 				
-				rowView.findViewById(R.id.pic).setTag(r.id);
+				rowView.findViewById(R.id.pic).setTag(position);
 				
 				lv.setOnItemClickListener(new RelevantClickListener());
 			}
@@ -256,12 +258,18 @@ public class SearchResultPage extends Activity {
 		startActivity(intent);
 	}
 	
+	private Restaurant liked;
+	private ImageView changed;
 	/**
 	 * like the given restaurant
 	 * @param view
 	 */
 	public void onClick(View view){
 		Settings s = Settings.getInstance(this);
+		int pos = (Integer)view.getTag();
+		changed = (ImageView) view;
+		liked = list.get(pos);
+		((ImageView)view).setImageResource(R.drawable.liked);
 		if(!s.hasAt()){
 			Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
 			try {
@@ -269,13 +277,21 @@ public class SearchResultPage extends Activity {
 				Intent i = new Intent();
 				i.setClass(this, LoginPage.class);
 				i.putExtra("return", "1");
-				startActivityForResult(i, 0);
+				startActivityForResult(i, 1);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+		}else{
+			new IsLikeAsyncTask().execute(new String[]{liked.id, "1", Settings.getInstance(this).getAt()});
 		}
-		new IsLikeAsyncTask().execute(new String[]{(String)view.getTag(), "1", Settings.getInstance(this).getAt()});
-		((ImageView)view).setImageResource(R.drawable.liked);
+	}
+	
+	
+	@Override
+	//make sure that the login status is correct
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		new IsLikeAsyncTask().execute(new String[]{liked.id, "1", Settings.getInstance(this).getAt()});
+		changed.setImageResource(R.drawable.liked);
 	}
 	
 }

@@ -9,7 +9,8 @@
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="40dp"
+        android:background="@color/light_blue" >
         
    	    <LinearLayout
 	        android:id="@+id/member_layouts"
@@ -24,18 +25,23 @@
 	            android:id="@+id/login_b"
 	            android:layout_width="80dp"
 	            android:layout_height="30dp"
-	            android:background="@drawable/white_button"
+	            android:background="@drawable/white_border_b"
 	            android:onClick="onClick"
 	            android:layout_marginRight="5dp"
-	            android:text="Login" />
+	            android:text="Login"
+	            android:textStyle="bold"
+	            android:textColor="@color/white"  />
 	
 	        <Button
 	            android:id="@+id/register_b"
 	            android:layout_width="80dp"
 	            android:layout_height="30dp"
-	            android:background="@drawable/white_button"
+	            android:background="@drawable/white_border_b"
 	            android:onClick="onClick"
-	            android:text="Register" />
+	            android:text="Register" 
+	            android:textStyle="bold"
+	            android:textColor="@color/white" />
+	        
 	    </LinearLayout>
         
         <RelativeLayout
@@ -51,30 +57,37 @@
 	            android:id="@+id/username_t"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Large Text"
-	            android:textColor="@color/themeOrange"
+	            android:text="Loading"
+	            android:textSize="20dp"
+	            android:textColor="@color/white"
 	            android:layout_marginRight="5dp"
-	            android:layout_alignParentLeft="true" />
+	            android:layout_alignParentLeft="true"
+	            android:layout_centerVertical="true"
+	            android:textStyle="bold" />
 	        
 	        
 	        <Button
 	            android:id="@+id/logout_b"
 	            android:layout_width="80dp"
 	            android:layout_height="30dp"
-	            android:background="@drawable/white_button"
+	            android:background="@drawable/white_border_b"
 	            android:text="Logout"
 	            android:layout_alignParentRight="true"
-	            android:onClick="onClick" />
+	            android:onClick="onClick"
+	            android:textStyle="bold"
+	            android:textColor="@color/white"  />
 	        
 	        <Button
 	            android:id="@+id/user_profile_b"
 	            android:layout_width="80dp"
 	            android:layout_height="30dp"
-	            android:background="@drawable/white_button"
+	            android:background="@drawable/white_border_b"
 	            android:text="My Profile"
 	            android:onClick="onClick" 
 	            android:layout_toLeftOf="@id/logout_b"
-	            android:layout_marginRight="5dp" />
+	            android:layout_marginRight="5dp"
+	            android:textStyle="bold"
+	            android:textColor="@color/white" />
             
         </RelativeLayout>
         
@@ -117,7 +130,7 @@
 	        android:id="@+id/search_b"
 	        android:layout_width="wrap_content"
 	        android:layout_height="50dp"
-	        android:background="@drawable/button_background"
+	        android:background="@drawable/light_blue_b"
 	        android:onClick="onClick"
 	        android:textColor="@color/white"
 	        android:text="@string/stumble"
@@ -127,16 +140,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="20dp" >
-
-
-
-	</LinearLayout>
-
-</RelativeLayout>
+    </RelativeLayout>

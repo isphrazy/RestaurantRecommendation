@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Large Text"
         android:textStyle="bold"
-        android:textColor="@color/themeBlue"
+        android:textColor="@color/light_blue"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView

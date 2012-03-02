@@ -95,7 +95,7 @@ public class LoginPage extends Activity{
 		protected Void doInBackground(String... arg0) {
 
 			Log.e("login", "loging");
-			String query = "http://kurlin.com/454/api_login.php?"
+			String query = "http://kurlin.com/454/api/api_login.php?"
 					+ USERNAME_Q + "=" + arg0[0] + "&"
 					+ PASSWORD_Q + "=" + arg0[1];
 			Log.e("login", query);

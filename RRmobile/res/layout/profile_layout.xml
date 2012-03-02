@@ -5,12 +5,11 @@
     android:orientation="vertical"
     android:background="@color/background_color"  >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
@@ -18,13 +17,22 @@
             android:layout_height="wrap_content"
             android:text="Loading..."
             android:textSize="30dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/themeBlue"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp" />
+            android:textColor="@color/light_blue"
+            android:layout_centerInParent="true"
+            android:textStyle="bold" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/light_blue_b" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/r_lv"

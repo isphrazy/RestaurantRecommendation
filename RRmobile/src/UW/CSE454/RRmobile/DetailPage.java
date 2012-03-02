@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,10 +16,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,7 +41,7 @@ import android.widget.TextView;
  * @author Pingyang He
  *
  */
-public class DetailPage extends Activity{
+public class DetailPage extends MapActivity{
 	
 	private String PD_TITLE = "Loading Data";
 	private String PD_MESSAGE = "Please wait...";
@@ -41,7 +49,10 @@ public class DetailPage extends Activity{
 	private String rId;
 	private ProgressDialog pd;
 	private TextView phoneNum;
+	private MapView map;
 	
+	private List<Overlay> mapOverlays;
+	private GeoPoint point;
 	/**
 	 * start activity
 	 */
@@ -61,6 +72,9 @@ public class DetailPage extends Activity{
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
 		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
+		map = (MapView) findViewById(R.id.mapview);
+		map.setBuiltInZoomControls(true);
+		
 	}
 
 	//fetching data from background
@@ -71,7 +85,7 @@ public class DetailPage extends Activity{
 		@Override
 		//fetch data from background
 		protected Void doInBackground(Void... params) {
-			String query = "http://kurlin.com/454/api_detail.php?name=" + rId;
+			String query = "http://kurlin.com/454/api/api_detail.php?name=" + rId;
 			query = query.replace(" ", "%20");
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
@@ -95,11 +109,11 @@ public class DetailPage extends Activity{
 			pd.dismiss();
 			try {
 				JSONObject r = new JSONObject(response);
-				((TextView) findViewById(R.id.b_name)).setText(r.getString("Business Name"));
+				((TextView) findViewById(R.id.b_name)).setText(r.getString("Business Name").replace("&amp;", "and"));
 				((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
 				((TextView) findViewById(R.id.address)).setText(r.getString("Address"));
 				
-				((TextView) findViewById(R.id.category)).setText("Category: " + r.getString("Category"));
+				((TextView) findViewById(R.id.category)).setText(r.getString("Category"));
 				
 				JSONArray ja = r.getJSONArray("review");
 				DecimalFormat df = new DecimalFormat("0.0");
@@ -110,11 +124,19 @@ public class DetailPage extends Activity{
 				phoneNum = ((TextView) findViewById(R.id.phone));
 				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
 				else phoneNum.setText(r.getString("Phone number"));
-
+				
+				mapOverlays = map.getOverlays();
+				RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
+																		DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
+																		DetailPage.this);
+				point = new GeoPoint(19240000,-99120000);
+				OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+				itemizedoverlay.addOverlay(overlayitem);
+				mapOverlays.add(itemizedoverlay);
+				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	
@@ -131,5 +153,11 @@ public class DetailPage extends Activity{
 	    } catch (ActivityNotFoundException e) {
 	        Log.e("helloandroid dialing example", "Call failed", e);
 	    }
+	}
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

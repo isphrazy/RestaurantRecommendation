@@ -47,7 +47,7 @@ public class FrontPage extends Activity {
     		findViewById(R.id.member_layouts).setVisibility(View.INVISIBLE);
     		findViewById(R.id.profile_l).setVisibility(View.VISIBLE);
     		TextView username = (TextView) findViewById(R.id.username_t);
-    		username.setText("Welcome: " + settings.getUsername());
+    		username.setText(settings.getUsername());
     		username.setVisibility(View.VISIBLE);
     	}else{
     		findViewById(R.id.profile_l).setVisibility(View.INVISIBLE);
