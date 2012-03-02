@@ -33,10 +33,11 @@ public final class R {
         public static final int liked=0x7f020006;
         public static final int logo=0x7f020007;
         public static final int m_edittext_background=0x7f020008;
-        public static final int pin=0x7f020009;
-        public static final int remove=0x7f02000a;
-        public static final int white_border_b=0x7f02000b;
-        public static final int white_button=0x7f02000c;
+        public static final int map_mark=0x7f020009;
+        public static final int pin=0x7f02000a;
+        public static final int remove=0x7f02000b;
+        public static final int white_border_b=0x7f02000c;
+        public static final int white_button=0x7f02000d;
     }
     public static final class id {
         public static final int address=0x7f060006;

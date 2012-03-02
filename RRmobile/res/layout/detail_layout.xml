@@ -235,9 +235,9 @@
 			    <com.google.android.maps.MapView
 				    android:id="@+id/mapview"
 				    android:layout_width="fill_parent"
-				    android:layout_height="fill_parent"
+				    android:layout_height="500dp"
 				    android:clickable="true"
-				    android:apiKey="0ferYEbmmBS3qA3Bvx4YQ-exhhJg2Cy8ia_ktOw"
+				    android:apiKey="0ferYEbmmBS3D9mR5_19TEXKNoTcZUUub_qxv2A"
 				/>
 			    
 		    </LinearLayout>
