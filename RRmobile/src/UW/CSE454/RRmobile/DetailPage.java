@@ -95,7 +95,7 @@ public class DetailPage extends Activity{
 			pd.dismiss();
 			try {
 				JSONObject r = new JSONObject(response);
-				((TextView) findViewById(R.id.b_name)).setText(r.getString("Business Name"));
+				((TextView) findViewById(R.id.b_name)).setText(r.getString("Business Name").replace("&amp;", "and"));
 				((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
 				((TextView) findViewById(R.id.address)).setText(r.getString("Address"));
 				

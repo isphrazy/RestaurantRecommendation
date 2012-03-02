@@ -141,6 +141,7 @@ public class SearchResultPage extends Activity {
 							JSONObject restaurant = restaurants.getJSONObject(id);
 							Restaurant r = new Restaurant();
 							r.businessName = restaurant.getString("Business Name");
+							r.businessName = r.businessName.replace("&amp;", "and");
 							r.address = restaurant.getString("Address");
 							r.id = id;
 							list.add(r);
@@ -151,6 +152,7 @@ public class SearchResultPage extends Activity {
 							JSONObject restaurant = resp.getJSONObject(i);
 							Restaurant r = new Restaurant();
 							r.businessName = restaurant.getString("business_name");
+							r.businessName = r.businessName.replace("&amp;", "and");
 							r.address = restaurant.getString("address");
 							r.id = restaurant.getString("name");
 							r.priceLevel = restaurant.getString("price");

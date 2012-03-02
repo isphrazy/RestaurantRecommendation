@@ -5,6 +5,8 @@
     android:orientation="vertical"
     android:background="@color/background_color" >
 
+    
+    
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
@@ -24,130 +26,221 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp" />
     </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/linearLayout1"
+
+    <ScrollView
+        android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
+        android:layout_height="wrap_content" >
 
-   	    <ImageView
-	        android:id="@+id/imageView1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/b_line" />
-   	    
-	    <LinearLayout
-	        android:id="@+id/linearLayout3"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+  			android:orientation="vertical"
+  			android:layout_marginLeft="2dp"
+  			android:layout_marginRight="2dp">
+            
 		    <TextView
-		        android:id="@+id/f_review"
+		        android:id="@+id/address"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:textColor="@color/black"
-		        android:textSize="20dp"
-		        android:text="Food: " />
-
-   	    </LinearLayout>
+		        android:textSize="15dp"
+		        android:textColor="@color/black" 
+		        android:text="empty"
+		        android:layout_marginBottom="5dp"
+		        android:layout_marginTop="2dp"
+		        android:layout_marginLeft="5dp"/>
+		
+		    <TextView
+		        android:id="@+id/textView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="REVIEW:"
+		        android:textColor="@color/light_blue"
+		        android:layout_marginLeft="5dp"
+		        android:textAppearance="?android:attr/textAppearanceMedium" />
 		    
-		<LinearLayout
-	        android:id="@+id/linearLayout2"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-		    <TextView
-		        android:id="@+id/s_review"
-		        android:layout_width="wrap_content"
+		    <LinearLayout
+		        android:id="@+id/linearLayout1"
+		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:textColor="@color/black"
-		        android:textSize="20dp"
-		        android:text="Service: " />
-   	    </LinearLayout>
-	    <LinearLayout
-	        android:id="@+id/linearLayout2"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-		    <TextView
-		        android:id="@+id/d_review"
-		        android:layout_width="wrap_content"
+		        android:orientation="vertical"
+		        android:layout_marginTop="2dp">
+		
+		   	    <ImageView
+			        android:id="@+id/imageView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:src="@drawable/b_line"
+			        android:layout_marginLeft="2dp" 
+			        android:layout_marginRight="2dp"/>
+		   	    
+		   	    <LinearLayout
+				        android:id="@+id/linearLayout4"
+				        android:layout_width="wrap_content"
+				        android:layout_height="match_parent"
+				        android:orientation="vertical" 
+				        android:layout_margin="5dp">
+			
+				    <LinearLayout
+				        android:id="@+id/linearLayout3"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal" >
+			
+					    <TextView
+					        android:id="@+id/f_review"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:textColor="@color/black"
+					        android:textSize="20dp"
+					        android:text="Food: " />
+			
+			   	    </LinearLayout>
+					    
+					<LinearLayout
+				        android:id="@+id/linearLayout2"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal" >
+					    <TextView
+					        android:id="@+id/s_review"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:textColor="@color/black"
+					        android:textSize="20dp"
+					        android:text="Service: " />
+			   	    </LinearLayout>
+				    <LinearLayout
+				        android:id="@+id/linearLayout2"
+				        android:layout_width="match_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal" >
+					    <TextView
+					        android:id="@+id/d_review"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:textColor="@color/black"
+					        android:textSize="20dp"
+					        android:text="Decor: " />
+			   	    </LinearLayout>
+				
+			    </LinearLayout>
+				    
+		   	    <TextView
+			        android:id="@+id/textView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="CATEGORY:"
+			        android:textColor="@color/light_blue"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginTop="5dp"
+			        android:textAppearance="?android:attr/textAppearanceMedium" />
+		   	    
+			    <ImageView
+			        android:id="@+id/imageView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:src="@drawable/b_line"
+			        android:layout_marginLeft="2dp" 
+			        android:layout_marginRight="2dp"/>
+			    
+			    <TextView
+			        android:id="@+id/category"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="20dp"
+			        android:layout_marginBottom="5dp"
+			        android:layout_marginLeft="5dp"
+			        android:textColor="@color/black"
+			        android:text="empty" />
+			
+			    
+		   	    <TextView
+			        android:id="@+id/textView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="PRICE_RANGE: "
+			        android:textColor="@color/light_blue"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginTop="5dp"
+			        android:textAppearance="?android:attr/textAppearanceMedium" />
+			    
+		   	    <ImageView
+			        android:id="@+id/imageView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:src="@drawable/b_line"
+			        android:layout_marginLeft="2dp" 
+			        android:layout_marginRight="2dp" />
+		   	    
+			    <TextView
+			        android:id="@+id/price"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:textSize="20dp"
+			        android:textColor="@color/black"
+			        android:text="empty"
+			        android:layout_marginBottom="5dp"
+			        android:layout_marginLeft="5dp"/>
+		
+   		   	    <TextView
+			        android:id="@+id/textView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="PHONE:"
+			        android:textColor="@color/light_blue"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginTop="5dp"
+			        android:textAppearance="?android:attr/textAppearanceMedium" />
+		   	    
+			    <ImageView
+			        android:id="@+id/imageView1"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:src="@drawable/b_line"
+			        android:layout_marginLeft="2dp" 
+			        android:layout_marginRight="2dp"/>
+			    
+			    <RelativeLayout
+			        android:id="@+id/phone_ll"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="horizontal"
+			        android:layout_marginBottom="5dp"
+			        android:layout_marginLeft="5dp"
+			        android:layout_marginTop="5dp"
+			        android:gravity="center_vertical" >
+		
+				    <TextView
+				        android:id="@+id/phone"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:textColor="@color/black"
+				        android:textSize="20dp"
+				        android:layout_marginRight="10dp"
+				        android:text="empty" 
+				        android:layout_alignParentLeft="true"/>
+				    
+			        <ImageView
+			            android:id="@+id/call_iv"
+			            android:layout_width="80dp"
+			            android:layout_height="30dp"
+			            android:src="@drawable/call"
+			            android:onClick="call"
+			            android:layout_alignParentRight="true" />
+			        
+			    </RelativeLayout>
+			    
+		
+		    </LinearLayout>
+		
+		    <LinearLayout
+		        android:id="@+id/more_ll"
+		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:textColor="@color/black"
-		        android:textSize="20dp"
-		        android:text="Decor: " />
-   	    </LinearLayout>
-
-	    <ImageView
-	        android:id="@+id/imageView1"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/b_line" />
-	    
-	    <TextView
-	        android:id="@+id/category"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20dp"
-	        android:layout_marginBottom="5dp"
-	        android:textColor="@color/black"
-	        android:text="empty" />
-	
-	    <TextView
-	        android:id="@+id/price"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20dp"
-	        android:layout_marginBottom="5dp"
-	        android:textColor="@color/black"
-	        android:text="empty"/>
-	
-	    <TextView
-	        android:id="@+id/address"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="20dp"
-	        android:layout_marginBottom="5dp"
-	        android:textColor="@color/black" />
-
-	    <LinearLayout
-	        android:id="@+id/phone_ll"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal"
-	        android:layout_marginBottom="5dp"
-	        android:gravity="center_vertical" >
-
-
-		    <TextView
-		        android:id="@+id/phone"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:textColor="@color/black"
-		        android:textSize="20dp"
-		        android:layout_marginRight="10dp"
-		        android:text="empty" />
-		    
-	        <ImageView
-	            android:id="@+id/call_iv"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:src="@drawable/call"
-	            android:onClick="call" />
-	        
-	    </LinearLayout>
-	    
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/more_ll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-    </LinearLayout>
-
+		        android:orientation="vertical" >
+		    </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
