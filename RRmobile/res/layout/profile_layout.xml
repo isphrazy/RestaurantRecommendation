@@ -23,14 +23,19 @@
             android:layout_centerInParent="true"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageView1"
+        <Button
+            android:id="@+id/edit_b"
             android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/light_blue_b" />
+            android:text="Edit"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:onClick="editClick"
+            android:background="@drawable/light_blue_b" />
 
     </RelativeLayout>
 
