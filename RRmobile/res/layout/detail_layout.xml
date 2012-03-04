@@ -242,7 +242,7 @@
 		        android:layout_marginRight="10dp">
 
 			    
-			    <com.google.android.maps.MapView
+			    <UW.CSE454.RRmobile.RMapView
 				    android:id="@+id/mapview"
 				    android:layout_width="fill_parent"
 				    android:layout_height="fill_parent"

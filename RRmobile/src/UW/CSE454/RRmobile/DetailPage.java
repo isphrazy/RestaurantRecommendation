@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -50,7 +51,10 @@ public class DetailPage extends MapActivity{
 	private String rId;
 	private ProgressDialog pd;
 	private TextView phoneNum;
-	private MapView map;
+	private RMapView map;
+	
+	private double mLat;
+	private double mLon;
 	
 	/**
 	 * start activity
@@ -71,7 +75,7 @@ public class DetailPage extends MapActivity{
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
 		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
-		map = (MapView) findViewById(R.id.mapview);
+		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 		
 	}
@@ -94,6 +98,7 @@ public class DetailPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
+//				mLat = 
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -128,6 +133,7 @@ public class DetailPage extends MapActivity{
 				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
 				else phoneNum.setText(r.getString("Phone number"));
 				
+				//set google map
 				List<Overlay> mapOverlays = map.getOverlays();
 				RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
 																		DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
@@ -138,8 +144,8 @@ public class DetailPage extends MapActivity{
 				mapOverlays.add(itemizedoverlay);
 				MapController mc = map.getController();
 				mc.setCenter(point);
-				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
-//				mc.setZoom(20);
+//				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
+				mc.setZoom(15);
 				
 				
 			} catch (JSONException e) {
@@ -168,4 +174,5 @@ public class DetailPage extends MapActivity{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
 }
