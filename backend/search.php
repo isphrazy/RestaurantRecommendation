@@ -150,12 +150,12 @@
 				$relevant_restaurants_count[$restaurant][$unique_category_count] ++;
 			}
 		}
-		
+
 		
 		$F = $favorite_restaurants_weight[0];
 		$S = $favorite_restaurants_weight[1];
 		$D = $favorite_restaurants_weight[2];
-		
+
 		foreach($relevant_restaurants_count as $r_name => $category_count_array){
 			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
 			//more advanced check are required
@@ -185,7 +185,7 @@
 					$relevant_restaurant->address = $relevant_restaurant_basic_info[ADDRESS];
 					
 				}
-													   
+
 				$relevant_restaurants_list[] = $relevant_restaurant;//append this restaurant.
 			}
 			
@@ -216,7 +216,7 @@
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		?>
 		<table>
-		<tr><td class='didyou'>Similar restaurants:</td></tr>
+		<tr><td class='didyou'>Recommendations for you:</td></tr>
 		<?php
 		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
