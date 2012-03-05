@@ -54,25 +54,7 @@
 	}
 
 	if($found){
-		
-		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
-		
-		$restaurant_basic_info = $restaurants_basic_info_json[$new_restaurant_name];
-		
-		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
-		
-		//this list contains user's favorite restaurants
-		$favorite_restaurants_list = generate_f_list($new_f_restaurant);
-		
-		//the list contains relevant restaurants
-		$relevant_restaurants_list = generate_relevant_restaurants_list($favorite_restaurants_list);
-
-		//sorts the relevant restaurants list based on relevance, qualities, and price 
-		usort($relevant_restaurants_list, 'cmp');
-
-		//prints the relevant restaurants list.
-		print_relevant_restaurants_list($relevant_restaurants_list);
-		
+		header("location:detail.php?name=$new_restaurant_name");
 	}
 	
 	print_bottom();
