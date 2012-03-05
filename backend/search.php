@@ -218,10 +218,7 @@
 		<table>
 		<tr><td class='didyou'>Similar restaurants:</td></tr>
 		<?php
-		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
-			if($count < 1) break;
-			$count --;
 			$address = $r->address;
 			?>
 			<tr>

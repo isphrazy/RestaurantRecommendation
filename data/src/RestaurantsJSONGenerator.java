@@ -60,6 +60,9 @@ public class RestaurantsJSONGenerator {
 			try{
 				//if the place do not have category, remove it
 				category = restaurant.getString(CATEGORY);
+//				if(!category.contains(KEY_WORD)){
+//					allData.remove(name);
+//				}
 				if(restaurant.getString(LON) == null) System.out.println("lon");
 				if(restaurant.getString(LAT) == null)System.out.println("lat");
 				//if no reviews found, remove it
