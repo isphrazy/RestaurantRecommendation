@@ -7,7 +7,7 @@
 
 	get_r_name();
 	
-	if(!$found){
+	if(!$found){//searching some restaurants
 		$nFound = 0;
 		if($new_restaurant_name != ''){
 			
@@ -18,15 +18,18 @@
 		if($nFound === 0){
 			print(NO_RESTAURANT_FOUND_MESSAGE);
 		}else if($nFound === 1){
-			$found = true;
+			// $found = true;
+			// $name_array = array_keys($search_result);
+			// $new_restaurant_name = $name_array[0];
 			$name_array = array_keys($search_result);
-			$new_restaurant_name = $name_array[0];
+			$r_result = array(1, $name_array[0]);
+			print(json_encode($r_result));
 		}else{//found several restaurants
 			print(json_encode(array(MANY_RESTAURANTS_FOUND_MESSAGE, $search_result)));
 		}
 	}
 	
-	if($found){
+	if($found){//need relevant restaurants
 		
 		$restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 		

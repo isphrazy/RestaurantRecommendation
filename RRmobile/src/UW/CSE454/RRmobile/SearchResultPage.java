@@ -138,7 +138,7 @@ public class SearchResultPage extends Activity {
 				}else{
 					resp = new JSONArray(response);
 					first = resp.getString(0);
-					if(first.equals("0")){
+					if(first.equals("0")){//find several restaurants
 						messageEt.setText("Do you mean:");
 						entry = R.layout.basic_r_info_entry;
 						JSONObject restaurants = resp.getJSONObject(1);
@@ -153,8 +153,14 @@ public class SearchResultPage extends Activity {
 							r.id = id;
 							list.add(r);
 						}
-					}else{
+					}else if(first.equals("1")){
+						Intent i = new Intent();
+						i.setClass(SearchResultPage.this, DetailPage.class);
+						i.putExtra("name", resp.getString(1));
+						startActivity(i);
+					}else{//print relevant restaurants
 						messageEt.setText("You may also like:");
+//						Log.e("first: ", first);
 						for(int i = 0; i < resp.length(); i++){
 							JSONObject restaurant = resp.getJSONObject(i);
 							Restaurant r = new Restaurant();
