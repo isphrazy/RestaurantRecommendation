@@ -5,27 +5,43 @@
     android:orientation="vertical"
     android:background="@color/background_color" >
 
-    
-    
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/linearLayout9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/light_blue" >
+        android:background="@color/light_blue"
+        android:gravity="center_vertical" >
 
+        <Button
+            android:id="@+id/like_b"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/white_border_b"
+            android:text="Like" />
+        
         <TextView
             android:id="@+id/b_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
             android:text="Loading..."
+            android:layout_toLeftOf="@id/like_b"
+            android:layout_alignParentLeft="true"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/white"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp" />
-    </LinearLayout>
+            android:layout_margin="5dp"/>
+
+    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
@@ -232,6 +248,19 @@
 			        
 			    </RelativeLayout>
 
+			<Button
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dp"
+			    android:layout_marginLeft="10dp"
+			    android:layout_marginRight="10dp"
+			    android:layout_marginTop="10dp"
+			    android:background="@drawable/blue_border_b"
+			    android:onClick="onClick"
+			    android:textColor="@color/light_blue"
+			    android:textSize="25dp"
+			    android:textStyle="bold" 
+			    android:text="Similar Restaurants" />
+			    
 		    <LinearLayout
 		        android:id="@+id/linearLayout1"
 		        android:layout_width="match_parent"

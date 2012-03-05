@@ -55,6 +55,8 @@ public class SearchResultPage extends Activity {
 	private TextView messageEt;
 	private int entry;
 	private String sure;
+	private RelevantClickListener rClickListener;
+	private RestaurantsClickListener rsClickListener;
 	
 	private List<Restaurant> list;
 	
@@ -80,6 +82,8 @@ public class SearchResultPage extends Activity {
 
 	//initiate variables
 	private void initiateVar() {
+		rClickListener = new RelevantClickListener();
+		rsClickListener = new RestaurantsClickListener();
 		keyword = getIntent().getStringExtra("keyword");
 		
 		lv = (ListView) findViewById(R.id.restaurant_l);
@@ -104,6 +108,8 @@ public class SearchResultPage extends Activity {
 		protected Void doInBackground(Void... params) {
 			String query = "http://kurlin.com/454/api/api_search.php?restaurant_name=" + keyword + sure;
 			query = query.replace(" ", "%20");
+			Log.e("query: ", query);
+			
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -125,6 +131,7 @@ public class SearchResultPage extends Activity {
 			JSONArray resp = null;
 			String first = null;
 			pd.dismiss();
+			Log.e("resp: ", response);
 			try {
 				if(response.equals("-1")){//no restaurant found
 					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
@@ -202,7 +209,7 @@ public class SearchResultPage extends Activity {
 			if(entry != R.layout.relevant_restaurants_entry){
 				((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
 				((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
-				lv.setOnItemClickListener(new RestaurantsClickListener());
+				lv.setOnItemClickListener(rsClickListener);
 			}else{
 				((TextView) rowView.findViewById(R.id.restaurant_name)).setText(r.businessName);
 				((TextView) rowView.findViewById(R.id.address)).setText(r.address);
@@ -220,7 +227,7 @@ public class SearchResultPage extends Activity {
 				
 				rowView.findViewById(R.id.pic).setTag(position);
 				
-				lv.setOnItemClickListener(new RelevantClickListener());
+				lv.setOnItemClickListener(rClickListener);
 			}
 			
 			return rowView;
@@ -231,12 +238,15 @@ public class SearchResultPage extends Activity {
 	private class RestaurantsClickListener implements OnItemClickListener{
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-			Restaurant r = list.get(position);
-			sure = "&sure=yes";
+//			sure = "&sure=yes";
+//			Intent i = new Intent();
+//			i.setClass(SearchResultPage.this, SearchResultPage.class);
+//			i.putExtra("sure", sure);
+//			i.putExtra("keyword", r.id);
+//			startActivity(i);
 			Intent i = new Intent();
-			i.setClass(SearchResultPage.this, SearchResultPage.class);
-			i.putExtra("sure", sure);
-			i.putExtra("keyword", r.id);
+			i.setClass(SearchResultPage.this, DetailPage.class);
+			i.putExtra("name", list.get(position).id);
 			startActivity(i);
 		}
 	}

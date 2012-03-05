@@ -35,7 +35,7 @@
 		$new_f_restaurant = generate_favorite_restaurant($restaurant_basic_info);
 		
 		//this list contains user's favorite restaurants
-		$favorite_restaurants_list = add_to_favorite_restaurants_list($new_f_restaurant);
+		$favorite_restaurants_list = generate_f_list($new_f_restaurant);
 			
 		//the list contains relevant restaurants
 		$relevant_restaurants_list = generate_relevant_restaurants_list($favorite_restaurants_list);
