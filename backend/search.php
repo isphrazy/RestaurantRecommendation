@@ -5,7 +5,7 @@
 	get_restaurants();
 	
 	define('SEARCH_FILE', '/home/a6591147/public_html/454/data/SearchDatabase.data');
-	define('RESTAURANT_BASIC_DATA_FILE', '/home/a6591147/public_html/454/data/restaurants_basic_info.data');
+	// define('RESTAURANT_BASIC_DATA_FILE', '/home/a6591147/public_html/454/data/restaurants_basic_info.data');
 	define('CATEGORY_DATA_FILE', '/home/a6591147/public_html/454/data/Category.data');
 	define('BUSINESS_NAME', 'Business Name');
 	define('ADDRESS', 'Address');
@@ -118,7 +118,7 @@
 	 * search database to find relevant restaurants;
 	 */
 	function generate_relevant_restaurants_list($favorite_restaurants_list){
-		
+
 		global $restaurants_basic_info_json;
 		global $favorite_restaurants_weight;
 		global $new_restaurant_name;
@@ -137,7 +137,6 @@
 			}
 		}
 		
-		
 		//calculate the categories count of each restaurants
 		$unique_category = 0;
 		$total_category_count = 1;
@@ -152,6 +151,7 @@
 			}
 		}
 		
+		
 		$F = $favorite_restaurants_weight[0];
 		$S = $favorite_restaurants_weight[1];
 		$D = $favorite_restaurants_weight[2];
@@ -160,7 +160,6 @@
 			$relevant_restaurant_basic_info = $restaurants_basic_info_json[$r_name];
 			//more advanced check are required
 			if($r_name != $new_restaurant_name && $relevant_restaurant_basic_info[BUSINESS_NAME] != $new_restaurant_name){
-				
 				$relevant_restaurant = new RelevantRestaurant();
 				$relevant_restaurant->name = $r_name;
 				$relevant_restaurant->price = $relevant_restaurant_basic_info[PRICE_RANGE];
@@ -187,7 +186,7 @@
 					
 				}
 													   
-				$relevant_restaurants_list[] = $relevant_restaurant;//apend this restaurant.
+				$relevant_restaurants_list[] = $relevant_restaurant;//append this restaurant.
 			}
 			
 		}
@@ -199,7 +198,7 @@
 	/*
 	 * add given restaurant to user's favorite restaurant list, then return this list.
 	 */
-	function add_to_favorite_restaurants_list($new_restaurant){
+	function generate_f_list($new_restaurant){
 		
 		global $favorite_restaurants_weight;
 		
