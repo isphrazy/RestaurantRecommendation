@@ -8,6 +8,7 @@ include 'backend/search.php';
 
 print_head();
 print_login();
+print_search_bar();
 
 // define('B_NAME', 'Business Name');
 // define('ADD', 'Address');
