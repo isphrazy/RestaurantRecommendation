@@ -7,5 +7,7 @@
 
 	print_search_bar();
 	
+	print_recommendations();
+	
 	print_bottom();
 ?>
