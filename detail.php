@@ -8,6 +8,7 @@ include 'backend/search.php';
 
 print_head();
 print_login();
+print_search_bar();
 
 // define('B_NAME', 'Business Name');
 // define('ADD', 'Address');
@@ -30,7 +31,7 @@ function print_info($r_info){
 		<table>
 			<tr>
 				<td class="didyou detail_top">
-					<h1><?= $r_info['Business Name']?></h1>
+					<h1><?= $r_info['Business Name']?><?php print_like($r_info["id"]); ?></h1>
 					<span class="metadataAttr">Categories:</span>
 					<span class="metadataValue"><?=$r_info['Category']?></span><br />
 					<span class="metadataValue"><?=$r_info['Address']?></span><br />
