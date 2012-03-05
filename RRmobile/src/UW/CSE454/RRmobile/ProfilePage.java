@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,11 +27,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ProfilePage extends Activity{
 
@@ -44,6 +47,7 @@ public class ProfilePage extends Activity{
 	private List<Restaurant> list;
 	
 	private RestaurantsArrayAdapter adapter;
+	private RClickListener rClickListener;
 	private boolean editingMode;
 	
 	/**
@@ -62,6 +66,7 @@ public class ProfilePage extends Activity{
 	
 	//initiate varaibles
 	private void initiateVar() {
+		rClickListener = new RClickListener();
 		settings = Settings.getInstance(ProfilePage.this);
 		aT = settings.getAt();
 		((TextView) findViewById(R.id.title)).setText(settings.getUsername());
@@ -121,6 +126,7 @@ public class ProfilePage extends Activity{
 			}
 			adapter = new RestaurantsArrayAdapter(ProfilePage.this, list);
 			lv.setAdapter(adapter);
+			lv.setOnItemClickListener(rClickListener);
 		}
 	}
 	
@@ -165,10 +171,24 @@ public class ProfilePage extends Activity{
 		adapter.notifyDataSetChanged();
 	}
 	
+	/**
+	 * show the remove buttons for each restaurant
+	 * @param view editing button
+	 */
 	public void editClick(View view){
 		editingMode = !editingMode;
 		((Button) findViewById(R.id.edit_b)).setText(editingMode ? "Done" : "Edit");
 		lv.setAdapter(adapter);
 	}
+	
+	// when relevant restaurant is clicked
+	private class RClickListener implements OnItemClickListener{
 		
+		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+			Intent i = new Intent();
+			i.setClass(ProfilePage.this, DetailPage.class);
+			i.putExtra("name", list.get(position).id);
+			startActivity(i);
+		}
+	}
 }

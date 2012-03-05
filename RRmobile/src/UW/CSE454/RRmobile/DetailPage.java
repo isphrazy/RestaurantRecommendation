@@ -98,7 +98,6 @@ public class DetailPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
-//				mLat = 
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -169,9 +168,21 @@ public class DetailPage extends MapActivity{
 	    }
 	}
 	
+	public void onClick(View view){
+		//go relevant restaurants list
+//		Intent i = new Intent();
+//		i.setClass(this, RelevantRestaurantList.class);
+//		i.putExtra("id", rId);
+//		startActivity(i);
+		Intent i = new Intent();
+		i.setClass(this, SearchResultPage.class);
+		i.putExtra("sure", "&sure=yes");
+		i.putExtra("keyword", rId);
+		startActivity(i);
+	}
+	
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
