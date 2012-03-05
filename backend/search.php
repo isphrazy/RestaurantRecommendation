@@ -216,7 +216,7 @@
 	function print_relevant_restaurants_list($relevant_restaurants_list){
 		?>
 		<table>
-		<tr><td class='didyou'>You may also like:</td></tr>
+		<tr><td class='didyou'>Similar restaurants:</td></tr>
 		<?php
 		$count = MAX_RELEVANT_RESTAURANTS;
 		foreach($relevant_restaurants_list as $r){
