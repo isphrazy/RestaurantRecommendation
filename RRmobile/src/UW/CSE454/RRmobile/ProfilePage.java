@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class ProfilePage extends Activity{
 	private List<Restaurant> list;
 	
 	private RestaurantsArrayAdapter adapter;
+	private boolean editingMode;
 	
 	/**
 	 * start the activity
@@ -65,6 +67,7 @@ public class ProfilePage extends Activity{
 		((TextView) findViewById(R.id.title)).setText(settings.getUsername());
 		lv = (ListView) findViewById(R.id.r_lv);
 		list = new ArrayList<Restaurant>();
+		editingMode = false;
 	}
 
 	//fetch the user's favoriate restaurant list
@@ -107,7 +110,6 @@ public class ProfilePage extends Activity{
 				for(int i = 0; i < ja.length(); i++){
 					Restaurant r = new Restaurant();
 					String rId = ja.getString(i);
-//					Log.e("id: ", rId);
 					JSONObject rInfo = rs.getJSONObject(rId);
 					r.id = rId;
 					r.businessName = rInfo.getString("Business Name");
@@ -140,8 +142,12 @@ public class ProfilePage extends Activity{
 			View rowView = inflater.inflate(R.layout.profile_entry, null, true);
 			((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
 			((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
-			if(rowView.findViewById(R.id.remove_pic) == null) Log.e("getView", "null");
-			rowView.findViewById(R.id.remove_pic).setTag(position);
+//			if(rowView.findViewById(R.id.remove_pic) == null) Log.e("getView", "null");
+			if(editingMode){
+				ImageView rIv = (ImageView) rowView.findViewById(R.id.remove_pic);
+				rIv.setTag(position);
+				rIv.setVisibility(View.VISIBLE);
+			}
 			return rowView;
 		}
 	}
@@ -157,6 +163,12 @@ public class ProfilePage extends Activity{
 		((ImageView)view).setImageResource(R.drawable.liked);
 		list.remove(position);
 		adapter.notifyDataSetChanged();
+	}
+	
+	public void editClick(View view){
+		editingMode = !editingMode;
+		((Button) findViewById(R.id.edit_b)).setText(editingMode ? "Done" : "Edit");
+		lv.setAdapter(adapter);
 	}
 		
 }

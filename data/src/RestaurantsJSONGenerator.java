@@ -21,6 +21,8 @@ public class RestaurantsJSONGenerator {
 	private static final String KEY_WORD = "Restaurants";
 	private static final String BUSINESS_TYPE = "Business Type";
 	private static final String FOOD = "Food";
+	private static final String LON = "Longitude";
+	private static final String LAT = "Latitude";
 	
 	private static JSONObject allData;
 	private static JSONObject restaurantsReviews;
@@ -58,6 +60,8 @@ public class RestaurantsJSONGenerator {
 			try{
 				//if the place do not have category, remove it
 				category = restaurant.getString(CATEGORY);
+				if(restaurant.getString(LON) == null) System.out.println("lon");
+				if(restaurant.getString(LAT) == null)System.out.println("lat");
 				//if no reviews found, remove it
 				if(restaurantsReviews.getJSONObject(name).length() < 1){
 					allData.remove(name);
@@ -68,13 +72,12 @@ public class RestaurantsJSONGenerator {
 			try{
 				businessType = restaurant.getString(BUSINESS_TYPE);
 			}catch (org.json.JSONException e){
-				
+//				e.printStackTrace();
 			}
 			if(category != null && !category.contains(KEY_WORD) 
 								&& !category.contains(FOOD)
 								&& (businessType == null ? true : !businessType.equals(KEY_WORD)))
 					allData.remove(name);
-			
 		}
 	}
 

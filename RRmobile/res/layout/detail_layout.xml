@@ -231,14 +231,25 @@
 			            android:layout_alignParentRight="true" />
 			        
 			    </RelativeLayout>
+
+		    <LinearLayout
+		        android:id="@+id/linearLayout1"
+		        android:layout_width="match_parent"
+		        android:layout_height="300dp"
+		        android:orientation="vertical" 
+		        android:layout_marginTop="20dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp">
+
 			    
-			    <com.google.android.maps.MapView
+			    <UW.CSE454.RRmobile.RMapView
 				    android:id="@+id/mapview"
 				    android:layout_width="fill_parent"
-				    android:layout_height="500dp"
+				    android:layout_height="fill_parent"
 				    android:clickable="true"
 				    android:apiKey="0ferYEbmmBS3D9mR5_19TEXKNoTcZUUub_qxv2A"
 				/>
+		    </LinearLayout>
 			    
 		    </LinearLayout>
 		
