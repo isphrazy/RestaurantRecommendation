@@ -53,7 +53,6 @@ $filted_restaurant_list = generate_users_recommendation();
 <?php
 //prints the relevant restaurants list.
 print_relevant_restaurants_list($filted_restaurant_list);
-var_dump($geocode_arr);
 ?>
 
 <br />
