@@ -25,6 +25,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/white_border_b"
+            android:onClick="likeClick"
             android:text="Like" />
         
         <TextView
@@ -249,6 +250,7 @@
 			    </RelativeLayout>
 
 			<Button
+				android:id="@+id/similar_r"
 			    android:layout_width="fill_parent"
 			    android:layout_height="40dp"
 			    android:layout_marginLeft="10dp"

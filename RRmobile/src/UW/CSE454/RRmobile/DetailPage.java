@@ -35,6 +35,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,6 +53,7 @@ public class DetailPage extends MapActivity{
 	private ProgressDialog pd;
 	private TextView phoneNum;
 	private RMapView map;
+	private Button likeB;
 	
 	private double mLat;
 	private double mLon;
@@ -77,7 +79,7 @@ public class DetailPage extends MapActivity{
 		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
-		
+		likeB = (Button) findViewById(R.id.like_b);
 	}
 
 	//fetching data from background
@@ -184,6 +186,12 @@ public class DetailPage extends MapActivity{
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	public void likeClick(View view){
+		likeB.setText("Liked");
+		new IsLikeAsyncTask().execute(new String[]{rId, "1", Settings.getInstance(this).getAt()});
+		likeB.setEnabled(false);
 	}
 	
 }
