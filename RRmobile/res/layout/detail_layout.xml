@@ -25,6 +25,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/white_border_b"
+            android:onClick="likeClick"
             android:text="Like" />
         
         <TextView
@@ -62,7 +63,7 @@
 		        android:layout_height="wrap_content"
 		        android:textSize="15dp"
 		        android:textColor="@color/black" 
-		        android:text="empty"
+		        android:text=""
 		        android:layout_marginBottom="5dp"
 		        android:layout_marginTop="2dp"
 		        android:layout_marginLeft="5dp"/>
@@ -169,7 +170,7 @@
 			        android:layout_marginBottom="5dp"
 			        android:layout_marginLeft="5dp"
 			        android:textColor="@color/black"
-			        android:text="empty" />
+			        android:text="" />
 			
 			    
 		   	    <TextView
@@ -196,7 +197,7 @@
 			        android:layout_height="wrap_content"
 			        android:textSize="20dp"
 			        android:textColor="@color/black"
-			        android:text="empty"
+			        android:text=""
 			        android:layout_marginBottom="5dp"
 			        android:layout_marginLeft="5dp"/>
 		
@@ -235,7 +236,7 @@
 				        android:textColor="@color/black"
 				        android:textSize="20dp"
 				        android:layout_marginRight="10dp"
-				        android:text="empty" 
+				        android:text="" 
 				        android:layout_alignParentLeft="true"/>
 				    
 			        <ImageView
@@ -249,6 +250,7 @@
 			    </RelativeLayout>
 
 			<Button
+				android:id="@+id/similar_r"
 			    android:layout_width="fill_parent"
 			    android:layout_height="40dp"
 			    android:layout_marginLeft="10dp"
@@ -267,6 +269,7 @@
 		        android:layout_height="300dp"
 		        android:orientation="vertical" 
 		        android:layout_marginTop="20dp"
+		        android:layout_marginBottom="10dp"
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginRight="10dp">
 
@@ -276,7 +279,7 @@
 				    android:layout_width="fill_parent"
 				    android:layout_height="fill_parent"
 				    android:clickable="true"
-				    android:apiKey="0ferYEbmmBS3D9mR5_19TEXKNoTcZUUub_qxv2A"
+				    android:apiKey="@string/map_api"
 				/>
 		    </LinearLayout>
 			    

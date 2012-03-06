@@ -57,6 +57,7 @@ public class SearchResultPage extends Activity {
 	private String sure;
 	private RelevantClickListener rClickListener;
 	private RestaurantsClickListener rsClickListener;
+	private Settings settings;
 	
 	private List<Restaurant> list;
 	
@@ -92,6 +93,7 @@ public class SearchResultPage extends Activity {
 		list = new ArrayList<Restaurant>();
 		sure = getIntent().getStringExtra("sure");
 		if(sure == null) sure = "";
+		settings = Settings.getInstance(this);
 		
 	}
 	
@@ -158,6 +160,7 @@ public class SearchResultPage extends Activity {
 						i.setClass(SearchResultPage.this, DetailPage.class);
 						i.putExtra("name", resp.getString(1));
 						startActivity(i);
+						finish();
 					}else{//print relevant restaurants
 						messageEt.setText("You may also like:");
 //						Log.e("first: ", first);
@@ -265,6 +268,7 @@ public class SearchResultPage extends Activity {
 			i.setClass(SearchResultPage.this, DetailPage.class);
 			i.putExtra("name", list.get(position).id);
 			startActivity(i);
+			
 		}
 	}
 	//will be implemented in next milestone
@@ -281,12 +285,12 @@ public class SearchResultPage extends Activity {
 	 * @param view
 	 */
 	public void onClick(View view){
-		Settings s = Settings.getInstance(this);
+//		Settings s = Settings.getInstance(this);
 		int pos = (Integer)view.getTag();
 		changed = (ImageView) view;
 		liked = list.get(pos);
 		((ImageView)view).setImageResource(R.drawable.liked);
-		if(!s.hasAt()){
+		if(settings.hasAt()){
 			Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
 			try {
 				Thread.sleep(500);
@@ -306,8 +310,10 @@ public class SearchResultPage extends Activity {
 	@Override
 	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		new IsLikeAsyncTask().execute(new String[]{liked.id, "1", Settings.getInstance(this).getAt()});
-		changed.setImageResource(R.drawable.liked);
+		if(settings.hasAt()){
+			new IsLikeAsyncTask().execute(new String[]{liked.id, "1", Settings.getInstance(this).getAt()});
+			changed.setImageResource(R.drawable.liked);
+		}
 	}
 	
 }
