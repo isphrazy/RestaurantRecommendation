@@ -15,17 +15,34 @@ print_search_bar();
 get_restaurants();
 $favorite_restaurants_list = array();
 
-$favorite_restaurants_weight[0]=0.3; // TEST
-$favorite_restaurants_weight[1]=0.4;
-$favorite_restaurants_weight[2]=0.3;
 $new_restaurant_name = "";
 $restaurants_basic_info_json = json_decode(file_get_contents(RESTAURANT_BASIC_DATA_FILE), true);
 
+$f_count=0;
+$s_count=0;
+$d_count=0;
 foreach ($restaurants as $rid => $restaurant) {
 	$new_f_restaurant = generate_favorite_restaurant($restaurant);
 	$favorite_restaurants_list[] = $new_f_restaurant;
+
+	$f = $new_f_restaurant->reviews_weight[0];
+	$s = $new_f_restaurant->reviews_weight[1];
+	$d = $new_f_restaurant->reviews_weight[2];
+	if ($f != 0) {
+		$favorite_restaurants_weight[0] += $f;
+		$f_count++;
+	}
+	if ($s != 0) {
+		$favorite_restaurants_weight[1] += $s;
+		$s_count++;
+	}
+	if ($s != 0) {
+		$favorite_restaurants_weight[2] += $d;
+		$d_count++;
+	}
+	
 	?>
-	<!-- print all favorite (liked) restaurants -->
+	<!-- print each favorite (liked) restaurant -->
 	<tr id="<?=$rid?>">
 		<td>
 			<a href="detail.php?name=<?=$rid?>" target="_blank">
@@ -38,7 +55,12 @@ foreach ($restaurants as $rid => $restaurant) {
 		</td>
 	</tr>
 	<?php
-}?>
+}
+
+$favorite_restaurants_weight[0] /= $f_count;
+$favorite_restaurants_weight[1] /= $s_count;
+$favorite_restaurants_weight[2] /= $d_count;
+?>
 </table>
 
 <?php
