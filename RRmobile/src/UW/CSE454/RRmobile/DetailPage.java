@@ -38,6 +38,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * This page shows the detail about given restaurant
@@ -57,6 +58,9 @@ public class DetailPage extends MapActivity{
 	
 	private double mLat;
 	private double mLon;
+	private Settings settings;
+	private String accessToken;
+	private String likedRestaurants;
 	
 	/**
 	 * start activity
@@ -80,6 +84,8 @@ public class DetailPage extends MapActivity{
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 		likeB = (Button) findViewById(R.id.like_b);
+		settings = Settings.getInstance(DetailPage.this);
+		accessToken = settings.getAt();
 	}
 
 	//fetching data from background
@@ -87,11 +93,13 @@ public class DetailPage extends MapActivity{
 		
 		private String response;
 		
+		
 		@Override
 		//fetch data from background
 		protected Void doInBackground(Void... params) {
 			String query = "http://kurlin.com/454/api/api_detail.php?name=" + rId;
 			query = query.replace(" ", "%20");
+			
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -100,6 +108,16 @@ public class DetailPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
+				
+				if(accessToken != null){//already logged in
+					HttpEntity userEntity = new DefaultHttpClient().execute(
+							new HttpGet("http://kurlin.com/454/api/api_liked_r.php?access_token=" + accessToken)).getEntity();
+					BufferedReader uBr = new BufferedReader(
+							new InputStreamReader(userEntity.getContent()));
+					likedRestaurants = uBr.readLine();
+					Log.e("uBr: ", likedRestaurants);
+				}
+				
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -147,7 +165,16 @@ public class DetailPage extends MapActivity{
 				mc.setCenter(point);
 //				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
 				mc.setZoom(15);
-				
+				if(likedRestaurants != null && likedRestaurants.length() > 2){//liked some restaurants
+					JSONArray rJa = new JSONArray(likedRestaurants);
+					for(int i = 0; i < rJa.length(); i++){
+						if(rJa.optString(i).equals(rId)){
+							likeB.setEnabled(false);
+							likeB.setText("Liked");
+							break;
+						}
+					}
+				}
 				
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -162,9 +189,12 @@ public class DetailPage extends MapActivity{
 	public void call(View v) {
 		Log.e("call", phoneNum.getText().toString());
 	    try {
-	        Intent callIntent = new Intent(Intent.ACTION_CALL);
-	        callIntent.setData(Uri.parse("tel:" + phoneNum.getText().toString()));
-	        startActivity(callIntent);
+	    	String number = phoneNum.getText().toString();
+	    	if(number.length() != 0){
+	    		Intent callIntent = new Intent(Intent.ACTION_CALL);
+	    		callIntent.setData(Uri.parse("tel:" + number));
+	    		startActivity(callIntent);
+	    	}
 	    } catch (ActivityNotFoundException e) {
 	        Log.e("helloandroid dialing example", "Call failed", e);
 	    }
@@ -189,9 +219,32 @@ public class DetailPage extends MapActivity{
 	}
 	
 	public void likeClick(View view){
-		likeB.setText("Liked");
-		new IsLikeAsyncTask().execute(new String[]{rId, "1", Settings.getInstance(this).getAt()});
-		likeB.setEnabled(false);
+		if(accessToken != null){//have already logged in
+			likeB.setText("Liked");
+			new IsLikeAsyncTask().execute(new String[]{rId, "1", Settings.getInstance(this).getAt()});
+			likeB.setEnabled(false);
+		}else{
+			Toast.makeText(this, "Please login first", Toast.LENGTH_SHORT).show();
+			try {
+				Thread.sleep(500);
+				Intent i = new Intent();
+				i.setClass(this, LoginPage.class);
+				i.putExtra("return", "1");
+				startActivityForResult(i, 1);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	@Override
+	//make sure that the login status is correct
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(settings.hasAt()){
+			new IsLikeAsyncTask().execute(new String[]{rId, "1", Settings.getInstance(this).getAt()});
+			likeB.setEnabled(false);
+			likeB.setText("Liked");
+			accessToken = settings.getAt();
+		}
+	}
 }

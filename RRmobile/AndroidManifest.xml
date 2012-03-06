@@ -31,7 +31,7 @@
         <activity android:name=".LoginPage"></activity>
         <activity android:name=".DetailPage"></activity>
         <activity android:name=".ProfilePage"></activity>
-        <activity android:name=".RelevantRestaurantList"></activity>
+        <activity android:name=".RecomPage"></activity>
     </application>
 
 </manifest>

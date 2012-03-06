@@ -30,6 +30,8 @@ public class RestaurantsBasicInfoGenerator {
 	private static final String DECOR = "Decor";
 	private static final String BUSINESS_NAME = "Business Name";
 	private static final String ADDRESS = "Address";
+	private static final String LON = "Longitude";
+	private static final String LAT = "Latitude";
 	
 	
 	private static JSONObject restaurantsReviews;
@@ -101,6 +103,9 @@ public class RestaurantsBasicInfoGenerator {
 			info.put(BUSINESS_NAME, restaurant.getString(BUSINESS_NAME));
 			
 			info.put(ADDRESS, restaurant.getString(ADDRESS));
+			
+			info.put(LON, Double.parseDouble(restaurant.getString(LON)));
+			info.put(LAT, Double.parseDouble(restaurant.getString(LAT)));
 			
 			basicRestaurants.put(name, info);
 			

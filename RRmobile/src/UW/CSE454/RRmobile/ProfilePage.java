@@ -49,6 +49,7 @@ public class ProfilePage extends Activity{
 	private RestaurantsArrayAdapter adapter;
 	private RClickListener rClickListener;
 	private boolean editingMode;
+	private boolean showProgressDialog;//this will be false when return from another activity
 	
 	/**
 	 * start the activity
@@ -64,9 +65,10 @@ public class ProfilePage extends Activity{
 		
 	}
 	
-	//initiate varaibles
+	//initiate variables
 	private void initiateVar() {
 		rClickListener = new RClickListener();
+		showProgressDialog = true;
 		settings = Settings.getInstance(ProfilePage.this);
 		aT = settings.getAt();
 		((TextView) findViewById(R.id.title)).setText(settings.getUsername());
@@ -81,7 +83,8 @@ public class ProfilePage extends Activity{
 		private String response;
 		
 		protected void onPreExecute (){
-			pd = ProgressDialog.show(ProfilePage.this, PD_TITLE, PD_MESSAGE);
+			if(showProgressDialog)
+				pd = ProgressDialog.show(ProfilePage.this, PD_TITLE, PD_MESSAGE);
 		}
 		
 		@Override
@@ -106,12 +109,12 @@ public class ProfilePage extends Activity{
 		}
 		
 		protected void onProgressUpdate(Void... v){
-			pd.dismiss();
+			list.clear();
+			if(showProgressDialog)
+				pd.dismiss();
 			try {
 				JSONObject rs = new JSONObject(response);
 				JSONArray ja = rs.names();
-//				Log.e("jid: ", ja.toString());
-				
 				for(int i = 0; i < ja.length(); i++){
 					Restaurant r = new Restaurant();
 					String rId = ja.getString(i);
@@ -190,5 +193,19 @@ public class ProfilePage extends Activity{
 			i.putExtra("name", list.get(position).id);
 			startActivity(i);
 		}
+	}
+	
+	//go to restaurants recommendation page
+	public void recommendClick(View view){
+		Intent i = new Intent();
+		i.setClass(this, RecomPage.class);
+		startActivityForResult(i, 1);
+	}
+	
+	@Override
+	//make sure that the login status is correct
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		showProgressDialog = false;
+		new FetchDetailAsync().execute();
 	}
 }

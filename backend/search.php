@@ -18,6 +18,8 @@
 	define('RELEVANCE_WEIGHT', 0.5);
 	define('REVIEWS_WEIGHT', 0.5);
 	define('MAX_RELEVANT_RESTAURANTS', 10);
+	// define('LONGITUDE', 'Longitude');
+	// define('LATITUDE', 'Latitude');
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -43,6 +45,8 @@
 		public $relevance; //similarity of this restaurant to user's favorite
 		public $reviews; //(eg: 12, 27, -3)
 		public $confidence;
+		public $lon;
+		public $lat;
 	}
 	
 	/*
@@ -166,6 +170,9 @@
 				$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
 				$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
 				$relevant_restaurant->category = $relevant_restaurant_basic_info[CATEGORY];
+				$relevant_restaurant->lon = $relevant_restaurant_basic_info['Longitude'];
+				$relevant_restaurant->lat = $relevant_restaurant_basic_info['Latitude'];
+				
 				
 				$relevant_restaurant -> relevance = 
 						  (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
