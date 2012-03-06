@@ -18,8 +18,6 @@
 	define('RELEVANCE_WEIGHT', 0.5);
 	define('REVIEWS_WEIGHT', 0.5);
 	define('MAX_RELEVANT_RESTAURANTS', 10);
-	// define('LONGITUDE', 'Longitude');
-	// define('LATITUDE', 'Latitude');
 	
 	$restaurants_basic_info_json;
 	$favorite_restaurants_weight;
@@ -45,8 +43,6 @@
 		public $relevance; //similarity of this restaurant to user's favorite
 		public $reviews; //(eg: 12, 27, -3)
 		public $confidence;
-		public $lon;
-		public $lat;
 	}
 	
 	/*
@@ -170,9 +166,6 @@
 				$relevant_category_count = $relevant_restaurant_basic_info[CATEGORY_COUNT];
 				$relevant_restaurant->reviews = $relevant_restaurant_basic_info[REVIEWS];
 				$relevant_restaurant->category = $relevant_restaurant_basic_info[CATEGORY];
-				$relevant_restaurant->lon = $relevant_restaurant_basic_info['Longitude'];
-				$relevant_restaurant->lat = $relevant_restaurant_basic_info['Latitude'];
-				
 				
 				$relevant_restaurant -> relevance = 
 						  (1.0 * $category_count_array[$unique_category_count] / $relevant_category_count) 
@@ -225,32 +218,42 @@
 		<table>
 		<tr><td class='didyou'>Recommendations for you:</td></tr>
 		<?php
-		foreach($relevant_restaurants_list as $r){
-			$address = $r->address;
+		if ( !empty($relevant_restaurants_list) ) {
+			foreach($relevant_restaurants_list as $r){
+				$address = $r->address;
+				?>
+				<tr>
+					<th colspan="3">
+						<a href="detail.php?name=<?=$r->name?>" target="_blank">
+							<?=$r->business_name?>
+						</a>
+						<?php print_like($r->name); ?>
+					</th>
+				</tr>
+				<tr>
+					<td>
+					<a href="http://maps.google.com/maps?q=<?= $address;?>" target="_blank"><?= $address;?></a><br/>
+					Category:
+					<?= implode(", ", $r->category);?>
+					<br />
+					Reviews: Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
+					Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
+					Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
+					<br />
+					Price: <?=$r->price?><br/>
+					</td>
+				</tr>
+				<?php
+			}
+		} else {
 			?>
-			<tr>
-				<th colspan="3">
-					<a href="detail.php?name=<?=$r->name?>" target="_blank">
-						<?=$r->business_name?>
-					</a>
-					<?php print_like($r->name); ?>
-				</th>
-			</tr>
-			<tr>
-				<td>
-				<a href="http://maps.google.com/maps?q=<?= $address;?>" target="_blank"><?= $address;?></a><br/>
-				Category:
-				<?= implode(", ", $r->category);?>
-				<br />
-				Reviews: Food: <?php $r->reviews[0] > 0 ? print round($r->reviews[0], 1) : print ''?>
-				Service: <?php $r->reviews[1] > 0 ? print round($r->reviews[1], 1) : print ''?>
-				Decor: <?php $r->reviews[2] > 0 ? print round($r->reviews[2], 1) : print ''?>
-				<br />
-				Price: <?=$r->price?><br/>
-				</td>
-			</tr>
+			<tr style="font-size:18px;text-align:center"><td>
+				Sorry, we don't have any recommendations for you at this point.<br />
+				Please like some restaurants first :)
+			</td></tr>
 			<?php
-		}?>
+		}
+		?>
 		</table>
 		<?php
 	}
