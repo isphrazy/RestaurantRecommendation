@@ -55,7 +55,7 @@
 			?>
 			<center style="margin-top:20px">
 				<a href="profile.php" style="font-size:14pt;font-family:arial">
-					View recommendations<img src="static/new_yellow.png">
+					Recommendations for you<img src="static/new_yellow.png">
 				</a>			
 			</center>
 			<?php

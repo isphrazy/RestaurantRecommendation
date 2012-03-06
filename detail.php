@@ -48,8 +48,8 @@ function print_info($r_info){
 					<span class="metadataAttr">Decor: </span>
 					<span class="metadataValue"><?php $reviews_d[2] > 0 ? print round($reviews_d[2], 1) : ''?></span>
 					
-					<span id="latitude" style="visibility:hidden"><?=$r_info[LAT]?></span>
-					<span id="longitude" style="visibility:hidden"><?=$r_info[LNG]?></span>
+					<span id="latitude" style="display: none"><?=$r_info[LAT]?></span>
+					<span id="longitude" style="display: none"><?=$r_info[LNG]?></span>
 					<div id="map_canvas" style="width:290px; height:300px"></div>
 				</td>
 			</tr>
@@ -91,6 +91,9 @@ function print_info($r_info){
 		//sorts the relevant restaurants list based on relevance, qualities, and price 
 		usort($relevant_restaurants_list, 'cmp');
 
+		//we only want the first MAX_RELEVANT_RESTAURANTS restaurants
+		array_splice($relevant_restaurants_list, MAX_RELEVANT_RESTAURANTS);
+		
 		//prints the relevant restaurants list.
 		print_relevant_restaurants_list($relevant_restaurants_list);
 		?>
