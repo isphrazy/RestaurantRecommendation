@@ -48,8 +48,8 @@ function print_info($r_info){
 					<span class="metadataAttr">Decor: </span>
 					<span class="metadataValue"><?php $reviews_d[2] > 0 ? print round($reviews_d[2], 1) : ''?></span>
 					
-					<span id="latitude" style="visibility:hidden"><?=$r_info[LAT]?></span>
-					<span id="longitude" style="visibility:hidden"><?=$r_info[LNG]?></span>
+					<span id="latitude" style="display: none"><?=$r_info[LAT]?></span>
+					<span id="longitude" style="display: none"><?=$r_info[LNG]?></span>
 					<div id="map_canvas" style="width:290px; height:300px"></div>
 				</td>
 			</tr>

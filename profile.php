@@ -50,9 +50,12 @@ usort($relevant_restaurants_list, 'cmp');
 
 $count = 0;
 $filted_restaurant_list = array();
+$geocode_arr = array();
 foreach ($relevant_restaurants_list as $relevant_restaurant) {
 	if ( !array_key_exists($relevant_restaurant->name, $restaurants) ) {
 		$filted_restaurant_list[] = $relevant_restaurant;
+		$geocode_arr[$relevant_restaurant->name] =
+			array($relevant_restaurant->business_name,$relevant_restaurant->lat,$relevant_restaurant->lon);
 		$count++;
 	}
 	if ($count==10)
@@ -62,6 +65,42 @@ foreach ($relevant_restaurants_list as $relevant_restaurant) {
 //prints the relevant restaurants list.
 print_relevant_restaurants_list($filted_restaurant_list);
 ?>
+<span id="geocode" style="display:none"><?=json_encode($geocode_arr)?></span>
+<div id="map" style="width: 800px; height: 600px;margin: 25px auto 0"></div>
+
+<script type="text/javascript">
+var str = document.getElementById("geocode").innerHTML;
+var obj = JSON.parse(str);
+
+var locations = new Array( Object.keys(obj).length );
+var j = 0;
+for(var key in obj){
+	locations[j] = new Array(obj[key][0],obj[key][1],obj[key][2])
+	j++;
+}
+
+var map = new google.maps.Map(document.getElementById('map'), {
+  zoom: 10,
+  center: new google.maps.LatLng(47.607205, -122.30916), // Seattle
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+var marker, i;
+for (i = 0; i < locations.length; i++) {
+  marker = new google.maps.Marker({
+	position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+	map: map
+  });
+
+  google.maps.event.addListener(marker, 'click', (function(marker, i) {
+	return function() {
+	  infowindow.setContent(locations[i][0]);
+	  infowindow.open(map, marker);
+	}
+  })(marker, i));
+}
+</script>
 
 <?php
 print_bottom();
