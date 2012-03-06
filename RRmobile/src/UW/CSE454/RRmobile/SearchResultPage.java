@@ -136,7 +136,8 @@ public class SearchResultPage extends Activity {
 			Log.e("resp: ", response);
 			try {
 				if(response.equals("-1")){//no restaurant found
-					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
+//					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
+					finish();
 				}else{
 					resp = new JSONArray(response);
 					first = resp.getString(0);
@@ -162,31 +163,34 @@ public class SearchResultPage extends Activity {
 						startActivity(i);
 						finish();
 					}else{//print relevant restaurants
-						messageEt.setText("You may also like:");
-//						Log.e("first: ", first);
-						for(int i = 0; i < resp.length(); i++){
-							JSONObject restaurant = resp.getJSONObject(i);
-							Restaurant r = new Restaurant();
-							r.businessName = restaurant.getString("business_name");
-							r.businessName = r.businessName.replace("&amp;", "and");
-							r.address = restaurant.getString("address");
-							r.id = restaurant.getString("name");
-							r.priceLevel = restaurant.getString("price");
-							
-							JSONArray jCategory = restaurant.getJSONArray("category");
-							String[] category = new String[jCategory.length()];
-							for(int j = 0; j < jCategory.length(); j++){
-								category[j] = jCategory.getString(j);
+						if(resp.length() > 0){//relevant restaurants is not empty
+							messageEt.setText("You may also like:");
+							for(int i = 0; i < resp.length(); i++){
+								JSONObject restaurant = resp.getJSONObject(i);
+								Restaurant r = new Restaurant();
+								r.businessName = restaurant.getString("business_name");
+								r.businessName = r.businessName.replace("&amp;", "and");
+								r.address = restaurant.getString("address");
+								r.id = restaurant.getString("name");
+								r.priceLevel = restaurant.getString("price");
+								
+								JSONArray jCategory = restaurant.getJSONArray("category");
+								String[] category = new String[jCategory.length()];
+								for(int j = 0; j < jCategory.length(); j++){
+									category[j] = jCategory.getString(j);
+								}
+								r.category = category;
+								
+								JSONArray jReviews = restaurant.getJSONArray("reviews");
+								double[] reviews = new double[jReviews.length()];
+								for(int j = 0; j < jReviews.length(); j++){
+									reviews[j] = jReviews.getDouble(j);
+								}
+								r.reviews = reviews;
+								list.add(r);
 							}
-							r.category = category;
-							
-							JSONArray jReviews = restaurant.getJSONArray("reviews");
-							double[] reviews = new double[jReviews.length()];
-							for(int j = 0; j < jReviews.length(); j++){
-								reviews[j] = jReviews.getDouble(j);
-							}
-							r.reviews = reviews;
-							list.add(r);
+						}else{
+							messageEt.setText("Sorry, this restaurant does not relevant restaurant");
 						}
 						entry = R.layout.relevant_restaurants_entry;
 					}

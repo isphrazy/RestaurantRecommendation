@@ -12,4 +12,6 @@ public class Restaurant {
 	public double[] reviews;
 	public String[] category;
 	public String priceLevel;
+	public double lon;
+	public double lat;
 }

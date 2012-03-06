@@ -63,15 +63,17 @@ public class FrontPage extends Activity {
 		boolean startActivity = true;
 		Intent intent = new Intent();
 		Class c = null;
-		
+		int purpose = -1;
     	switch (view.getId()){
     	case R.id.search_b:
-    		if(et.getText().toString().length() < 1){
+    		String rName = et.getText().toString().trim();
+    		if(rName.length() < 1){
     			startActivity = false;
     			Toast.makeText(this, "restaurant should not be empty", Toast.LENGTH_SHORT);
     		}
     		c = SearchResultPage.class;
-    		intent.putExtra("keyword", et.getText().toString());
+    		intent.putExtra("keyword", rName);
+    		purpose = 1;
     		break;
     	case R.id.register_b:
     		c = SignUpPage.class;
@@ -94,7 +96,7 @@ public class FrontPage extends Activity {
     	}
     	if(startActivity){
     		intent.setClass(this, c);
-    		startActivityForResult(intent, 1);
+    		startActivityForResult(intent, purpose);
     	}
     	
     }
@@ -103,5 +105,8 @@ public class FrontPage extends Activity {
 	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		checkLogin();
+		Toast.makeText(this, "Sorry, the restaurant " +
+				et.getText().toString().trim() + 
+				" can not be found, please try again", Toast.LENGTH_LONG).show();
 	}
 }
