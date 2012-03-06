@@ -61,12 +61,22 @@ foreach ($relevant_restaurants_list as $relevant_restaurant) {
 	if ($count==10)
 		break;
 }
-
+?>
+<br />
+&nbsp;&nbsp;&nbsp;<a id="listview" href="#mapview" style="font-size:20px;font-weight:bold">Show map<img src="static/new_yellow.png"></a>
+<?php
 //prints the relevant restaurants list.
 print_relevant_restaurants_list($filted_restaurant_list);
 ?>
+
+<br />
+&nbsp;&nbsp;&nbsp;<a id="mapview" href="#listview" style="font-size:20px;font-weight:bold">Show recommendation list</a>
 <span id="geocode" style="display:none"><?=json_encode($geocode_arr)?></span>
-<div id="map" style="width: 800px; height: 600px;margin: 25px auto 0"></div>
+<table style="padding-top:0">
+	<tr style="background-color:white"><td>
+	<div id="map" style="width: 100%; height: 600px;margin: 25px auto 0;display:inline-block"></div>
+	</td></tr>
+</table>
 
 <script type="text/javascript">
 var str = document.getElementById("geocode").innerHTML;
@@ -75,7 +85,7 @@ var obj = JSON.parse(str);
 var locations = new Array( Object.keys(obj).length );
 var j = 0;
 for(var key in obj){
-	locations[j] = new Array(obj[key][0],obj[key][1],obj[key][2])
+	locations[j] = new Array('<a href="detail.php?name='+key+'" target="_blank">'+obj[key][0]+'</a>', obj[key][1], obj[key][2])
 	j++;
 }
 
