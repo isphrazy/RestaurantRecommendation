@@ -40,11 +40,11 @@
 
 	function print_search_bar(){
 	?>
-		<div id="search">
+		<div id="searchWrapper">
 			<a href="index.php"><img src="static/logo.png" alt="logo"/></a>
-			<form action="result.php">
-				<input type="text" name="restaurant_name" autofocus="" id="searchBox">
-				<button class="myButton" type="submit">Stumble!</button>
+			<form id="searchbox" action="result.php">
+				<input id="search" type="text" name="restaurant_name" autofocus="" placeholder="Type in the restaurant you like">
+				<input id="submit" type="submit" value="Search">
 			</form>
 		</div>
 	<?php
