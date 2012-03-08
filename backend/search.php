@@ -251,7 +251,7 @@
 			}
 		} else {
 			?>
-			<tr style="font-size:18px;text-align:center"><td>
+			<tr style="font-size:18px"><td>
 				Sorry, we don't have any recommendations for you at this point.<br />
 				Please like some restaurants first :)
 			</td></tr>
