@@ -26,8 +26,12 @@ import com.google.android.maps.OverlayItem;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -80,7 +84,7 @@ public class DetailPage extends MapActivity{
 	//initiate variables
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
-		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
+//		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 		likeB = (Button) findViewById(R.id.like_b);
@@ -92,7 +96,8 @@ public class DetailPage extends MapActivity{
 	private class FetchDetailAsync extends AsyncTask<Void, Void, Void>{
 		
 		private String response;
-		
+		private JSONObject r;
+		private double[] location;
 		
 		@Override
 		//fetch data from background
@@ -118,6 +123,16 @@ public class DetailPage extends MapActivity{
 //					Log.e("uBr: ", likedRestaurants);
 				}
 				
+//				location = getMyLocation();
+//				if(location[0] != 0 && location[1] != 0){
+//					Log.e("got it", "yeaaaaah");
+//					try {
+//						r = new JSONObject(response);
+//						getUrl(location[1], location[0], r.getDouble("Latitude"), r.getDouble("Longitude"));
+//					} catch (JSONException e) {
+//						e.printStackTrace();
+//					}
+//				}
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -129,11 +144,10 @@ public class DetailPage extends MapActivity{
 		
 		//update the page
 		protected void onProgressUpdate(Void... v){
-			pd.dismiss();
+//			pd.dismiss();
 			try {
 				Log.e("onProgress", "in");
-				
-				JSONObject r = new JSONObject(response);
+				r = new JSONObject(response);
 				String bName = "";
 				try{
 					bName = r.getString("Business Name").replace("&amp;", "and");
@@ -221,6 +235,50 @@ public class DetailPage extends MapActivity{
 		}
 	}
 	
+	private double[] getMyLocation(){
+		
+//		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
+//		Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//		return new double[]{location.getLongitude(), location.getLatitude()};
+		CurrentLocationFinder locationFinder = new CurrentLocationFinder(DetailPage.this);
+		locationFinder.getLocation();
+		int count = 10;
+		try {
+			while(locationFinder.latitude == 0 || locationFinder.longitude == 0 && count > 0){
+				Thread.sleep(200);
+				count--;
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return new double[]{locationFinder.latitude, locationFinder.longitude};
+		
+//		LocationListener locationListener = new LocationListener() {
+//			
+//			Location l;
+//			
+//		    public void onLocationChanged(Location location) {
+//		    	loca = location;
+//		    }
+//
+//			@Override
+//			public void onProviderDisabled(String provider) {
+//			}
+//
+//			@Override
+//			public void onProviderEnabled(String provider) {
+//			}
+//
+//			@Override
+//			public void onStatusChanged(String provider, int status,
+//					Bundle extras) {
+//			}
+//		};
+//
+//		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListener);
+	}
+	
 	/**
 	 * make a phone call when the view is pressed
 	 * @param v image view of call
@@ -281,4 +339,40 @@ public class DetailPage extends MapActivity{
 			accessToken = settings.getAt();
 		}
 	}
+	
+	 public static String getUrl(double fromLat, double fromLon,
+			   double toLat, double toLon) {// connect to map web service
+			  StringBuffer urlString = new StringBuffer();
+			  urlString.append("http://maps.google.com/maps?f=d&hl=en");
+			  urlString.append("&saddr=");// from
+			  urlString.append(Double.toString(fromLat));
+			  urlString.append(",");
+			  urlString.append(Double.toString(fromLon));
+			  urlString.append("&daddr=");// to
+			  urlString.append(Double.toString(toLat));
+			  urlString.append(",");
+			  urlString.append(Double.toString(toLon));
+			  urlString.append("&ie=UTF8&0&om=0&output=kml");
+			  return urlString.toString();
+	}
+	 
+	private class Point {
+		String mName;
+		String mDescription;
+		String mIconUrl;
+		double mLatitude;
+		double mLongitude;
+	}
+	
+	
+	private class Road {
+		public String mName;
+		public String mDescription;
+		public int mColor;
+		public int mWidth;
+		public double[][] mRoute = new double[][] {};
+		public Point[] mPoints = new Point[] {};
+	}
+	
+	
 }
