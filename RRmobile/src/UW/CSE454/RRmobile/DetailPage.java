@@ -166,7 +166,6 @@ public class DetailPage extends MapActivity{
 //				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
 				mc.setZoom(15);
 				
-				
 				if(likedRestaurants != null && likedRestaurants.length() > 2){//liked some restaurants
 					JSONArray rJa = new JSONArray(likedRestaurants);
 					for(int i = 0; i < rJa.length(); i++){

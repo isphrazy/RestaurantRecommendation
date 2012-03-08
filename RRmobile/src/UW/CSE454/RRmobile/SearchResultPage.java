@@ -137,6 +137,18 @@ public class SearchResultPage extends Activity {
 			try {
 				if(response.equals("-1")){//no restaurant found
 //					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");
+//					Toast.makeText(SearchResultPage.this, "Sorry, the restaurant " + keyword + 
+//							" can not be found, please try again", Toast.LENGTH_LONG).show();
+//					try {
+//						Thread.sleep(1000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//					finishActivity(2);
+					setResult(1);
+//					Intent i = new Intent();
+//					i.setClass(SearchResultPage.this, FrontPage.class);
+//					startActivity(i);
 					finish();
 				}else{
 					resp = new JSONArray(response);

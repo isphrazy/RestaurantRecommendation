@@ -105,8 +105,8 @@ public class FrontPage extends Activity {
 	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		checkLogin();
-		Toast.makeText(this, "Sorry, the restaurant " +
-				et.getText().toString().trim() + 
+		if(resultCode == 1)//no restaurant found
+		Toast.makeText(this, "Sorry, the restaurant " + et.getText().toString().trim() + 
 				" can not be found, please try again", Toast.LENGTH_LONG).show();
 	}
 }

@@ -32,6 +32,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -72,6 +73,8 @@ public class RecomPage extends MapActivity{
         setContentView(R.layout.recom_page_layout);
 		
         initiateVars();
+        
+        new FetchData().execute();
 	}
 	
 	private void initiateVars() {
@@ -81,6 +84,9 @@ public class RecomPage extends MapActivity{
 		aT = Settings.getInstance(this).getAt();
 		list = new ArrayList<Restaurant>();
 		rClickListener = new RClickListener();
+		lv = (ListView) findViewById(R.id.listView);
+		map = (RMapView) findViewById(R.id.mapview);
+		map.setBuiltInZoomControls(true);
 	}
 
 	@Override
@@ -94,12 +100,20 @@ public class RecomPage extends MapActivity{
 	 */
 	public void changeMode(View view){
 		if(view == listB && mode){//click on listB while currently is in map view
-			listB.setBackgroundDrawable(getResources().getDrawable(R.drawable.tabb));
-			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.taba));
+			listB.setBackgroundDrawable(getResources().getDrawable(R.drawable.taba));
+			listB.setTextColor(getResources().getColor(R.color.light_blue));
+			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.tabb));
+			mapB.setTextColor(getResources().getColor(R.color.white));
+			lv.setVisibility(View.VISIBLE);
+			map.setVisibility(View.INVISIBLE);
 			mode = false;
 		}else if(view == mapB && !mode){//click on mapB while currently is in list view
-			listB.setBackgroundDrawable(getResources().getDrawable(R.drawable.taba));
-			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.tabb));
+			listB.setBackgroundDrawable(getResources().getDrawable(R.drawable.tabb));
+			listB.setTextColor(getResources().getColor(R.color.white));
+			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.taba));
+			mapB.setTextColor(getResources().getColor(R.color.light_blue));
+			map.setVisibility(View.VISIBLE);
+			lv.setVisibility(View.INVISIBLE);
 			mode = true;
 		}
 	}
@@ -135,18 +149,35 @@ public class RecomPage extends MapActivity{
 		
 		protected void onProgressUpdate(Void... v){
 			pd.dismiss();
+			Log.e("reponse: ", response);
 			try {
-				JSONObject rs = new JSONObject(response);
-				JSONArray ja = rs.names();
+//				JSONObject rs = new JSONObject(response);
+				JSONArray ja = new JSONArray(response);
 				for(int i = 0; i < ja.length(); i++){
 					Restaurant r = new Restaurant();
-					String rId = ja.getString(i);
-					JSONObject rInfo = rs.getJSONObject(rId);
-					r.id = rId;
-					r.businessName = rInfo.getString("Business Name");
-					r.address = rInfo.getString("Address");
-					r.lon = rInfo.getDouble("Longitude");
-					r.lat = rInfo.getDouble("Latitude");
+					JSONObject restaurant = ja.getJSONObject(i);
+//					JSONObject rInfo = rs.getJSONObject(rId);
+					r.businessName = restaurant.getString("business_name");
+					r.businessName = r.businessName.replace("&amp;", "and");
+					r.address = restaurant.getString("address");
+					r.id = restaurant.getString("name");
+					r.priceLevel = restaurant.getString("price");
+					r.lat = restaurant.getDouble("lat");
+					r.lon = restaurant.getDouble("lon");
+					
+					JSONArray jCategory = restaurant.getJSONArray("category");
+					String[] category = new String[jCategory.length()];
+					for(int j = 0; j < jCategory.length(); j++){
+						category[j] = jCategory.getString(j);
+					}
+					r.category = category;
+					
+					JSONArray jReviews = restaurant.getJSONArray("reviews");
+					double[] reviews = new double[jReviews.length()];
+					for(int j = 0; j < jReviews.length(); j++){
+						reviews[j] = jReviews.getDouble(j);
+					}
+					r.reviews = reviews;
 					list.add(r);
 				}
 			} catch (JSONException e) {
@@ -209,7 +240,7 @@ public class RecomPage extends MapActivity{
 	}
 
 	public void setUpMap() {
-		map = new MapView(this, getResources().getString(R.string.map_api));
+//		map = new MapView(this, getResources().getString(R.string.map_api));
 		List<Overlay> mapOverlays = map.getOverlays();
 		RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
 																RecomPage.this.getResources().getDrawable(R.drawable.map_mark), 
@@ -236,6 +267,8 @@ public class RecomPage extends MapActivity{
 		MapController mc = map.getController();
 		mc.setCenter(new GeoPoint((upMax + downMax) / 2, (leftMax + rightMax) / 2));
 //		mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
-		mc.setZoom((upMax - downMax) / (int) (90 * 1e6));
+		int zoomScale = (int)(1.0 * (upMax - downMax) / (180 * 1e6) * 21);
+		Log.e("zoomScale", "" + 1.0 * (upMax - downMax) / (180 * 1e6));
+		mc.setZoom(11);
 	}
 }
