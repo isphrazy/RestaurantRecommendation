@@ -43,7 +43,7 @@
 		<div id="searchWrapper">
 			<a href="index.php"><img src="static/logo.png" alt="logo"/></a>
 			<form id="searchbox" action="result.php">
-				<input id="search" type="text" name="restaurant_name" autofocus="" placeholder="Search...">
+				<input id="search" type="text" name="restaurant_name" autofocus="" placeholder="Type in the restaurant you like">
 				<input id="submit" type="submit" value="Search">
 			</form>
 		</div>
