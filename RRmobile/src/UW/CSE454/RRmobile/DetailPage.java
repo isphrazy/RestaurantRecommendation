@@ -108,14 +108,14 @@ public class DetailPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
-				
+				Log.e("response: ", response);
 				if(accessToken != null){//already logged in
 					HttpEntity userEntity = new DefaultHttpClient().execute(
 							new HttpGet("http://kurlin.com/454/api/api_liked_r.php?access_token=" + accessToken)).getEntity();
 					BufferedReader uBr = new BufferedReader(
 							new InputStreamReader(userEntity.getContent()));
 					likedRestaurants = uBr.readLine();
-					Log.e("uBr: ", likedRestaurants);
+//					Log.e("uBr: ", likedRestaurants);
 				}
 				
 				publishProgress();
@@ -131,40 +131,78 @@ public class DetailPage extends MapActivity{
 		protected void onProgressUpdate(Void... v){
 			pd.dismiss();
 			try {
+				Log.e("onProgress", "in");
+				
 				JSONObject r = new JSONObject(response);
-				String bName = r.getString("Business Name").replace("&amp;", "and");
-				((TextView) findViewById(R.id.b_name)).setText(bName);
-				((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
-				String address = r.getString("Address");
-				((TextView) findViewById(R.id.address)).setText(address);
+				String bName = "";
+				try{
+					bName = r.getString("Business Name").replace("&amp;", "and");
+					((TextView) findViewById(R.id.b_name)).setText(bName);
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
 				
-				((TextView) findViewById(R.id.category)).setText(r.getString("Category"));
+				try{
+					((TextView) findViewById(R.id.price)).setText("Price Level: " + r.getString("Price Range"));
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
 				
-				JSONArray ja = r.getJSONArray("review");
-				DecimalFormat df = new DecimalFormat("0.0");
-				((TextView) findViewById(R.id.f_review)).setText("Food: " + df.format(ja.get(0)));
-				((TextView) findViewById(R.id.s_review)).setText("Service: " + df.format(ja.get(1)));
-				((TextView) findViewById(R.id.d_review)).setText("Decor: " + df.format(ja.get(2)));
+				String address = "";
+				try{
+					address = r.getString("Address");
+					((TextView) findViewById(R.id.address)).setText(address);
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
 				
-				int lat = (int) (r.getDouble("Latitude") * 1e6);
-				int lon = (int) (r.getDouble("Longitude") * 1e6);
-				phoneNum = ((TextView) findViewById(R.id.phone));
-				if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
-				else phoneNum.setText(r.getString("Phone number"));
+				try{
+					((TextView) findViewById(R.id.category)).setText(r.getString("Category"));
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
+				
+				try{
+					JSONArray ja = r.getJSONArray("review");
+					DecimalFormat df = new DecimalFormat("0.0");
+					((TextView) findViewById(R.id.f_review)).setText("Food: " + df.format(ja.get(0)));
+					((TextView) findViewById(R.id.s_review)).setText("Service: " + df.format(ja.get(1)));
+					((TextView) findViewById(R.id.d_review)).setText("Decor: " + df.format(ja.get(2)));
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
+				
+
+				
+				try{
+					phoneNum = ((TextView) findViewById(R.id.phone));
+					if(phoneNum == null) ((LinearLayout) findViewById(R.id.phone_ll)).setVisibility(View.INVISIBLE);
+					else phoneNum.setText(r.getString("Phone number"));
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
+				
+				
 				
 				//set google map
-				List<Overlay> mapOverlays = map.getOverlays();
-				RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
-																		DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
-																		DetailPage.this);
-				GeoPoint point = new GeoPoint(lat, lon);
-				OverlayItem overlayitem = new OverlayItem(point, bName, address);
-				itemizedoverlay.addOverlay(overlayitem);
-				mapOverlays.add(itemizedoverlay);
-				MapController mc = map.getController();
-				mc.setCenter(point);
-//				mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
-				mc.setZoom(15);
+				try{
+					int lat = (int) (r.getDouble("Latitude") * 1e6);
+					int lon = (int) (r.getDouble("Longitude") * 1e6);
+					List<Overlay> mapOverlays = map.getOverlays();
+					RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
+							DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
+							DetailPage.this);
+					GeoPoint point = new GeoPoint(lat, lon);
+					OverlayItem overlayitem = new OverlayItem(point, bName, address);
+					itemizedoverlay.addOverlay(overlayitem);
+					mapOverlays.add(itemizedoverlay);
+					MapController mc = map.getController();
+					mc.setCenter(point);
+					mc.setZoom(13);
+				}catch (JSONException e){
+					e.printStackTrace();
+				}
+				
 				
 				if(likedRestaurants != null && likedRestaurants.length() > 2){//liked some restaurants
 					JSONArray rJa = new JSONArray(likedRestaurants);
@@ -202,11 +240,6 @@ public class DetailPage extends MapActivity{
 	}
 	
 	public void onClick(View view){
-		//go relevant restaurants list
-//		Intent i = new Intent();
-//		i.setClass(this, RelevantRestaurantList.class);
-//		i.putExtra("id", rId);
-//		startActivity(i);
 		Intent i = new Intent();
 		i.setClass(this, SearchResultPage.class);
 		i.putExtra("sure", "&sure=yes");

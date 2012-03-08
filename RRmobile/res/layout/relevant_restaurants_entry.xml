@@ -16,13 +16,13 @@
             android:layout_alignParentRight="true"
             android:orientation="vertical" >
             
-		    <ImageView
+<!-- 	    <ImageView
 	            android:id="@+id/pic"
 	            android:layout_width="60dp"
 	            android:layout_height="30dp"
 	            android:layout_marginTop="5dp"
 	            android:src="@drawable/like"
-	            android:onClick="onClick" />
+	            android:onClick="onClick" /> -->	
 		    
         </LinearLayout>
 

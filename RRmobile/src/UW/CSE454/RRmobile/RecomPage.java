@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -34,6 +35,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
@@ -62,6 +64,7 @@ public class RecomPage extends MapActivity{
 	private RestaurantsArrayAdapter adapter;
 	private boolean mode;//0 for list, 1 for map
 	private RClickListener rClickListener;
+	private RelativeLayout content;
 	
 	/**
 	 * start the activity
@@ -87,6 +90,7 @@ public class RecomPage extends MapActivity{
 		lv = (ListView) findViewById(R.id.listView);
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
+		content = (RelativeLayout) findViewById(R.id.content);
 	}
 
 	@Override
@@ -226,7 +230,7 @@ public class RecomPage extends MapActivity{
 									+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 			((TextView) rowView.findViewById(R.id.review)).setText(review);
 			
-			rowView.findViewById(R.id.pic).setTag(position);
+//			rowView.findViewById(R.id.pic).setTag(position);
 			
 			lv.setOnItemClickListener(rClickListener);
 			return rowView;
@@ -272,8 +276,9 @@ public class RecomPage extends MapActivity{
 		MapController mc = map.getController();
 		mc.setCenter(new GeoPoint((upMax + downMax) / 2, (leftMax + rightMax) / 2));
 //		mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
-		int zoomScale = (int)(1.0 * (upMax - downMax) / (180 * 1e6) * 21);
-		Log.e("zoomScale", "" + 1.0 * (upMax - downMax) / (180 * 1e6));
+//		int zoomScale = (int)(1.0 * (upMax - downMax) / (180 * 1e6) * 21);
+//		Log.e("zoomScale", "" + 1.0 * (upMax - downMax) / (180 * 1e6));
 		mc.setZoom(11);
 	}
+	
 }

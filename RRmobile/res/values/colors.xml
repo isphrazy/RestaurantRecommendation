@@ -11,4 +11,5 @@
     <color name="darkGray">#4E4E51</color>
     <color name="red">#CC0000</color>
     <color name="light_blue">#33B5E5</color>
+    <color name="lighter_blue">#33B5E5</color>
 </resources>

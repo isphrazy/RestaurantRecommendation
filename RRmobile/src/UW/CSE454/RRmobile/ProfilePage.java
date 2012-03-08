@@ -27,12 +27,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ProfilePage extends Activity{
@@ -50,6 +54,8 @@ public class ProfilePage extends Activity{
 	private RClickListener rClickListener;
 	private boolean editingMode;
 	private boolean showProgressDialog;//this will be false when return from another activity
+//	private Button sB;
+	private LinearLayout sll;
 	
 	/**
 	 * start the activity
@@ -75,6 +81,8 @@ public class ProfilePage extends Activity{
 		lv = (ListView) findViewById(R.id.r_lv);
 		list = new ArrayList<Restaurant>();
 		editingMode = false;
+//		sB = (Button) findViewById(R.id.similar_r);
+		sll = (LinearLayout) findViewById(R.id.info);
 	}
 
 	//fetch the user's favoriate restaurant list
@@ -99,6 +107,7 @@ public class ProfilePage extends Activity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
+				
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -112,24 +121,33 @@ public class ProfilePage extends Activity{
 			list.clear();
 			if(showProgressDialog)
 				pd.dismiss();
-			try {
-				JSONObject rs = new JSONObject(response);
-				JSONArray ja = rs.names();
-				for(int i = 0; i < ja.length(); i++){
-					Restaurant r = new Restaurant();
-					String rId = ja.getString(i);
-					JSONObject rInfo = rs.getJSONObject(rId);
-					r.id = rId;
-					r.businessName = rInfo.getString("Business Name");
-					r.address = rInfo.getString("Address");
-					list.add(r);
+			if(response.equals("[]")){
+				
+//				sB.setVisibility(View.INVISIBLE);
+				sll.setVisibility(View.VISIBLE);
+				
+			}else{
+//				sB.setVisibility(View.VISIBLE);
+				sll.setVisibility(View.INVISIBLE);
+				try {
+					JSONObject rs = new JSONObject(response);
+					JSONArray ja = rs.names();
+					for(int i = 0; i < ja.length(); i++){
+						Restaurant r = new Restaurant();
+						String rId = ja.getString(i);
+						JSONObject rInfo = rs.getJSONObject(rId);
+						r.id = rId;
+						r.businessName = rInfo.getString("Business Name");
+						r.address = rInfo.getString("Address");
+						list.add(r);
+					}
+					adapter = new RestaurantsArrayAdapter(ProfilePage.this, list);
+					lv.setAdapter(adapter);
+					lv.setOnItemClickListener(rClickListener);
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
 			}
-			adapter = new RestaurantsArrayAdapter(ProfilePage.this, list);
-			lv.setAdapter(adapter);
-			lv.setOnItemClickListener(rClickListener);
 		}
 	}
 	
@@ -197,9 +215,13 @@ public class ProfilePage extends Activity{
 	
 	//go to restaurants recommendation page
 	public void recommendClick(View view){
-		Intent i = new Intent();
-		i.setClass(this, RecomPage.class);
-		startActivityForResult(i, 1);
+		if(list.isEmpty()){//no favorite restaurants
+			Toast.makeText(this, "You need to like some restaurants first:)", Toast.LENGTH_SHORT).show();
+		}else{
+			Intent i = new Intent();
+			i.setClass(this, RecomPage.class);
+			startActivityForResult(i, 1);
+		}
 	}
 	
 	@Override
@@ -208,4 +230,13 @@ public class ProfilePage extends Activity{
 		showProgressDialog = false;
 		new FetchDetailAsync().execute();
 	}
+	
+		
+	public void sampleClick(View v) {
+		Intent i = new Intent();
+		i.setClass(ProfilePage.this, DetailPage.class);
+		i.putExtra("name", (String) v.getTag());
+		startActivityForResult(i, 1);
+	}
+		
 }

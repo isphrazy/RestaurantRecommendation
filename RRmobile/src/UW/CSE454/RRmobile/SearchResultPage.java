@@ -250,7 +250,7 @@ public class SearchResultPage extends Activity {
 										+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 				((TextView) rowView.findViewById(R.id.review)).setText(review);
 				
-				rowView.findViewById(R.id.pic).setTag(position);
+//				rowView.findViewById(R.id.pic).setTag(position);
 				
 				lv.setOnItemClickListener(rClickListener);
 			}
@@ -263,12 +263,6 @@ public class SearchResultPage extends Activity {
 	private class RestaurantsClickListener implements OnItemClickListener{
 		
 		public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-//			sure = "&sure=yes";
-//			Intent i = new Intent();
-//			i.setClass(SearchResultPage.this, SearchResultPage.class);
-//			i.putExtra("sure", sure);
-//			i.putExtra("keyword", r.id);
-//			startActivity(i);
 			Intent i = new Intent();
 			i.setClass(SearchResultPage.this, DetailPage.class);
 			i.putExtra("name", list.get(position).id);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/overall"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -54,7 +55,6 @@
 	    android:textStyle="bold" 
 	    android:layout_alignParentBottom="true"
 	    android:text="Recommend Restaurants For Me!" />
-    
     <ListView
         android:id="@+id/r_lv"
         android:layout_width="match_parent"
@@ -65,5 +65,46 @@
         android:layout_above="@id/similar_r"
         android:layout_below="@id/header">
     </ListView>
+    
+    <LinearLayout
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/header"
+    	android:orientation="vertical"
+    	android:id="@+id/info"
+    	android:visibility="invisible"
+    	android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You currently do not have any favorite restaurants, you could try following examples:"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/themeBlue"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:text="Blue C Sushi"
+            android:tag="blue-c-sushi-seattle-3"
+            android:textColor="@color/light_blue" 
+            android:layout_marginBottom="10dp"
+            android:onClick="sampleClick"
+            android:background="@drawable/m_edittext_background"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:text="The Cheesecake Factory" 
+            android:tag="the-cheesecake-factory-seattle"
+            android:textColor="@color/light_blue"
+            android:onClick="sampleClick"
+            android:background="@drawable/m_edittext_background"/>
+        
+    </LinearLayout>
 
 </RelativeLayout>
