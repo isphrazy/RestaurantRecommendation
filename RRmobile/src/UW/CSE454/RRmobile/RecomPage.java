@@ -148,45 +148,50 @@ public class RecomPage extends MapActivity{
 		}
 		
 		protected void onProgressUpdate(Void... v){
-			pd.dismiss();
-			Log.e("reponse: ", response);
 			try {
 //				JSONObject rs = new JSONObject(response);
 				JSONArray ja = new JSONArray(response);
-				for(int i = 0; i < ja.length(); i++){
-					Restaurant r = new Restaurant();
-					JSONObject restaurant = ja.getJSONObject(i);
+				int length = ja.length();
+				if(length < 1){//no recommendation
+					
+				}else{
+					for(int i = 0; i < length; i++){
+						Restaurant r = new Restaurant();
+						JSONObject restaurant = ja.getJSONObject(i);
 //					JSONObject rInfo = rs.getJSONObject(rId);
-					r.businessName = restaurant.getString("business_name");
-					r.businessName = r.businessName.replace("&amp;", "and");
-					r.address = restaurant.getString("address");
-					r.id = restaurant.getString("name");
-					r.priceLevel = restaurant.getString("price");
-					r.lat = restaurant.getDouble("lat");
-					r.lon = restaurant.getDouble("lon");
-					
-					JSONArray jCategory = restaurant.getJSONArray("category");
-					String[] category = new String[jCategory.length()];
-					for(int j = 0; j < jCategory.length(); j++){
-						category[j] = jCategory.getString(j);
+						r.businessName = restaurant.getString("business_name");
+						r.businessName = r.businessName.replace("&amp;", "and");
+						r.address = restaurant.getString("address");
+						r.id = restaurant.getString("name");
+						r.priceLevel = restaurant.getString("price");
+						r.lat = restaurant.getDouble("lat");
+						r.lon = restaurant.getDouble("lon");
+						
+						JSONArray jCategory = restaurant.getJSONArray("category");
+						String[] category = new String[jCategory.length()];
+						for(int j = 0; j < jCategory.length(); j++){
+							category[j] = jCategory.getString(j);
+						}
+						r.category = category;
+						
+						JSONArray jReviews = restaurant.getJSONArray("reviews");
+						double[] reviews = new double[jReviews.length()];
+						for(int j = 0; j < jReviews.length(); j++){
+							reviews[j] = jReviews.getDouble(j);
+						}
+						r.reviews = reviews;
+						list.add(r);
+						adapter = new RestaurantsArrayAdapter(RecomPage.this, list);
+						lv.setAdapter(adapter);
+						lv.setOnItemClickListener(rClickListener);
+						setUpMap();
+						
 					}
-					r.category = category;
-					
-					JSONArray jReviews = restaurant.getJSONArray("reviews");
-					double[] reviews = new double[jReviews.length()];
-					for(int j = 0; j < jReviews.length(); j++){
-						reviews[j] = jReviews.getDouble(j);
-					}
-					r.reviews = reviews;
-					list.add(r);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			adapter = new RestaurantsArrayAdapter(RecomPage.this, list);
-			lv.setAdapter(adapter);
-			lv.setOnItemClickListener(rClickListener);
-			setUpMap();
+			pd.dismiss();
 		}
 	}
 	
