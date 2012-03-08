@@ -226,16 +226,16 @@ public class DetailPage extends MapActivity{
 	 * @param v image view of call
 	 */
 	public void call(View v) {
-		Log.e("call", phoneNum.getText().toString());
+//		Log.e("call", phoneNum.getText().toString());
 	    try {
-	    	String number = phoneNum.getText().toString();
-	    	if(number.length() != 0){
+	    	String number = "";
+	    	if(phoneNum != null && (number = phoneNum.getText().toString()).length() != 0){
 	    		Intent callIntent = new Intent(Intent.ACTION_CALL);
 	    		callIntent.setData(Uri.parse("tel:" + number));
 	    		startActivity(callIntent);
 	    	}
 	    } catch (ActivityNotFoundException e) {
-	        Log.e("helloandroid dialing example", "Call failed", e);
+	        e.printStackTrace();
 	    }
 	}
 	

@@ -114,12 +114,13 @@ public final class R {
         public static final int front_page_layout=0x7f030002;
         public static final int login_layout=0x7f030003;
         public static final int main=0x7f030004;
-        public static final int profile_entry=0x7f030005;
-        public static final int profile_layout=0x7f030006;
-        public static final int recom_page_layout=0x7f030007;
-        public static final int relevant_restaurants_entry=0x7f030008;
-        public static final int search_result_layout=0x7f030009;
-        public static final int signup_layout=0x7f03000a;
+        public static final int map_popup=0x7f030005;
+        public static final int profile_entry=0x7f030006;
+        public static final int profile_layout=0x7f030007;
+        public static final int recom_page_layout=0x7f030008;
+        public static final int relevant_restaurants_entry=0x7f030009;
+        public static final int search_result_layout=0x7f03000a;
+        public static final int signup_layout=0x7f03000b;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

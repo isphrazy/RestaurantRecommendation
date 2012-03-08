@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.google.android.maps.GeoPoint;
@@ -90,6 +91,7 @@ public class RecomPage extends MapActivity{
 		lv = (ListView) findViewById(R.id.listView);
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
+//		map.setSatellite(true);
 		content = (RelativeLayout) findViewById(R.id.content);
 	}
 
@@ -153,11 +155,15 @@ public class RecomPage extends MapActivity{
 		
 		protected void onProgressUpdate(Void... v){
 			try {
-//				JSONObject rs = new JSONObject(response);
 				JSONArray ja = new JSONArray(response);
 				int length = ja.length();
 				if(length < 1){//no recommendation
-					
+					Toast.makeText(RecomPage.this, "Please try to add some favorite restaurants first:)", Toast.LENGTH_SHORT).show();
+					Thread.sleep(1000);
+					Intent i = new Intent();
+					i.setClass(RecomPage.this, FrontPage.class);
+					startActivity(i);
+					finish();
 				}else{
 					for(int i = 0; i < length; i++){
 						Restaurant r = new Restaurant();
@@ -194,6 +200,8 @@ public class RecomPage extends MapActivity{
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			pd.dismiss();
 		}
@@ -229,8 +237,6 @@ public class RecomPage extends MapActivity{
 									+ " Service: " + (new DecimalFormat("0.0").format(r.reviews[1]))
 									+ " Decor: " + (new DecimalFormat("0.0").format(r.reviews[2]));
 			((TextView) rowView.findViewById(R.id.review)).setText(review);
-			
-//			rowView.findViewById(R.id.pic).setTag(position);
 			
 			lv.setOnItemClickListener(rClickListener);
 			return rowView;
@@ -274,7 +280,14 @@ public class RecomPage extends MapActivity{
 		}
 		mapOverlays.add(itemizedoverlay);
 		MapController mc = map.getController();
-		mc.setCenter(new GeoPoint((upMax + downMax) / 2, (leftMax + rightMax) / 2));
+		GeoPoint center = new GeoPoint((upMax + downMax) / 2, (leftMax + rightMax) / 2);
+		mc.setCenter(center);
+//		View popUp = getLayoutInflater().inflate(R.layout.map_popup, map, false);
+//		MapView.LayoutParams mapParams = new MapView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                center, 0,0,
+//                MapView.LayoutParams.BOTTOM_CENTER);
+//		map.addView(popUp, mapParams);
 //		mc.zoomToSpan(itemizedoverlay.getLatSpanE6(), itemizedoverlay.getLonSpanE6());
 //		int zoomScale = (int)(1.0 * (upMax - downMax) / (180 * 1e6) * 21);
 //		Log.e("zoomScale", "" + 1.0 * (upMax - downMax) / (180 * 1e6));
