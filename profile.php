@@ -13,9 +13,6 @@ print_search_bar();
 <tr><td class='didyou'>You liked the following restaurants:</td></tr>
 <?php
 
-
-
-
 get_restaurants();
 initiate_vars();
 set_reviews_weigth();
@@ -39,7 +36,17 @@ if(!empty($restaurants)){//user has some favorite restaurants
 		<?php
 	}
 }else{
-	
+	?>
+	<tr style="font-size:18px;">
+		<td>
+			You currently do not have any favorite restaurants.<br />
+			Try these <b>examples</b>:<br />
+			<a href="detail.php?name=blue-c-sushi-seattle-3">Blue C Sushi</a>
+			<br />
+			<a href="detail.php?name=the-cheesecake-factory-seattle">The Cheesecake Factory</a>
+		</td>
+	</tr>
+	<?php
 }
 
 ?>
