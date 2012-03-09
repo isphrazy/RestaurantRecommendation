@@ -9,7 +9,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -125,7 +124,6 @@ public class SignUpPage extends Activity{
 					+ EMAIL + "=" + email + "&"
 					+ AGREE + "=yes";
 			query = query.replace(" ", "%20");
-			Log.e("query: ", query);
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
 			try {
@@ -133,8 +131,6 @@ public class SignUpPage extends Activity{
 				HttpEntity entity = hr.getEntity();
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-//				String buff = "";
-//				while((buff = br.readLine()) != null)
 					response += br.readLine();
 				publishProgress();
 			} catch (ClientProtocolException e) {

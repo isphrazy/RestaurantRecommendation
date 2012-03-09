@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+/**
+ * Show user's profile
+ * @author Pingyang He
+ *
+ */
 public class ProfilePage extends Activity{
 
 	private String PD_TITLE = "Loading Data";
@@ -52,7 +56,6 @@ public class ProfilePage extends Activity{
 	private RClickListener rClickListener;
 	private boolean editingMode;
 	private boolean showProgressDialog;//this will be false when return from another activity
-//	private Button sB;
 	private LinearLayout sll;
 	
 	/**
@@ -132,7 +135,7 @@ public class ProfilePage extends Activity{
 						String rId = ja.getString(i);
 						JSONObject rInfo = rs.getJSONObject(rId);
 						r.id = rId;
-						r.businessName = rInfo.getString("Business Name");
+						r.businessName = rInfo.getString("Business Name").replace("&amp;", "and");
 						r.address = rInfo.getString("Address");
 						list.add(r);
 					}
@@ -221,7 +224,6 @@ public class ProfilePage extends Activity{
 	@Override
 	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		Log.e("onActivityResult", "back");
 		showProgressDialog = false;
 		new FetchDetailAsync().execute();
 	}

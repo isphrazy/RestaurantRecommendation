@@ -33,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -110,7 +109,6 @@ public class SearchResultPage extends Activity {
 		protected Void doInBackground(Void... params) {
 			String query = "http://kurlin.com/454/api/api_search.php?restaurant_name=" + keyword + sure;
 			query = query.replace(" ", "%20");
-			Log.e("query: ", query);
 			
 			HttpClient client = new DefaultHttpClient();
 			HttpResponse hr = null;
@@ -133,7 +131,6 @@ public class SearchResultPage extends Activity {
 			JSONArray resp = null;
 			String first = null;
 			pd.dismiss();
-			Log.e("resp: ", response);
 			try {
 				if(response.equals("-1")){//no restaurant found
 //					messageEt.setText("Sorry, we could not find restaurant " + keyword + " ,please try again");

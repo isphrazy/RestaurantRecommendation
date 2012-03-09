@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -26,16 +27,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -56,6 +54,8 @@ public class RecomPage extends MapActivity{
 	private Button listB;
 	private Button mapB;
 	private ListView lv;
+	private LinearLayout userFav;
+	private TextView userFavInfo;
 	
 	private MapView map;
 	private ProgressDialog pd;
@@ -65,7 +65,7 @@ public class RecomPage extends MapActivity{
 	private RestaurantsArrayAdapter adapter;
 	private boolean mode;//0 for list, 1 for map
 	private RClickListener rClickListener;
-	private RelativeLayout content;
+//	private RelativeLayout content;
 	
 	/**
 	 * start the activity
@@ -92,7 +92,9 @@ public class RecomPage extends MapActivity{
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 //		map.setSatellite(true);
-		content = (RelativeLayout) findViewById(R.id.content);
+//		content = (RelativeLayout) findViewById(R.id.content);
+		userFav = (LinearLayout) findViewById(R.id.users_fav);
+		userFavInfo = (TextView) findViewById(R.id.users_fav_num);
 	}
 
 	@Override
@@ -110,7 +112,7 @@ public class RecomPage extends MapActivity{
 			listB.setTextColor(getResources().getColor(R.color.light_blue));
 			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.tabb));
 			mapB.setTextColor(getResources().getColor(R.color.white));
-			lv.setVisibility(View.VISIBLE);
+			userFav.setVisibility(View.VISIBLE);
 			map.setVisibility(View.INVISIBLE);
 			mode = false;
 		}else if(view == mapB && !mode){//click on mapB while currently is in list view
@@ -119,7 +121,7 @@ public class RecomPage extends MapActivity{
 			mapB.setBackgroundDrawable(getResources().getDrawable(R.drawable.taba));
 			mapB.setTextColor(getResources().getColor(R.color.light_blue));
 			map.setVisibility(View.VISIBLE);
-			lv.setVisibility(View.INVISIBLE);
+			userFav.setVisibility(View.INVISIBLE);
 			mode = true;
 		}
 	}
@@ -127,6 +129,7 @@ public class RecomPage extends MapActivity{
 	private class FetchData extends AsyncTask<Void, Void, Void>{
 		
 		private String response;
+		private String value;
 		
 		protected void onPreExecute (){
 				pd = ProgressDialog.show(RecomPage.this, PD_TITLE, PD_MESSAGE);
@@ -144,8 +147,7 @@ public class RecomPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
-//				Log.e("response: ", response);
-//				Log.e("second: ", br.readLine());
+				value = br.readLine();
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -156,7 +158,29 @@ public class RecomPage extends MapActivity{
 		}
 		
 		protected void onProgressUpdate(Void... v){
+			list.clear();
 			try {
+				JSONArray values = new JSONArray(value);
+				String[] attr = new String[]{"Food", "Service", "Decor"};
+//				String[] result = new String[3];
+				String result = "";
+				double[] sorted = new double[3];
+				for(int i = 0; i < 3; i ++){
+					sorted[i] = values.getDouble(i);
+				}
+				Arrays.sort(sorted);
+				for(int i = 2; i >= 0; i--){
+					for(int j = 0; j < 3; j++){
+						if(values.getDouble(j) == sorted[i]){
+							result += attr[j];
+							if(i > 0) result += ", ";
+							break;
+						}
+					}
+				}
+				userFavInfo.setText("Your preference order: " + result);
+				
+				
 				JSONArray ja = new JSONArray(response);
 				int length = ja.length();
 				if(length < 1){//no recommendation
@@ -197,7 +221,6 @@ public class RecomPage extends MapActivity{
 						lv.setAdapter(adapter);
 						lv.setOnItemClickListener(rClickListener);
 						setUpMap();
-						
 					}
 				}
 			} catch (JSONException e) {
@@ -245,6 +268,11 @@ public class RecomPage extends MapActivity{
 		}
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		new FetchData().execute();
+	}
+	
 	// when relevant restaurant is clicked
 	private class RClickListener implements OnItemClickListener{
 		
@@ -252,13 +280,14 @@ public class RecomPage extends MapActivity{
 			Intent i = new Intent();
 			i.setClass(RecomPage.this, DetailPage.class);
 			i.putExtra("name", list.get(position).id);
-			startActivity(i);
+			startActivityForResult(i, 1);
 		}
 	}
+	
 
 	public void setUpMap() {
-//		map = new MapView(this, getResources().getString(R.string.map_api));
 		List<Overlay> mapOverlays = map.getOverlays();
+		mapOverlays.clear();
 		RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
 																RecomPage.this.getResources().getDrawable(R.drawable.map_mark), 
 																RecomPage.this);

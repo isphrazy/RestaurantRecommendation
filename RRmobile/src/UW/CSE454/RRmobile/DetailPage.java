@@ -19,24 +19,15 @@ import org.json.JSONObject;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
-import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -60,8 +51,6 @@ public class DetailPage extends MapActivity{
 	private RMapView map;
 	private Button likeB;
 	
-	private double mLat;
-	private double mLon;
 	private Settings settings;
 	private String accessToken;
 	private String likedRestaurants;
@@ -103,7 +92,6 @@ public class DetailPage extends MapActivity{
 		
 		private String response;
 		private JSONObject r;
-		private double[] location;
 		
 		@Override
 		//fetch data from background
@@ -119,26 +107,14 @@ public class DetailPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
-				Log.e("response: ", response);
 				if(accessToken != null){//already logged in
 					HttpEntity userEntity = new DefaultHttpClient().execute(
 							new HttpGet("http://kurlin.com/454/api/api_liked_r.php?access_token=" + accessToken)).getEntity();
 					BufferedReader uBr = new BufferedReader(
 							new InputStreamReader(userEntity.getContent()));
 					likedRestaurants = uBr.readLine();
-//					Log.e("uBr: ", likedRestaurants);
 				}
 				
-//				location = getMyLocation();
-//				if(location[0] != 0 && location[1] != 0){
-//					Log.e("got it", "yeaaaaah");
-//					try {
-//						r = new JSONObject(response);
-//						getUrl(location[1], location[0], r.getDouble("Latitude"), r.getDouble("Longitude"));
-//					} catch (JSONException e) {
-//						e.printStackTrace();
-//					}
-//				}
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
@@ -237,57 +213,6 @@ public class DetailPage extends MapActivity{
 		}
 	}
 	
-	private void getMyLocation(){
-		
-//		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
-//		Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//		return new double[]{location.getLongitude(), location.getLatitude()};
-		CurrentLocationFinder locationFinder = new CurrentLocationFinder(DetailPage.this);
-		locationFinder.getLocation();
-		int count = 10;
-		try {
-			while(locationFinder.latitude == 0 || locationFinder.longitude == 0 && count > 0){
-				Thread.sleep(200);
-				count--;
-			}
-			double lat = locationFinder.latitude;
-			double lon = locationFinder.longitude;
-			Log.e("getLocaiton", "" + locationFinder.latitude + ", " + locationFinder.longitude);
-			GeoPoint point = new GeoPoint((int)(lat * 1e6), (int)(lon * 1e6));
-			OverlayItem overlayitem = new OverlayItem(point, "My Location", "" + lat + ", " + lon);
-			itemizedoverlay.addOverlay(overlayitem);
-			map.getOverlays().add(itemizedoverlay);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-//		return new double[]{locationFinder.latitude, locationFinder.longitude};
-		
-//		LocationListener locationListener = new LocationListener() {
-//			
-//			Location l;
-//			
-//		    public void onLocationChanged(Location location) {
-//		    	loca = location;
-//		    }
-//
-//			@Override
-//			public void onProviderDisabled(String provider) {
-//			}
-//
-//			@Override
-//			public void onProviderEnabled(String provider) {
-//			}
-//
-//			@Override
-//			public void onStatusChanged(String provider, int status,
-//					Bundle extras) {
-//			}
-//		};
-//
-//		lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 10, locationListener);
-	}
-	
 	/**
 	 * make a phone call when the view is pressed
 	 * @param v image view of call
@@ -365,23 +290,4 @@ public class DetailPage extends MapActivity{
 			  return urlString.toString();
 	}
 	 
-	private class Point {
-		String mName;
-		String mDescription;
-		String mIconUrl;
-		double mLatitude;
-		double mLongitude;
-	}
-	
-	
-	private class Road {
-		public String mName;
-		public String mDescription;
-		public int mColor;
-		public int mWidth;
-		public double[][] mRoute = new double[][] {};
-		public Point[] mPoints = new Point[] {};
-	}
-	
-	
 }

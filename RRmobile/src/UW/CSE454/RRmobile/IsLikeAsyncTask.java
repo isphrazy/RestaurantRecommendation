@@ -12,7 +12,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 /**
  * update user's favoriate restuarants
@@ -30,7 +29,6 @@ public class IsLikeAsyncTask extends AsyncTask<String, Void, Void> {
 														"&like=" + params[1] + 
 														"&access_token=" + params[2];
 		query = query.replace(" ", "%20");
-		Log.e("query: ", query);
 		HttpClient client = new DefaultHttpClient();
 		HttpResponse hr = null;
 		
