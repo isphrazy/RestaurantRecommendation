@@ -144,6 +144,8 @@ public class RecomPage extends MapActivity{
 				
 				BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
 				response = br.readLine();
+//				Log.e("response: ", response);
+//				Log.e("second: ", br.readLine());
 				publishProgress();
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();

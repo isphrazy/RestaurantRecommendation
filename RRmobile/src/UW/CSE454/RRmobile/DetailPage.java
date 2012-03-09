@@ -66,6 +66,8 @@ public class DetailPage extends MapActivity{
 	private String accessToken;
 	private String likedRestaurants;
 	
+	RRItemizedOverlay itemizedoverlay;
+	
 	/**
 	 * start activity
 	 */
@@ -79,17 +81,21 @@ public class DetailPage extends MapActivity{
 		initiateVar();
 		
 		new FetchDetailAsync().execute();
+//		getMyLocation();
 	}
 	
 	//initiate variables
 	private void initiateVar() {
 		rId = getIntent().getStringExtra("name");
-//		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
+		pd = ProgressDialog.show(DetailPage.this, PD_TITLE, PD_MESSAGE);
 		map = (RMapView) findViewById(R.id.mapview);
 		map.setBuiltInZoomControls(true);
 		likeB = (Button) findViewById(R.id.like_b);
 		settings = Settings.getInstance(DetailPage.this);
 		accessToken = settings.getAt();
+		itemizedoverlay = new RRItemizedOverlay(
+				DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
+				DetailPage.this);
 	}
 
 	//fetching data from background
@@ -144,9 +150,8 @@ public class DetailPage extends MapActivity{
 		
 		//update the page
 		protected void onProgressUpdate(Void... v){
-//			pd.dismiss();
+			pd.dismiss();
 			try {
-				Log.e("onProgress", "in");
 				r = new JSONObject(response);
 				String bName = "";
 				try{
@@ -203,9 +208,6 @@ public class DetailPage extends MapActivity{
 					int lat = (int) (r.getDouble("Latitude") * 1e6);
 					int lon = (int) (r.getDouble("Longitude") * 1e6);
 					List<Overlay> mapOverlays = map.getOverlays();
-					RRItemizedOverlay itemizedoverlay = new RRItemizedOverlay(
-							DetailPage.this.getResources().getDrawable(R.drawable.map_mark), 
-							DetailPage.this);
 					GeoPoint point = new GeoPoint(lat, lon);
 					OverlayItem overlayitem = new OverlayItem(point, bName, address);
 					itemizedoverlay.addOverlay(overlayitem);
@@ -235,7 +237,7 @@ public class DetailPage extends MapActivity{
 		}
 	}
 	
-	private double[] getMyLocation(){
+	private void getMyLocation(){
 		
 //		LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
 //		Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -248,11 +250,18 @@ public class DetailPage extends MapActivity{
 				Thread.sleep(200);
 				count--;
 			}
+			double lat = locationFinder.latitude;
+			double lon = locationFinder.longitude;
+			Log.e("getLocaiton", "" + locationFinder.latitude + ", " + locationFinder.longitude);
+			GeoPoint point = new GeoPoint((int)(lat * 1e6), (int)(lon * 1e6));
+			OverlayItem overlayitem = new OverlayItem(point, "My Location", "" + lat + ", " + lon);
+			itemizedoverlay.addOverlay(overlayitem);
+			map.getOverlays().add(itemizedoverlay);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		return new double[]{locationFinder.latitude, locationFinder.longitude};
+//		return new double[]{locationFinder.latitude, locationFinder.longitude};
 		
 //		LocationListener locationListener = new LocationListener() {
 //			

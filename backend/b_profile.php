@@ -78,15 +78,19 @@
 				$d_count++;
 			}
 			
-			$sum = $f_count + $s_count + $d_count;
+			if($f_count != 0)$favorite_restaurants_weight[0] /= $f_count;
+			if($s_count != 0)$favorite_restaurants_weight[1] /= $s_count;
+			if($d_count != 0)$favorite_restaurants_weight[2] /= $d_count;
+			
+			$sum = $favorite_restaurants_weight[0] + $favorite_restaurants_weight[1] + $favorite_restaurants_weight[2];
 			if($sum == 0){//no info about favorite over any of the three attributes
 				$favorite_restaurants_weight[0] = 1/3;
 				$favorite_restaurants_weight[1] = 1/3;
 				$favorite_restaurants_weight[2] = 1/3;
 			}else{
-				$favorite_restaurants_weight[0] = $f_count / $sum;
-				$favorite_restaurants_weight[1] = $s_count / $sum;
-				$favorite_restaurants_weight[2] = $d_count / $sum;
+				$favorite_restaurants_weight[0] /= $sum;
+				$favorite_restaurants_weight[1] /= $sum;
+				$favorite_restaurants_weight[2] /= $sum;
 			}
 			
 		}

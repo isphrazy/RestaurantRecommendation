@@ -27,14 +27,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -68,7 +66,6 @@ public class ProfilePage extends Activity{
 		initiateVar();
 		
 		new FetchDetailAsync().execute();
-		
 	}
 	
 	//initiate variables
@@ -123,11 +120,9 @@ public class ProfilePage extends Activity{
 				pd.dismiss();
 			if(response.equals("[]")){
 				
-//				sB.setVisibility(View.INVISIBLE);
 				sll.setVisibility(View.VISIBLE);
 				
 			}else{
-//				sB.setVisibility(View.VISIBLE);
 				sll.setVisibility(View.INVISIBLE);
 				try {
 					JSONObject rs = new JSONObject(response);
@@ -169,7 +164,6 @@ public class ProfilePage extends Activity{
 			View rowView = inflater.inflate(R.layout.profile_entry, null, true);
 			((TextView) rowView.findViewById(R.id.result_b_name)).setText(r.businessName);
 			((TextView) rowView.findViewById(R.id.result_address)).setText(r.address);
-//			if(rowView.findViewById(R.id.remove_pic) == null) Log.e("getView", "null");
 			if(editingMode){
 				ImageView rIv = (ImageView) rowView.findViewById(R.id.remove_pic);
 				rIv.setTag(position);
@@ -209,7 +203,7 @@ public class ProfilePage extends Activity{
 			Intent i = new Intent();
 			i.setClass(ProfilePage.this, DetailPage.class);
 			i.putExtra("name", list.get(position).id);
-			startActivity(i);
+			startActivityForResult(i, 1);
 		}
 	}
 	
@@ -227,6 +221,7 @@ public class ProfilePage extends Activity{
 	@Override
 	//make sure that the login status is correct
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.e("onActivityResult", "back");
 		showProgressDialog = false;
 		new FetchDetailAsync().execute();
 	}
